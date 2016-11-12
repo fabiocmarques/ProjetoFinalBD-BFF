@@ -1,4 +1,15 @@
-﻿create table OrgaoSuperior(
+﻿DROP TABLE IF EXISTS UnidadeGestora;
+DROP TABLE IF EXISTS OrgaoSubordinado;
+DROP TABLE IF EXISTS OrgaoSuperior;
+DROP TABLE IF EXISTS Subfuncao;
+DROP TABLE IF EXISTS Funcao;
+DROP TABLE IF EXISTS Acao;
+DROP TABLE IF EXISTS Programa;
+DROP TABLE IF EXISTS Favorecido;
+DROP TABLE IF EXISTS Diaria;
+DROP TABLE IF EXISTS TabelaTemporaria;
+
+create table OrgaoSuperior(
 	CodOrgSup int,
 	NomeOrgSup text,
 	primary key(CodOrgSup)
@@ -61,5 +72,30 @@ create table Diaria(
 	ValorPagamento real,
 	GestaoPagamento int,
 	DataPagamento date,
+	primary key(DocPagamento)
+);
+
+create table TabelaTemporaria(
+	CodOrgSup int,
+	NomeOrgSup text,
+	CodOrgSub int,
+	NomeOrgSub text,
+	CodUniGes int,
+	NomeUniGes text,
+	CodFun int,
+	NomeFun text,
+	CodSubFun int,
+	NomeSubFun text,
+	CodProg int,
+	NomeProg text,
+	CodAcao int,
+	NomeAcao text,
+	LinguagemCidada text,
+	Cpf varchar(14),
+	NomeFav text,
+	DocPagamento text,
+	GestaoPagamento int,
+	DataPagamento date,
+	ValorPagamento real,
 	primary key(DocPagamento)
 );
