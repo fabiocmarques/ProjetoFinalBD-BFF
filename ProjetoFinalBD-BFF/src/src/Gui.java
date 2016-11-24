@@ -55,6 +55,7 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				painelInf.removeAll();
 				Remover(painelInf);				
 			}
 		});
@@ -63,6 +64,7 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				painelInf.removeAll();
 				Atualizar(painelInf);
 				
 			}
@@ -188,9 +190,110 @@ public class Gui {
 
 
 	protected void Remover(JPanel painelInf){
+		JPanel painelSeletorTab = new JPanel();
+		JLabel t1 = new JLabel("Selecione a tabela para remoção: ");
+		JComboBox comboTabelas = new JComboBox(tabelas);
+		JButton confirmaTabela = new JButton("Confirmar");
 		
+		/*
+		 * Listener do botão de confirmar.
+		 * */
+		
+		confirmaTabela.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				switch(comboTabelas.getSelectedIndex()){
+					case 0://Ação
+						painelSeletorTab.setVisible(false);
+						removeEntrada(painelInf, "Ação", "acao");
+						break;
+						
+					case 1://Diária
+						painelSeletorTab.setVisible(false);
+						removeEntrada(painelInf, "Diária", "diaria");
+						break;
+						
+					case 2://Favorecido
+						painelSeletorTab.setVisible(false);
+						removeEntrada(painelInf, "Favorecido", "favorecido");
+						break;
+						
+					case 3://Função
+						painelSeletorTab.setVisible(false);
+						removeEntrada(painelInf, "Função", "funcao");
+						break;
+						
+					case 4://Órgão Subordinado
+						painelSeletorTab.setVisible(false);
+						removeEntrada(painelInf, "Órgão Subordinado", "orgaosubordinado");
+						break;
+						
+					case 5://Órgão Superior
+						painelSeletorTab.setVisible(false);
+						removeEntrada(painelInf, "Órgão Superior", "orgaosuperior");
+						break;
+						
+					case 6://Programa
+						painelSeletorTab.setVisible(false);
+						removeEntrada(painelInf, "Programa", "programa");
+						break;
+						
+					case 7://Subfunção
+						painelSeletorTab.setVisible(false);
+						removeEntrada(painelInf, "Subfunção", "subfuncao");
+						break;
+						
+					default://Unidade gestora
+						painelSeletorTab.setVisible(false);
+						removeEntrada(painelInf, "Unidade gestora", "unidadegestora");
+						break;
+				}
+			}
+		});
+		
+		/**/
+		
+		painelInf.setBackground(Color.GREEN);
+		painelSeletorTab.setBackground(Color.WHITE);
+		
+		painelSeletorTab.setLayout(new BoxLayout(painelSeletorTab, BoxLayout.Y_AXIS));
+		
+		painelSeletorTab.add(t1);
+		painelSeletorTab.add(comboTabelas);
+		painelSeletorTab.add(confirmaTabela);
+		
+		painelInf.add(painelSeletorTab);
+		painelInf.repaint();
+		painelInf.revalidate();
 	}
 	
+	protected void removeEntrada(JPanel painelInf, String nome, String tabela) {
+		JPanel p = new JPanel();
+		JLabel lb = new JLabel("Digite a chave da entrada da tabela de " + nome + ": ");
+		JTextField chave = new JTextField();
+		JButton confirma = new JButton("Confirmar");
+		
+		confirma.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				/*
+				 * Realizar a remoção com a chave em "chave.getText()".
+				 * */
+			}
+		});
+		
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+		
+		p.add(lb);
+		p.add(chave);
+		p.add(confirma);
+		
+		painelInf.add(p);
+	}
+
+
 	protected void Atualizar(JPanel painelInf){
 		
 	}
