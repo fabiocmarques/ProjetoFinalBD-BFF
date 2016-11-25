@@ -2,7 +2,7 @@ package Negocio;
 
 public class OrgaoSub {
 	int codOrgaoSub;
-	int codOrgaoSup;
+	OrgaoSup orgSup;
 	String nomeOrgaoSub;
 	
 	
@@ -11,12 +11,6 @@ public class OrgaoSub {
 	}
 	public void setCodOrgaoSub(int codOrgaoSub) {
 		this.codOrgaoSub = codOrgaoSub;
-	}
-	public int getCodOrgaoSup() {
-		return codOrgaoSup;
-	}
-	public void setCodOrgaoSup(int codOrgaoSup) {
-		this.codOrgaoSup = codOrgaoSup;
 	}
 	public String getNomeOrgaoSub() {
 		return nomeOrgaoSub;
