@@ -1,0 +1,5 @@
+.Quanto que um funcionario gastou de julho a dezembro.
+.Quantas diárias estão atreladas a um órgão superior, órgão subordinado ou unidade gestora.
+.Listar diárias que um funcionário pegou.
+.Listar os favorecidos de uma determinada função ou subfunção em ordem crescente ou decrescente de gastos.
+.Listar todos os programas em ordem crescente ou decrescente da quantidade de diárias.
