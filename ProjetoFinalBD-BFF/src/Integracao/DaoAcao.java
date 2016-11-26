@@ -8,6 +8,15 @@ import java.sql.Statement;
 import Negocio.Acao;
 
 public class DaoAcao {
+	String bd;
+	String senha;
+	
+	
+	public DaoAcao(String bd, String senha){
+		this.bd = bd;
+		this.senha = senha;
+	}
+	
 	public void createAcao(Acao acao){
 		Connection c = null;
 		Statement stmt = null;
@@ -15,8 +24,8 @@ public class DaoAcao {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	stmt = c.createStatement();
 	        String acaoSql = "INSERT INTO ACAO (CODACAO,NOMEMACAO,LINGUAGEMCIDADA) "
@@ -43,7 +52,7 @@ public class DaoAcao {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
-	    	"postgres", "senha123");
+	    	"postgres", senha);
 	    	
 	    	String sql = "UPDATE ACAO SET codacao = " + acao.getCodAcao() + ", "
 	    				+ "nomeacao = " + acao.getNome() + ", "
@@ -70,8 +79,8 @@ public class DaoAcao {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String sql = "SELECT * FROM ACAO WHERE CodAcao = " + acao.getCodAcao() + ";";
 		    stmt = c.createStatement();
@@ -100,8 +109,8 @@ public class DaoAcao {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String sql = "DELETE FROM ACAO WHERE CodAcao = " + acao.getCodAcao() + ";";
 		    stmt = c.createStatement();

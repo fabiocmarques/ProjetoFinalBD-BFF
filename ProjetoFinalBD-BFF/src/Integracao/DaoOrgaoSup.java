@@ -5,10 +5,18 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import Negocio.Favorecido;
 import Negocio.OrgaoSup;
 
 public class DaoOrgaoSup {
+	String bd;
+	String senha;
+	
+	
+	public DaoOrgaoSup(String bd, String senha){
+		this.bd = bd;
+		this.senha = senha;
+	}
+	
 	public void createOrgaoSup(OrgaoSup orgSup){
 		Connection c = null;
 		Statement stmt = null;
@@ -16,8 +24,8 @@ public class DaoOrgaoSup {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	stmt = c.createStatement();
 	         String orgSupSql = "INSERT INTO ORGAOSUPERIOR (CODORGSUP, NOMEORGSUP) "
@@ -41,8 +49,8 @@ public class DaoOrgaoSup {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String sql = "UPDATE ORGAOSUPERIOR SET codorgsup = " + orgaoSup.getCodOrgSup() + ", "
 	    				+ "nomeOrgSup = " + orgaoSup.getNomeOrgSup()
@@ -68,8 +76,8 @@ public class DaoOrgaoSup {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String sql = "SELECT * FROM ORGAOSUPERIOR WHERE CodOrgSup = " + codOrgSup + ";";
 		    stmt = c.createStatement();
@@ -98,8 +106,8 @@ public class DaoOrgaoSup {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String sql = "DELETE FROM ORGAOSUPERIOR WHERE CodOrgSup = " + orgSup.getCodOrgSup() + ";";
 		    stmt = c.createStatement();

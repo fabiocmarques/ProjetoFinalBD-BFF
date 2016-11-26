@@ -9,6 +9,15 @@ import Negocio.Favorecido;
 import Negocio.Programa;
 
 public class DaoPrograma {
+	String bd;
+	String senha;
+	
+	
+	public DaoPrograma(String bd, String senha){
+		this.bd = bd;
+		this.senha = senha;
+	}
+	
 	public void createPrograma(Programa programa){
 		Connection c = null;
 		Statement stmt = null;
@@ -16,8 +25,8 @@ public class DaoPrograma {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	stmt = c.createStatement();
 	         String progSql = "INSERT INTO PROGRAMA (CODPROG, NOMEPROG) "
@@ -42,7 +51,7 @@ public class DaoPrograma {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
-	    	"postgres", "senha123");
+	    	"postgres", senha);
 	    	
 	    	String sql = "UPDATE PROGRAMA SET codprog = " + programa.getCodProg() + ", "
 	    				+ "nomeprog = " + programa.getNomeProg()
@@ -68,8 +77,8 @@ public class DaoPrograma {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String sql = "SELECT * FROM Programa WHERE Codprog = " + codProg + ";";
 		    stmt = c.createStatement();
@@ -98,8 +107,8 @@ public class DaoPrograma {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String sql = "DELETE FROM PROGRAMA WHERE CodProg = " + programa.getCodProg() + ";";
 		    stmt = c.createStatement();

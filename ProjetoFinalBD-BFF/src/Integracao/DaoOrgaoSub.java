@@ -10,6 +10,15 @@ import Negocio.OrgaoSub;
 import Negocio.OrgaoSup;
 
 public class DaoOrgaoSub {
+	String bd;
+	String senha;
+	
+	
+	public DaoOrgaoSub(String bd, String senha){
+		this.bd = bd;
+		this.senha = senha;
+	}
+	
 	public void createOrgaoSub(OrgaoSub orgaoSub){
 		Connection c = null;
 		Statement stmt = null;
@@ -17,8 +26,8 @@ public class DaoOrgaoSub {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	stmt = c.createStatement();
 		    String orgSubSql = "INSERT INTO ORGAOSUBORDINADO (CODORGSUB, CODORGSUP, NOMEORGSUB) "
@@ -43,7 +52,7 @@ public class DaoOrgaoSub {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
-	    	"postgres", "senha123");
+	    	"postgres", senha);
 	    	
 	    	String sql = "UPDATE OrgaoSub SET codorgsub = " + orgaoSub.getCodOrgaoSub() + ", "
 	    				+ "nomeorgsub = " + orgaoSub.getNomeOrgaoSub() + ", "
@@ -70,8 +79,8 @@ public class DaoOrgaoSub {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String sql = "SELECT ORGAOSUBORDINADO.* AND ORGAOSUPERIOR.NOMEORGSUP FROM ORGAOSUBORDINADO "
 	    			+ "JOIN  ORGAOSUPERIOR ON ORGAOSUBORDINADO.codorgsup = ORGAOSUPERIOR.codorgsup" 
@@ -108,8 +117,8 @@ public class DaoOrgaoSub {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String sql = "DELETE FROM ORGAOSUBORDINADO WHERE CodOrgSub = " + orgSub.getCodOrgaoSub() + ";";
 		    stmt = c.createStatement();

@@ -8,6 +8,15 @@ import java.sql.Statement;
 import Negocio.SubFuncao;
 
 public class DaoSubfuncao {
+	String bd;
+	String senha;
+	
+	
+	public DaoSubfuncao(String bd, String senha){
+		this.bd = bd;
+		this.senha = senha;
+	}
+	
 	public void createSubfuncao(SubFuncao subf){
 		Connection c = null;
 		Statement stmt = null;
@@ -15,8 +24,8 @@ public class DaoSubfuncao {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	stmt = c.createStatement();
 	        String subfSql = "INSERT INTO subfuncao (codsubfun, nomesubfun) "
@@ -42,7 +51,7 @@ public class DaoSubfuncao {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
-	    	"postgres", "senha123");
+	    	"postgres", senha);
 	    	
 	    	String sql = "UPDATE subfuncao SET codsubfun = " + subf.getCodSubFun() + ", "
 	    				+ "nomesubfun = " + subf.getNomeSubFun() + ", "
@@ -68,8 +77,8 @@ public class DaoSubfuncao {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String sql = "SELECT * FROM subfuncao WHERE Codsubfuncao = " + codSubf + ";";
 		    stmt = c.createStatement();
@@ -97,8 +106,8 @@ public class DaoSubfuncao {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String sql = "DELETE FROM ACAO WHERE CodAcao = " + subf.getCodSubFun() + ";";
 		    stmt = c.createStatement();
