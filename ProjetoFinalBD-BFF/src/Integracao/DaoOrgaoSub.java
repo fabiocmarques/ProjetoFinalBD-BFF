@@ -5,11 +5,12 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import Negocio.Acao;
 import Negocio.Favorecido;
+import Negocio.OrgaoSub;
+import Negocio.OrgaoSup;
 
-public class DaoFavorecido {
-	public void createFavorecido(Favorecido favorecido){
+public class DaoOrgaoSub {
+	public void createOrgaoSub(OrgaoSub orgaoSub){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -20,9 +21,9 @@ public class DaoFavorecido {
 	    	"postgres", "senha123");
 	    	
 	    	stmt = c.createStatement();
-	         String favSql = "INSERT INTO FAVORECIDO (CODFAVORECIDO, CPF, NOMEFAV) "
-	               + "VALUES (" + favorecido.getCodFavorecido() + ", " + favorecido.getCpf() + ", " + favorecido.getNomeFavorecido() + ");";
-	         stmt.executeUpdate(favSql);
+		    String orgSubSql = "INSERT INTO ORGAOSUBORDINADO (CODORGSUB, CODORGSUP, NOMEORGSUB) "
+		    				+ "VALUES (" + orgaoSub.getCodOrgaoSub() + ", " + orgaoSub.getOrgSup().getCodOrgSup() + ", " + orgaoSub.getNomeOrgaoSub() + ");";
+		    stmt.executeUpdate(orgSubSql);
 		    
 		    stmt.close();
 		    c.close();
@@ -34,7 +35,7 @@ public class DaoFavorecido {
 	      }
 	}
 	
-	public void updateFavorecido(Favorecido favorecido){
+	public void updateOrgaoSub(OrgaoSub orgaoSub){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -44,10 +45,10 @@ public class DaoFavorecido {
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
 	    	"postgres", "senha123");
 	    	
-	    	String sql = "UPDATE Favorecido SET codfavorecido = " + favorecido.getCodFavorecido() + ", "
-	    				+ "cpf = " + favorecido.getCpf() + ", "
-	    				+ "nomefav = " + favorecido.getNomeFavorecido()
-	    				+ " WHERE CodFavorecido = " + favorecido.getCodFavorecido() + ";";
+	    	String sql = "UPDATE OrgaoSub SET codorgsub = " + orgaoSub.getCodOrgaoSub() + ", "
+	    				+ "nomeorgsub = " + orgaoSub.getNomeOrgaoSub() + ", "
+	    				+ "codorgsup = " + orgaoSub.getOrgSup().getCodOrgSup()
+	    				+ " WHERE CodOrgSup = " + orgaoSub.getCodOrgaoSub() + ";";
 		    stmt = c.createStatement();
 		    stmt.executeQuery(sql);
 		    
@@ -61,8 +62,8 @@ public class DaoFavorecido {
 	      }
 	}
 	
-	public Favorecido recuperaFavorecido(int codFavorecido){
-		Favorecido favorecido = new Favorecido();
+	public OrgaoSub recuperaOrgaoSub(int codOrgaoSub){
+		OrgaoSub orgSub = new OrgaoSub();
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -72,13 +73,20 @@ public class DaoFavorecido {
 	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
 	    	"postgres", "senha123");
 	    	
-	    	String sql = "SELECT * FROM FAVORECIDO WHERE CodFavorecido = " + codFavorecido + ";";
+	    	String sql = "SELECT ORGAOSUBORDINADO.* AND ORGAOSUPERIOR.NOMEORGSUP FROM ORGAOSUBORDINADO "
+	    			+ "JOIN  ORGAOSUPERIOR ON ORGAOSUBORDINADO.codorgsup = ORGAOSUPERIOR.codorgsup" 
+	    			+ "WHERE CodOrgSub = " + codOrgaoSub + ";";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
-		    favorecido.setCodFavorecido(rs.getInt("codfavorecido"));
-		    favorecido.setCpf(rs.getString("cpf"));
-		    favorecido.setNomeFavorecido(rs.getString("nomefav"));
+		    orgSub.setCodOrgaoSub(rs.getInt("codorgsub"));
+		    orgSub.setNomeOrgaoSub(rs.getString("nomeorgsub"));
+		    
+		    OrgaoSup orgSup = new OrgaoSup();
+		    
+		    orgSup.setCodOrgSup(rs.getInt("codorgsup"));
+		    orgSup.setNomeOrgSup(rs.getString("nomeorgsup"));
+		    orgSub.setOrgSup(orgSup);
 		    
 		    rs.close();
 		    stmt.close();
@@ -90,10 +98,10 @@ public class DaoFavorecido {
 	    	  System.exit(0);
 	      }
 
-		return favorecido;
+		return orgSub;
 	}
 	
-	public void deletaFavorecido(Favorecido favorecido){
+	public void deletaOrgaoSub(OrgaoSub orgSub){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -103,7 +111,7 @@ public class DaoFavorecido {
 	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
 	    	"postgres", "senha123");
 	    	
-	    	String sql = "DELETE FROM FAVORECIDO WHERE CodFavorecido = " + favorecido.getCodFavorecido() + ";";
+	    	String sql = "DELETE FROM ORGAOSUBORDINADO WHERE CodOrgSub = " + orgSub.getCodOrgaoSub() + ";";
 		    stmt = c.createStatement();
 		    stmt.executeQuery(sql);
 		    

@@ -61,7 +61,7 @@ public class DaoFuncao {
 	      }
 	}
 	
-	public Funcao recuperaFuncao(String codFun){
+	public Funcao recuperaFuncao(int codFun){
 		Funcao funcao = new Funcao();
 		Connection c = null;
 		Statement stmt = null;
@@ -72,7 +72,7 @@ public class DaoFuncao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
 	    	"postgres", "senha123");
 	    	
-	    	String sql = "SELECT * FROM FUNCAO WHERE CodFun = " + funcao.getCodFuncao() + ";";
+	    	String sql = "SELECT * FROM FUNCAO WHERE CodFun = " + codFun + ";";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
