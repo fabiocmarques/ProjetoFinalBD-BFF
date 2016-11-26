@@ -6,9 +6,15 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import Negocio.Acao;
 import Negocio.Diaria;
 import Negocio.Favorecido;
+import Negocio.Funcao;
+import Negocio.OrgaoSub;
+import Negocio.OrgaoSup;
 import Negocio.Programa;
+import Negocio.SubFuncao;
+import Negocio.UnidadeGestora;
 
 public class DaoDiaria {
 	public float gastoFuncionario(String nome){
@@ -430,13 +436,73 @@ public class DaoDiaria {
 	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
 	    	"postgres", "senha123");
 	    	
-	    	String query = "SELECT NomeFav, Cpf, SUM(ValorPagamento) AS Total_Gastos "
-		    		+ "FROM Favorecido JOIN Diaria ON Favorecido.CodFavorecido = Diaria.CodFavorecido "
-		    		+ "WHERE NomeFav = " + nome + " GROUP BY Diaria.CodFavorecido";
+	    	String query = "SELECT codDiaria, docPagamento, valorPagamento, gestaoPagamento, datapagamento, acao.*, favorecido.*, programa.*, funcao.*, subfuncao.*, unidadeGestora.coduniges, unidadeGestora.nomeuniges, orgaoSubordinado.codOrgSub, orgaoSubordinado.nomeOrgSub, orgaoSuperior.* FROM diaria  "
+	    			+ "JOIN acao ON diaria.codAcao = acao.codAcao "
+	    			+ "JOIN favorecido ON diaria.codFavorecido = favorecido.codfavorecido "
+	    			+ "JOIN programa ON diaria.codprog = programa.codprog "
+	    			+ "JOIN funcao ON diaria.codFun = funcao.codFun "
+	    			+ "JOIN subfuncao ON diaria.codSubFun = subfuncao.codSubFun "
+	    			+ "JOIN unidadeGestora ON diaria.codUniGes = unidadeGestora.codUniGes "
+	    			+ "JOIN orgaoSubordinado ON orgaoSubordinado.codOrgSub = unidadeGestora.codOrgSub "
+	    			+ "JOIN orgaoSuperior ON orgaoSuperior.codOrgSup = orgaoSubordinado.codOrgSup "
+	    			+ "WHERE codDiaria = " + codDiaria + ";";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(query);
 		    
-		    result = rs.getFloat("Total_Gastos");
+		    diaria.setCodDiaria(rs.getInt("codDiaria"));
+		    diaria.setDocPagamento(rs.getString("docPagamento"));
+		    diaria.setValorPagamento(rs.getFloat("valorPagamento"));
+		    diaria.setGestaoPag(rs.getInt("gestaoPagamento"));
+		    diaria.setDataPagamento(rs.getDate("dataPagamento"));
+		    
+		    Acao acao = new Acao();
+		    
+		    acao.setCodAcao(rs.getString("codAcao"));
+		    acao.setLinguagemCidada(rs.getString("linguagemCidada"));
+		    acao.setNome(rs.getString("nomeAcao"));
+		    diaria.setAcao(acao);
+		    
+		    Favorecido favorecido = new Favorecido();
+		    
+		    favorecido.setCodFavorecido(rs.getInt("codFavorecido"));
+		    favorecido.setCpf(rs.getString("cpf"));
+		    favorecido.setNomeFavorecido(rs.getString("nomeFav"));
+		    diaria.setFavorecido(favorecido);
+		    
+		    Programa programa = new Programa();
+		    
+		    programa.setCodProg(rs.getInt("codProg"));
+		    programa.setNomeProg(rs.getString("nomeProg"));
+		    diaria.setPrograma(programa);
+		    
+		    Funcao funcao = new Funcao();
+		    
+		    funcao.setCodFuncao(rs.getInt("codfun"));
+		    funcao.setNomeFuncao(rs.getString("nomefun"));
+		    diaria.setFuncao(funcao);
+		    
+		    SubFuncao subFuncao = new SubFuncao();
+		    
+		    subFuncao.setCodSubFun(rs.getInt("codsubfun"));
+		    subFuncao.setNomeSubFun(rs.getString("nomesubfun"));
+		    diaria.setSubFuncao(subFuncao);
+		    
+		    UnidadeGestora unidadeGestora = new UnidadeGestora();
+		    
+		    unidadeGestora.setCodUniGes(rs.getInt("coduniges"));
+		    unidadeGestora.setNomeUnidadeGestora(rs.getString("nomeuniges"));
+		    diaria.setGestor(unidadeGestora);
+		    
+		    OrgaoSub orgaoSub = new OrgaoSub();
+		    
+		    orgaoSub.setCodOrgaoSub(rs.getInt("codOrgSub"));
+		    orgaoSub.setNomeOrgaoSub(rs.getString("nomeorgaosub"));
+		    unidadeGestora.setOrgaoSub(orgaoSub);
+		    
+		    OrgaoSup orgaoSup = new OrgaoSup();
+		    orgaoSup.setCodOrgSup(rs.getInt("codorgsup"));
+		    orgaoSup.setNomeOrgSup(rs.getString("nomeorgsup"));
+		    orgaoSub.setOrgSup(orgaoSup);
 		    
 		    rs.close();
 		    stmt.close();
@@ -463,13 +529,21 @@ public class DaoDiaria {
 	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
 	    	"postgres", "senha123");
 	    	
-	    	String query = "UPDATE COMPANY set SALARY = 25000.00 where ID=1;";
+	    	String query = "UPDATE Diaria set codDiaria = " + diaria.getCodDiaria() 
+	    					+ "codAcao = " + diaria.getAcao().getCodAcao()
+	    					+ "codFav = " + diaria.getFavorecido().getCodFavorecido()
+	    					+ "codProg = " + diaria.getPrograma().getCodProg()
+	    					+ "codFun = " + diaria.getFuncao().getCodFuncao()
+	    					+ "codSubFun = " + diaria.getSubFuncao().getCodSubFun()
+	    					+ "codUniGes = " + diaria.getGestor().getCodUniGes()
+	    					+ "docPagamento = " + diaria.getDocPagamento()
+	    					+ "valorPagamento = " + diaria.getValorPagamento()
+	    					+ "gestaoPagamento = " + diaria.getGestaoPag()
+	    					+ "dataPagamento = " + diaria.getDataPagamento()
+	    					+ " where ID =" + diaria.getCodDiaria() +  ";";
+	    	
 		    stmt = c.createStatement();
-		    ResultSet rs = stmt.executeQuery(query);
 		    
-		    result = rs.getFloat("Total_Gastos");
-		    
-		    rs.close();
 		    stmt.close();
 		    c.close();
 	    	

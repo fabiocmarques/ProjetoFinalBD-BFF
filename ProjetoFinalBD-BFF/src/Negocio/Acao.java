@@ -1,14 +1,14 @@
 package Negocio;
 
 public class Acao {
-	int codAcao;
+	String codAcao;
 	String nome;
 	String linguagemCidada;
 	
-	public int getCodAcao() {
+	public String getCodAcao() {
 		return codAcao;
 	}
-	public void setCodAcao(int codAcao) {
+	public void setCodAcao(String codAcao) {
 		this.codAcao = codAcao;
 	}
 	public String getNome() {
