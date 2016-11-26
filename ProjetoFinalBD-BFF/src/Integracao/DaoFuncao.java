@@ -5,10 +5,12 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import Negocio.Acao;
+import Negocio.Favorecido;
+import Negocio.Funcao;
 
-public class DaoAcao {
-	public void createAcao(Acao acao){
+public class DaoFuncao {
+	
+	public void createFuncao(Funcao funcao){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -19,9 +21,9 @@ public class DaoAcao {
 	    	"postgres", "senha123");
 	    	
 	    	stmt = c.createStatement();
-	        String acaoSql = "INSERT INTO ACAO (CODACAO,NOMEMACAO,LINGUAGEMCIDADA) "
-	               + "VALUES (" + acao.getCodAcao() + ", " + acao.getNome() + ", " + acao.getLinguagemCidada() + ");";
-	        stmt.executeUpdate(acaoSql);
+	         String favSql = "INSERT INTO FUNCAO (CODFUN, NOMEFUN) "
+	               + "VALUES (" + funcao.getCodFuncao() + ", " + funcao.getNomeFuncao() + ");";
+	         stmt.executeUpdate(favSql);
 		    
 		    stmt.close();
 		    c.close();
@@ -33,7 +35,7 @@ public class DaoAcao {
 	      }
 	}
 	
-	public void updateAcao(Acao acao){
+	public void updateFuncao(Funcao funcao){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -43,10 +45,9 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
 	    	"postgres", "senha123");
 	    	
-	    	String sql = "UPDATE ACAO SET codacao = " + acao.getCodAcao() + ", "
-	    				+ "nomeacao = " + acao.getNome() + ", "
-	    				+ "ligaugemcidada = " + acao.getLinguagemCidada()
-	    				+ " WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "UPDATE Funcao SET codfun = " + funcao.getCodFuncao() + ", "
+	    				+ "nomefun = " + funcao.getNomeFuncao()
+	    				+ " WHERE codFun = " + funcao.getCodFuncao() + ";";
 		    stmt = c.createStatement();
 		    stmt.executeQuery(sql);
 		    
@@ -60,8 +61,8 @@ public class DaoAcao {
 	      }
 	}
 	
-	public Acao recuperaAcao(String codAcao){
-		Acao acao = new Acao();
+	public Funcao recuperaFuncao(String codFun){
+		Funcao funcao = new Funcao();
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -71,14 +72,14 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
 	    	"postgres", "senha123");
 	    	
-	    	String sql = "SELECT * FROM ACAO WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "SELECT * FROM FUNCAO WHERE CodFun = " + funcao.getCodFuncao() + ";";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
-		    acao.setCodAcao(rs.getString("codacao"));
-		    acao.setLinguagemCidada(rs.getString("liguagemcidada"));
-		    acao.setNome(rs.getString("nomeacao"));
+		    funcao.setCodFuncao(rs.getInt("codfun"));
+		    funcao.setNomeFuncao(rs.getString("nomefun"));
 		    
+		    rs.close();
 		    stmt.close();
 		    c.close();
 	    	
@@ -88,10 +89,10 @@ public class DaoAcao {
 	    	  System.exit(0);
 	      }
 
-		return acao;
+		return funcao;
 	}
 	
-	public void deletaAcao(Acao acao){
+	public void deletaFuncao(Funcao funcao){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -101,7 +102,7 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
 	    	"postgres", "senha123");
 	    	
-	    	String sql = "DELETE FROM ACAO WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "DELETE FROM FUNCAO WHERE codFun = " + funcao.getCodFuncao() + ";";
 		    stmt = c.createStatement();
 		    stmt.executeQuery(sql);
 		    

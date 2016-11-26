@@ -412,7 +412,7 @@ public class DaoDiaria {
 	    	
 	    	String sql = "DELETE FROM DIARIA WHERE CODDIARIA = " + diaria.getCodDiaria() + ";";
 		    stmt = c.createStatement();
-		    
+		    stmt.executeQuery(sql);		    
 		    stmt.close();
 		    c.close();
 	    	
@@ -530,15 +530,15 @@ public class DaoDiaria {
 	    	"postgres", "senha123");
 	    	
 	    	String query = "UPDATE Diaria set codDiaria = " + diaria.getCodDiaria() 
-	    					+ "codAcao = " + diaria.getAcao().getCodAcao()
-	    					+ "codFav = " + diaria.getFavorecido().getCodFavorecido()
-	    					+ "codProg = " + diaria.getPrograma().getCodProg()
-	    					+ "codFun = " + diaria.getFuncao().getCodFuncao()
-	    					+ "codSubFun = " + diaria.getSubFuncao().getCodSubFun()
-	    					+ "codUniGes = " + diaria.getGestor().getCodUniGes()
-	    					+ "docPagamento = " + diaria.getDocPagamento()
-	    					+ "valorPagamento = " + diaria.getValorPagamento()
-	    					+ "gestaoPagamento = " + diaria.getGestaoPag()
+	    					+ "codAcao = " + diaria.getAcao().getCodAcao() + ", "
+	    					+ "codFav = " + diaria.getFavorecido().getCodFavorecido() + ", "
+	    					+ "codProg = " + diaria.getPrograma().getCodProg() + ", "
+	    					+ "codFun = " + diaria.getFuncao().getCodFuncao() + ", "
+	    					+ "codSubFun = " + diaria.getSubFuncao().getCodSubFun() + ", "
+	    					+ "codUniGes = " + diaria.getGestor().getCodUniGes() + ", "
+	    					+ "docPagamento = " + diaria.getDocPagamento() + ", "
+	    					+ "valorPagamento = " + diaria.getValorPagamento() + ", "
+	    					+ "gestaoPagamento = " + diaria.getGestaoPag() + ", "
 	    					+ "dataPagamento = " + diaria.getDataPagamento()
 	    					+ " where ID =" + diaria.getCodDiaria() +  ";";
 	    	

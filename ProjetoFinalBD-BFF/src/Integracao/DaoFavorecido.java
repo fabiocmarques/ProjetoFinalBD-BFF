@@ -6,9 +6,10 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import Negocio.Acao;
+import Negocio.Favorecido;
 
-public class DaoAcao {
-	public void createAcao(Acao acao){
+public class DaoFavorecido {
+	public void createFavorecido(Favorecido favorecido){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -19,9 +20,9 @@ public class DaoAcao {
 	    	"postgres", "senha123");
 	    	
 	    	stmt = c.createStatement();
-	        String acaoSql = "INSERT INTO ACAO (CODACAO,NOMEMACAO,LINGUAGEMCIDADA) "
-	               + "VALUES (" + acao.getCodAcao() + ", " + acao.getNome() + ", " + acao.getLinguagemCidada() + ");";
-	        stmt.executeUpdate(acaoSql);
+	         String favSql = "INSERT INTO FAVORECIDO (CODFAVORECIDO, CPF, NOMEFAV) "
+	               + "VALUES (" + favorecido.getCodFavorecido() + ", " + favorecido.getCpf() + ", " + favorecido.getNomeFavorecido() + ");";
+	         stmt.executeUpdate(favSql);
 		    
 		    stmt.close();
 		    c.close();
@@ -33,7 +34,7 @@ public class DaoAcao {
 	      }
 	}
 	
-	public void updateAcao(Acao acao){
+	public void updateFavorecido(Favorecido favorecido){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -43,10 +44,10 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
 	    	"postgres", "senha123");
 	    	
-	    	String sql = "UPDATE ACAO SET codacao = " + acao.getCodAcao() + ", "
-	    				+ "nomeacao = " + acao.getNome() + ", "
-	    				+ "ligaugemcidada = " + acao.getLinguagemCidada()
-	    				+ " WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "UPDATE Favorecido SET codfavorecido = " + favorecido.getCodFavorecido() + ", "
+	    				+ "cpf = " + favorecido.getCpf() + ", "
+	    				+ "nomefav = " + favorecido.getNomeFavorecido()
+	    				+ " WHERE CodFavorecido = " + favorecido.getCodFavorecido() + ";";
 		    stmt = c.createStatement();
 		    stmt.executeQuery(sql);
 		    
@@ -60,8 +61,8 @@ public class DaoAcao {
 	      }
 	}
 	
-	public Acao recuperaAcao(String codAcao){
-		Acao acao = new Acao();
+	public Favorecido recuperaFavorecido(String codFavorecido){
+		Favorecido favorecido = new Favorecido();
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -71,14 +72,15 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
 	    	"postgres", "senha123");
 	    	
-	    	String sql = "SELECT * FROM ACAO WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "SELECT * FROM FAVORECIDO WHERE CodFavorecido = " + favorecido.getCodFavorecido() + ";";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
-		    acao.setCodAcao(rs.getString("codacao"));
-		    acao.setLinguagemCidada(rs.getString("liguagemcidada"));
-		    acao.setNome(rs.getString("nomeacao"));
+		    favorecido.setCodFavorecido(rs.getInt("codfavorecido"));
+		    favorecido.setCpf(rs.getString("cpf"));
+		    favorecido.setNomeFavorecido(rs.getString("nomefav"));
 		    
+		    rs.close();
 		    stmt.close();
 		    c.close();
 	    	
@@ -88,10 +90,10 @@ public class DaoAcao {
 	    	  System.exit(0);
 	      }
 
-		return acao;
+		return favorecido;
 	}
 	
-	public void deletaAcao(Acao acao){
+	public void deletaFavorecido(Favorecido favorecido){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -101,7 +103,7 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
 	    	"postgres", "senha123");
 	    	
-	    	String sql = "DELETE FROM ACAO WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "DELETE FROM FAVORECIDO WHERE CodFavorecido = " + favorecido.getCodFavorecido() + ";";
 		    stmt = c.createStatement();
 		    stmt.executeQuery(sql);
 		    
