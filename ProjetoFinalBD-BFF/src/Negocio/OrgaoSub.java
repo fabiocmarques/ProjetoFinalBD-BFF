@@ -6,6 +6,12 @@ public class OrgaoSub {
 	String nomeOrgaoSub;
 	
 	
+	public OrgaoSup getOrgSup() {
+		return orgSup;
+	}
+	public void setOrgSup(OrgaoSup orgSup) {
+		this.orgSup = orgSup;
+	}
 	public int getCodOrgaoSub() {
 		return codOrgaoSub;
 	}

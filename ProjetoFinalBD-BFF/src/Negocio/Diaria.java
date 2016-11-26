@@ -1,5 +1,7 @@
 package Negocio;
 
+import java.sql.Date;
+
 public class Diaria {
 	UnidadeGestora gestor;
 	SubFuncao subFuncao;
@@ -10,10 +12,17 @@ public class Diaria {
 	int gestaoPag;
 	float valorPagamento;
 	String docPagamento;
-	String dataPagamento;
+	Date dataPagamento;
+	int codDiaria;
 	
 	
 	
+	public int getCodDiaria() {
+		return codDiaria;
+	}
+	public void setCodDiaria(int codDiaria) {
+		this.codDiaria = codDiaria;
+	}
 	public UnidadeGestora getGestor() {
 		return gestor;
 	}
@@ -68,10 +77,10 @@ public class Diaria {
 	public void setValorPagamento(float valorPagamento) {
 		this.valorPagamento = valorPagamento;
 	}
-	public String getDataPagamento() {
+	public Date getDataPagamento() {
 		return dataPagamento;
 	}
-	public void setDataPagamento(String dataPagamento) {
+	public void setDataPagamento(Date dataPagamento) {
 		this.dataPagamento = dataPagamento;
 	}
 	
