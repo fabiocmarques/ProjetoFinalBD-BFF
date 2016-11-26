@@ -295,8 +295,223 @@ public class Gui {
 
 
 	protected void Atualizar(JPanel painelInf){
+		JPanel painelSeletorTab = new JPanel();
+		JLabel t1 = new JLabel("Selecione a tabela para remoção: ");
+		JComboBox comboTabelas = new JComboBox(tabelas);
+		JButton confirmaTabela = new JButton("Confirmar");
+		
+		/*
+		 * Listener do botão de confirmar.
+		 * */
+		
+		confirmaTabela.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				switch(comboTabelas.getSelectedIndex()){
+					case 0://Ação
+						painelSeletorTab.setVisible(false);
+						attTab(painelInf, "Ação", "acao");
+						break;
+						
+					case 1://Diária
+						painelSeletorTab.setVisible(false);
+						attTab(painelInf, "Diária", "diaria");
+						break;
+						
+					case 2://Favorecido
+						painelSeletorTab.setVisible(false);
+						attTab(painelInf, "Favorecido", "favorecido");
+						break;
+						
+					case 3://Função
+						painelSeletorTab.setVisible(false);
+						attTab(painelInf, "Função", "funcao");
+						break;
+						
+					case 4://Órgão Subordinado
+						painelSeletorTab.setVisible(false);
+						attTab(painelInf, "Órgão Subordinado", "orgaosubordinado");
+						break;
+						
+					case 5://Órgão Superior
+						painelSeletorTab.setVisible(false);
+						attTab(painelInf, "Órgão Superior", "orgaosuperior");
+						break;
+						
+					case 6://Programa
+						painelSeletorTab.setVisible(false);
+						attTab(painelInf, "Programa", "programa");
+						break;
+						
+					case 7://Subfunção
+						painelSeletorTab.setVisible(false);
+						attTab(painelInf, "Subfunção", "subfuncao");
+						break;
+						
+					default://Unidade gestora
+						painelSeletorTab.setVisible(false);
+						attTab(painelInf, "Unidade gestora", "unidadegestora");
+						break;
+				}
+			}
+		});
+		
+		/**/
+		
+		painelInf.setBackground(Color.GREEN);
+		painelSeletorTab.setBackground(Color.WHITE);
+		
+		painelSeletorTab.setLayout(new BoxLayout(painelSeletorTab, BoxLayout.Y_AXIS));
+		
+		painelSeletorTab.add(t1);
+		painelSeletorTab.add(comboTabelas);
+		painelSeletorTab.add(confirmaTabela);
+		
+		painelInf.add(painelSeletorTab);
+		painelInf.repaint();
+		painelInf.revalidate();
 		
 	}
+
+	protected void attTab(JPanel painelInf, String nome, String tabela) {
+		JPanel p = new JPanel();
+		JLabel t[] = new JLabel[11];
+		JTextField in[] = new JTextField[11];
+		JButton confirma = new JButton("Confirmar");
+		int camposLeitura, i;
+		
+		for(i = 0; i < 11; ++i)
+			t[i] = new JLabel();		
+		
+		for(i = 0; i < 11; ++i)
+			in[i] = new JTextField();
+		
+		
+		confirma.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+								
+			}
+		});
+		
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));		
+		
+		
+		switch(tabela){
+			case "acao":
+				t[0].setText("Código da Ação (PK): ");
+				t[1].setText("Nome da Ação: ");
+				t[2].setText("Linguagem citada: ");
+				for(i = 0; i < 3; ++i){
+					p.add(t[i]);
+					p.add(in[i]);
+				}
+				camposLeitura = i;
+				break;
+				
+			case "diaria":
+				t[0] = new JLabel("Código da Diária (PK): ");
+				t[1] = new JLabel("Documento de pagamento: ");
+				t[2] = new JLabel("Código da Unidade Gestora (FK): ");
+				t[3] = new JLabel("Código da Subfunção (FK): ");
+				t[4] = new JLabel("Código da Função (FK): ");
+				t[5] = new JLabel("Código da Ação (FK): ");
+				t[6] = new JLabel("Código do Programa (FK): ");
+				t[7] = new JLabel("Código do Favorecido (FK): ");
+				t[8] = new JLabel("Valor do pagamento: ");
+				t[9] = new JLabel("Gestão do pagamento: ");
+				t[10] = new JLabel("Data do pagamento: ");
+				for(i = 0; i < 11; ++i){
+					p.add(t[i]);
+					p.add(in[i]);
+				}
+				camposLeitura = i;
+				break;
+				
+			case "funcao":
+				t[0].setText("Código da Função (PK): ");
+				t[1].setText("Nome da Função: ");
+				for(i = 0; i < 2; ++i){
+					p.add(t[i]);
+					p.add(in[i]);
+				}
+				camposLeitura = i;
+				break;
+			
+			case "programa":
+				t[0].setText("Código do Programa (PK): ");
+				t[1].setText("Nome do Programa: ");
+				for(i = 0; i < 2; ++i){
+					p.add(t[i]);
+					p.add(in[i]);
+				}
+				camposLeitura = i;
+				break;
+			
+			case "favorecido":
+				t[0].setText("Código do Favorecido (PK): ");
+				t[1].setText("CPF do Favorecido: ");
+				t[2].setText("Nome do Favorecido: ");
+				for(i = 0; i < 3; ++i){
+					p.add(t[i]);
+					p.add(in[i]);
+				}
+				camposLeitura = i;
+				break;
+				
+			case "subfuncao":
+				t[0].setText("Código da Subfunção (PK): ");
+				t[1].setText("Nome da Subfunção: ");
+				for(i = 0; i < 2; ++i){
+					p.add(t[i]);
+					p.add(in[i]);
+				}
+				camposLeitura = i;
+				break;
+				
+			case "unidadegestora":
+				t[0].setText("Código da Unidade Gestora (PK): ");
+				t[1].setText("Código do Órgão Subordinado (FK): ");
+				t[2].setText("Nome da Unidade Gestora: ");
+				for(i = 0; i < 3; ++i){
+					p.add(t[i]);
+					p.add(in[i]);
+				}
+				camposLeitura = i;
+				break;
+				
+			case "orgaosubordinado":
+				t[0].setText("Código do Órgão Subordinado (PK): ");
+				t[1].setText("Código do Órgão Superior (FK): ");
+				t[2].setText("Nome do Órgão Subordinado: ");
+				for(i = 0; i < 3; ++i){
+					p.add(t[i]);
+					p.add(in[i]);
+				}
+				camposLeitura = i;
+				break;
+				
+			case "orgaosuperior":
+				t[0].setText("Código do Órgão Superior (PK): ");
+				t[1].setText("Nome do Órgão Superior: ");
+				for(i = 0; i < 2; ++i){
+					p.add(t[i]);
+					p.add(in[i]);
+				}
+				camposLeitura = i;
+				break;
+			
+			default:
+				break;
+		}
+		
+		p.add(confirma);
+		
+		painelInf.add(p);
+	}
+
 
 	protected void Buscar(JFrame janela){
 	
@@ -604,7 +819,46 @@ public class Gui {
 
 
 	protected void insereDiaria(JPanel painelInserir) {
-		// TODO Auto-generated method stub
+		JPanel p = new JPanel();
+		JLabel t[] = new JLabel[10];
+		JTextField in[] = new JTextField[10];
+		JButton confirmar = new JButton("Confirmar");
+		int i;
+		
+		for(i = 0; i < 10; ++i){
+			in[i] = new JTextField();
+		}
+		
+		t[0] = new JLabel("Documento de pagamento: ");
+		t[1] = new JLabel("Código da Unidade Gestora (FK): ");
+		t[2] = new JLabel("Código da Subfunção (FK): ");
+		t[3] = new JLabel("Código da Função (FK): ");
+		t[4] = new JLabel("Código da Ação (FK): ");
+		t[5] = new JLabel("Código do Programa (FK): ");
+		t[6] = new JLabel("Código do Favorecido (FK): ");
+		t[7] = new JLabel("Valor do pagamento: ");
+		t[8] = new JLabel("Gestão do pagamento: ");
+		t[9] = new JLabel("Data do pagamento: ");
+		
+		confirmar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				/*
+				 * 
+				 * 
+				 * */				
+			}
+		});
+		
+		p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
+		
+		for(i = 0; i < 10; ++i){
+			p.add(t[i]);
+			p.add(in[i]);
+		}
+		
+		painelInserir.add(p);		
 		
 	}
 
