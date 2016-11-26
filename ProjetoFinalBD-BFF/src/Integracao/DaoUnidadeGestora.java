@@ -5,23 +5,24 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import Negocio.Acao;
+import Negocio.OrgaoSub;
+import Negocio.OrgaoSup;
+import Negocio.UnidadeGestora;
 
-public class DaoAcao {
-	public void createAcao(Acao acao){
+public class DaoUnidadeGestora {
+	public void createUnidadeGestora(UnidadeGestora uniGes){
 		Connection c = null;
 		Statement stmt = null;
 		
 	    try {
 	    	Class.forName("org.postgresql.Driver");
-	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
+	    	c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/testdb",
 	    	"postgres", "senha123");
 	    	
 	    	stmt = c.createStatement();
-	        String acaoSql = "INSERT INTO ACAO (CODACAO,NOMEMACAO,LINGUAGEMCIDADA) "
-	               + "VALUES (" + acao.getCodAcao() + ", " + acao.getNome() + ", " + acao.getLinguagemCidada() + ");";
-	        stmt.executeUpdate(acaoSql);
+	         String gestorSql = "INSERT INTO UNIDADEGESTORA (CODUNIGES, CODORGSUB, NOMEUNIGES) "
+		               + "VALUES (" + uniGes.getCodUniGes() + ", " + uniGes.getOrgaoSub() + ", " + uniGes.getNomeUnidadeGestora() + ");";
+	         stmt.executeUpdate(gestorSql);
 	        
 	     
 		    
@@ -35,7 +36,7 @@ public class DaoAcao {
 	      }
 	}
 	
-	public void updateAcao(Acao acao){
+	public void updateUnidadeGestora(UnidadeGestora uniGes){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -45,10 +46,10 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
 	    	"postgres", "senha123");
 	    	
-	    	String sql = "UPDATE ACAO SET codacao = " + acao.getCodAcao() + ", "
-	    				+ "nomeacao = " + acao.getNome() + ", "
-	    				+ "ligaugemcidada = " + acao.getLinguagemCidada()
-	    				+ " WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "UPDATE unidadegestora SET coduniges = " + uniGes.getCodUniGes() + ", "
+	    				+ "codorgsub = " + uniGes.getOrgaoSub() + ", "
+	    				+ "nomeuniges = " + uniGes.getNomeUnidadeGestora()
+	    				+ " WHERE coduniges = " + uniGes.getCodUniGes() + ";";
 		    stmt = c.createStatement();
 		    stmt.executeQuery(sql);
 		    
@@ -62,10 +63,13 @@ public class DaoAcao {
 	      }
 	}
 	
-	public Acao recuperaAcao(String codAcao){
-		Acao acao = new Acao();
+	public UnidadeGestora recuperaUnidadeGestora(String uniGes){
+		UnidadeGestora uGes = new UnidadeGestora();
+		OrgaoSub oSub = new OrgaoSub();
+		OrgaoSup oSup = new OrgaoSup();
 		Connection c = null;
 		Statement stmt = null;
+		String sub, sup;
 		
 	    try {
 	    	Class.forName("org.postgresql.Driver");
@@ -73,13 +77,32 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
 	    	"postgres", "senha123");
 	    	
-	    	String sql = "SELECT * FROM ACAO WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "SELECT * FROM unidadegestora WHERE Coduniges = " + uniGes + ";";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
-		    acao.setCodAcao(rs.getString("codacao"));
-		    acao.setLinguagemCidada(rs.getString("liguagemcidada"));
-		    acao.setNome(rs.getString("nomeacao"));
+		    uGes.setCodUniGes(rs.getInt("coduniges"));
+		    sub = rs.getString("codorgsub");
+		    uGes.setNomeUnidadeGestora(rs.getString("nomeuniges"));
+		    
+		    sql = "SELECT * FROM orgaosubordinado WHERE codorgsub = " + sub + ";";
+		    stmt = c.createStatement();
+		    rs = stmt.executeQuery(sql);
+		    
+		    sup = rs.getString("codorgsup");
+		    oSub.setCodOrgaoSub(rs.getInt("codorgsub"));
+		    oSub.setNomeOrgaoSub(rs.getString("nomeorgsub"));
+		    
+		    sql = "SELECT * FROM orgaosuperior WHERE codorgsup = " + sup + ";";
+		    stmt = c.createStatement();
+		    rs = stmt.executeQuery(sql);
+		    
+		    oSup.setCodOrgSup(rs.getInt("codorgsup"));
+		    oSup.setNomeOrgSup(rs.getString("nomeorgsup"));
+		    
+		    oSub.setOrgSup(oSup);
+		    
+		    uGes.setOrgaoSub(oSub);
 		    
 		    stmt.close();
 		    c.close();
@@ -90,10 +113,10 @@ public class DaoAcao {
 	    	  System.exit(0);
 	      }
 
-		return acao;
+		return uGes;
 	}
 	
-	public void deletaAcao(Acao acao){
+	public void deletaUnidadeGestora(UnidadeGestora uniGes){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -103,7 +126,7 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
 	    	"postgres", "senha123");
 	    	
-	    	String sql = "DELETE FROM ACAO WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "DELETE FROM unidadegestora WHERE CodUniGes = " + uniGes.getCodUniGes() + ";";
 		    stmt = c.createStatement();
 		    stmt.executeQuery(sql);
 		    
