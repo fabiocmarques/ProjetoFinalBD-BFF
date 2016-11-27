@@ -15,6 +15,7 @@ public class Diaria {
 	Date dataPagamento;
 	int codDiaria;
 	
+
 	
 	
 	public int getCodDiaria() {

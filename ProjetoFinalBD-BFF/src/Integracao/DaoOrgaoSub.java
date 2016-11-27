@@ -5,19 +5,21 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import Negocio.Acao;
+import Negocio.Favorecido;
+import Negocio.OrgaoSub;
+import Negocio.OrgaoSup;
 
-public class DaoAcao {
+public class DaoOrgaoSub {
 	String bd;
 	String senha;
 	
 	
-	public DaoAcao(String bd, String senha){
+	public DaoOrgaoSub(String bd, String senha){
 		this.bd = bd;
 		this.senha = senha;
 	}
 	
-	public void createAcao(Acao acao){
+	public void createOrgaoSub(OrgaoSub orgaoSub){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -28,11 +30,9 @@ public class DaoAcao {
 	    	"postgres", senha);
 	    	
 	    	stmt = c.createStatement();
-	        String acaoSql = "INSERT INTO ACAO (CODACAO,NOMEMACAO,LINGUAGEMCIDADA) "
-	               + "VALUES (" + acao.getCodAcao() + ", " + acao.getNome() + ", " + acao.getLinguagemCidada() + ");";
-	        stmt.executeUpdate(acaoSql);
-	        
-	     
+		    String orgSubSql = "INSERT INTO ORGAOSUBORDINADO (CODORGSUB, CODORGSUP, NOMEORGSUB) "
+		    				+ "VALUES (" + orgaoSub.getCodOrgaoSub() + ", " + orgaoSub.getOrgSup().getCodOrgSup() + ", " + orgaoSub.getNomeOrgaoSub() + ");";
+		    stmt.executeUpdate(orgSubSql);
 		    
 		    stmt.close();
 		    c.close();
@@ -44,7 +44,7 @@ public class DaoAcao {
 	      }
 	}
 	
-	public void updateAcao(Acao acao){
+	public void updateOrgaoSub(OrgaoSub orgaoSub){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -54,10 +54,10 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
 	    	"postgres", senha);
 	    	
-	    	String sql = "UPDATE ACAO SET codacao = " + acao.getCodAcao() + ", "
-	    				+ "nomeacao = " + acao.getNome() + ", "
-	    				+ "ligaugemcidada = " + acao.getLinguagemCidada()
-	    				+ " WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "UPDATE OrgaoSub SET codorgsub = " + orgaoSub.getCodOrgaoSub() + ", "
+	    				+ "nomeorgsub = " + orgaoSub.getNomeOrgaoSub() + ", "
+	    				+ "codorgsup = " + orgaoSub.getOrgSup().getCodOrgSup()
+	    				+ " WHERE CodOrgSup = " + orgaoSub.getCodOrgaoSub() + ";";
 		    stmt = c.createStatement();
 		    stmt.executeQuery(sql);
 		    
@@ -71,8 +71,8 @@ public class DaoAcao {
 	      }
 	}
 	
-	public Acao recuperaAcao(String codAcao){
-		Acao acao = new Acao();
+	public OrgaoSub recuperaOrgaoSub(int codOrgaoSub){
+		OrgaoSub orgSub = new OrgaoSub();
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -82,14 +82,22 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "SELECT * FROM ACAO WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "SELECT ORGAOSUBORDINADO.* AND ORGAOSUPERIOR.NOMEORGSUP FROM ORGAOSUBORDINADO "
+	    			+ "JOIN  ORGAOSUPERIOR ON ORGAOSUBORDINADO.codorgsup = ORGAOSUPERIOR.codorgsup" 
+	    			+ "WHERE CodOrgSub = " + codOrgaoSub + ";";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
-		    acao.setCodAcao(rs.getString("codacao"));
-		    acao.setLinguagemCidada(rs.getString("liguagemcidada"));
-		    acao.setNome(rs.getString("nomeacao"));
+		    orgSub.setCodOrgaoSub(rs.getInt("codorgsub"));
+		    orgSub.setNomeOrgaoSub(rs.getString("nomeorgsub"));
 		    
+		    OrgaoSup orgSup = new OrgaoSup();
+		    
+		    orgSup.setCodOrgSup(rs.getInt("codorgsup"));
+		    orgSup.setNomeOrgSup(rs.getString("nomeorgsup"));
+		    orgSub.setOrgSup(orgSup);
+		    
+		    rs.close();
 		    stmt.close();
 		    c.close();
 	    	
@@ -99,10 +107,10 @@ public class DaoAcao {
 	    	  System.exit(0);
 	      }
 
-		return acao;
+		return orgSub;
 	}
 	
-	public void deletaAcao(Acao acao){
+	public void deletaOrgaoSub(OrgaoSub orgSub){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -112,7 +120,7 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "DELETE FROM ACAO WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "DELETE FROM ORGAOSUBORDINADO WHERE CodOrgSub = " + orgSub.getCodOrgaoSub() + ";";
 		    stmt = c.createStatement();
 		    stmt.executeQuery(sql);
 		    

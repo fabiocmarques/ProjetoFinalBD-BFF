@@ -9,6 +9,15 @@ import Negocio.Acao;
 import Negocio.Favorecido;
 
 public class DaoFavorecido {
+	String bd;
+	String senha;
+	
+	
+	public DaoFavorecido(String bd, String senha){
+		this.bd = bd;
+		this.senha = senha;
+	}
+	
 	public void createFavorecido(Favorecido favorecido){
 		Connection c = null;
 		Statement stmt = null;
@@ -16,8 +25,8 @@ public class DaoFavorecido {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	stmt = c.createStatement();
 	         String favSql = "INSERT INTO FAVORECIDO (CODFAVORECIDO, CPF, NOMEFAV) "
@@ -42,7 +51,7 @@ public class DaoFavorecido {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
-	    	"postgres", "senha123");
+	    	"postgres", senha);
 	    	
 	    	String sql = "UPDATE Favorecido SET codfavorecido = " + favorecido.getCodFavorecido() + ", "
 	    				+ "cpf = " + favorecido.getCpf() + ", "
@@ -61,7 +70,7 @@ public class DaoFavorecido {
 	      }
 	}
 	
-	public Favorecido recuperaFavorecido(String codFavorecido){
+	public Favorecido recuperaFavorecido(int codFavorecido){
 		Favorecido favorecido = new Favorecido();
 		Connection c = null;
 		Statement stmt = null;
@@ -69,10 +78,10 @@ public class DaoFavorecido {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
-	    	String sql = "SELECT * FROM FAVORECIDO WHERE CodFavorecido = " + favorecido.getCodFavorecido() + ";";
+	    	String sql = "SELECT * FROM FAVORECIDO WHERE CodFavorecido = " + codFavorecido + ";";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
@@ -100,8 +109,8 @@ public class DaoFavorecido {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String sql = "DELETE FROM FAVORECIDO WHERE CodFavorecido = " + favorecido.getCodFavorecido() + ";";
 		    stmt = c.createStatement();

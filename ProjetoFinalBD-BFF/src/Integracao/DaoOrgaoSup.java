@@ -5,19 +5,19 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import Negocio.Acao;
+import Negocio.OrgaoSup;
 
-public class DaoAcao {
+public class DaoOrgaoSup {
 	String bd;
 	String senha;
 	
 	
-	public DaoAcao(String bd, String senha){
+	public DaoOrgaoSup(String bd, String senha){
 		this.bd = bd;
 		this.senha = senha;
 	}
 	
-	public void createAcao(Acao acao){
+	public void createOrgaoSup(OrgaoSup orgSup){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -28,11 +28,9 @@ public class DaoAcao {
 	    	"postgres", senha);
 	    	
 	    	stmt = c.createStatement();
-	        String acaoSql = "INSERT INTO ACAO (CODACAO,NOMEMACAO,LINGUAGEMCIDADA) "
-	               + "VALUES (" + acao.getCodAcao() + ", " + acao.getNome() + ", " + acao.getLinguagemCidada() + ");";
-	        stmt.executeUpdate(acaoSql);
-	        
-	     
+	         String orgSupSql = "INSERT INTO ORGAOSUPERIOR (CODORGSUP, NOMEORGSUP) "
+		               + "VALUES (" + orgSup.getCodOrgSup() + ", " + orgSup.getNomeOrgSup() + ");";
+	         stmt.executeUpdate(orgSupSql);
 		    
 		    stmt.close();
 		    c.close();
@@ -44,20 +42,19 @@ public class DaoAcao {
 	      }
 	}
 	
-	public void updateAcao(Acao acao){
+	public void updateOrgaoSup(OrgaoSup orgaoSup){
 		Connection c = null;
 		Statement stmt = null;
 		
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "UPDATE ACAO SET codacao = " + acao.getCodAcao() + ", "
-	    				+ "nomeacao = " + acao.getNome() + ", "
-	    				+ "ligaugemcidada = " + acao.getLinguagemCidada()
-	    				+ " WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "UPDATE ORGAOSUPERIOR SET codorgsup = " + orgaoSup.getCodOrgSup() + ", "
+	    				+ "nomeOrgSup = " + orgaoSup.getNomeOrgSup()
+	    				+ " WHERE CodOrgSup = " + orgaoSup.getCodOrgSup() + ";";
 		    stmt = c.createStatement();
 		    stmt.executeQuery(sql);
 		    
@@ -71,8 +68,8 @@ public class DaoAcao {
 	      }
 	}
 	
-	public Acao recuperaAcao(String codAcao){
-		Acao acao = new Acao();
+	public OrgaoSup recuperaFavorecido(int codOrgSup){
+		OrgaoSup orgSup = new OrgaoSup();
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -82,14 +79,14 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "SELECT * FROM ACAO WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "SELECT * FROM ORGAOSUPERIOR WHERE CodOrgSup = " + codOrgSup + ";";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
-		    acao.setCodAcao(rs.getString("codacao"));
-		    acao.setLinguagemCidada(rs.getString("liguagemcidada"));
-		    acao.setNome(rs.getString("nomeacao"));
+		    orgSup.setCodOrgSup(rs.getInt("codorgsup"));
+		    orgSup.setNomeOrgSup(rs.getString("nomeorgsup"));
 		    
+		    rs.close();
 		    stmt.close();
 		    c.close();
 	    	
@@ -99,10 +96,10 @@ public class DaoAcao {
 	    	  System.exit(0);
 	      }
 
-		return acao;
+		return orgSup;
 	}
 	
-	public void deletaAcao(Acao acao){
+	public void deletaOrgaoSup(OrgaoSup orgSup){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -112,7 +109,7 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "DELETE FROM ACAO WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "DELETE FROM ORGAOSUPERIOR WHERE CodOrgSup = " + orgSup.getCodOrgSup() + ";";
 		    stmt = c.createStatement();
 		    stmt.executeQuery(sql);
 		    

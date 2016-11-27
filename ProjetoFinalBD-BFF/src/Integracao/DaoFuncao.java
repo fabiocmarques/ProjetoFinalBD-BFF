@@ -9,6 +9,15 @@ import Negocio.Favorecido;
 import Negocio.Funcao;
 
 public class DaoFuncao {
+	String bd;
+	String senha;
+	
+	
+	public DaoFuncao(String bd, String senha){
+		this.bd = bd;
+		this.senha = senha;
+	}
+	
 	
 	public void createFuncao(Funcao funcao){
 		Connection c = null;
@@ -17,8 +26,8 @@ public class DaoFuncao {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	stmt = c.createStatement();
 	         String favSql = "INSERT INTO FUNCAO (CODFUN, NOMEFUN) "
@@ -43,7 +52,7 @@ public class DaoFuncao {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
-	    	"postgres", "senha123");
+	    	"postgres", senha);
 	    	
 	    	String sql = "UPDATE Funcao SET codfun = " + funcao.getCodFuncao() + ", "
 	    				+ "nomefun = " + funcao.getNomeFuncao()
@@ -61,7 +70,7 @@ public class DaoFuncao {
 	      }
 	}
 	
-	public Funcao recuperaFuncao(String codFun){
+	public Funcao recuperaFuncao(int codFun){
 		Funcao funcao = new Funcao();
 		Connection c = null;
 		Statement stmt = null;
@@ -69,10 +78,10 @@ public class DaoFuncao {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
-	    	String sql = "SELECT * FROM FUNCAO WHERE CodFun = " + funcao.getCodFuncao() + ";";
+	    	String sql = "SELECT * FROM FUNCAO WHERE CodFun = " + codFun + ";";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
@@ -99,8 +108,8 @@ public class DaoFuncao {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String sql = "DELETE FROM FUNCAO WHERE codFun = " + funcao.getCodFuncao() + ";";
 		    stmt = c.createStatement();

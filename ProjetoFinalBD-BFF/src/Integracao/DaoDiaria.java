@@ -17,6 +17,15 @@ import Negocio.SubFuncao;
 import Negocio.UnidadeGestora;
 
 public class DaoDiaria {
+	String bd;
+	String senha;
+	
+	
+	public DaoDiaria(String bd, String senha){
+		this.bd = bd;
+		this.senha = senha;
+	}
+	
 	public float gastoFuncionario(String nome){
 		Connection c = null;
 		Statement stmt = null;
@@ -25,8 +34,8 @@ public class DaoDiaria {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String query = "SELECT NomeFav, Cpf, SUM(ValorPagamento) AS Total_Gastos "
 		    		+ "FROM Favorecido JOIN Diaria ON Favorecido.CodFavorecido = Diaria.CodFavorecido "
@@ -58,8 +67,8 @@ public class DaoDiaria {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String query = "SELECT NomeOrgSup, COUNT(CodDiaria) AS Num_Diarias "
 	    			+ "FROM Diaria JOIN UnidadeGestora ON Diaria.CodUniGes = UnidadeGestora.CodUniGes "
@@ -92,8 +101,8 @@ public class DaoDiaria {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String query = "SELECT NomeOrgSub, COUNT(CodDiaria) AS Num_Diarias "
 	    			+ "FROM Diaria JOIN UnidadeGestora ON Diaria.CodUniGes = UnidadeGestora.CodUniGes "
@@ -125,8 +134,8 @@ public class DaoDiaria {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String query = "SELECT NomeUniGes, COUNT(CodDiaria) AS Num_Diarias "
 	    			+ "FROM Diaria JOIN UnidadeGestora ON Diaria.CodUniGes = UnidadeGestora.CodUniGes  "
@@ -158,8 +167,8 @@ public class DaoDiaria {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String query = "SELECT NomeFav, Cpf, DocPagamento, GestaoPagamento, DataPagamento, ValorPagamento "
 	    			+ "FROM Favorecido JOIN Diaria ON Favorecido.CodFavorecido = Diaria.CodFavorecido "
@@ -208,8 +217,8 @@ public class DaoDiaria {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String query = "SELECT NomeFav, Cpf, SUM(ValorPagamento) AS Total_Gastos "
 	    			+ "FROM Favorecido JOIN Diaria ON Favorecido.CodFavorecido = Diaria.CodFavorecido "
@@ -253,8 +262,8 @@ public class DaoDiaria {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String query = "SELECT NomeFav, Cpf, SUM(ValorPagamento) AS Total_Gastos "
 	    			+ "FROM Favorecido JOIN Diaria ON Favorecido.CodFavorecido = Diaria.CodFavorecido "
@@ -297,8 +306,8 @@ public class DaoDiaria {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String query = "SELECT programa.codprog, nomeprog, COUNT(programa.codprog) AS Num_Diarias "
 	    			+ "FROM programa "
@@ -339,49 +348,9 @@ public class DaoDiaria {
 	         Class.forName("org.postgresql.Driver");
 	         c = DriverManager
 	            .getConnection("jdbc:postgresql://localhost:5432/Diarias",
-	            "postgres", "senha123");
+	            "postgres", senha);
 	         c.setAutoCommit(false);
 	         System.out.println("Opened database successfully");
-
-	         stmt = c.createStatement();
-	         String acaoSql = "INSERT INTO ACAO (CODACAO,NOMEMACAO,LINGUAGEMCIDADA) "
-	               + "VALUES (" + diaria.getAcao().getCodAcao() + ", " + diaria.getAcao().getNome() + ", " + diaria.getAcao().getLinguagemCidada() + ");";
-	         stmt.executeUpdate(acaoSql);
-	         
-	         stmt = c.createStatement();
-	         String favSql = "INSERT INTO FAVORECIDO (CODFAVORECIDO, CPF, NOMEFAV) "
-	               + "VALUES (" + diaria.getFavorecido().getCodFavorecido() + ", " + diaria.getFavorecido().getCpf() + ", " + diaria.getFavorecido().getNomeFavorecido() + ");";
-	         stmt.executeUpdate(favSql);
-	         
-	         stmt = c.createStatement();
-	         String progSql = "INSERT INTO PROGRAMA (CODPROG, NOMEPROG) "
-	               + "VALUES (" + diaria.getPrograma().getCodProg() + ", " + diaria.getPrograma().getNomeProg() + ");";
-	         stmt.executeUpdate(progSql);
-	         
-	         stmt = c.createStatement();
-	         String funSql = "INSERT INTO FUNCAO (CODFUN, NOMEFUN) "
-		               + "VALUES (" + diaria.getFuncao().getCodFuncao() + ", " + diaria.getFuncao().getNomeFuncao() + ");";
-	         stmt.executeUpdate(funSql);
-	         
-	         stmt = c.createStatement();
-	         String subFunSql = "INSERT INTO SUBFUNCAO (CODSUBFUN, NOMESUBFUN) "
-		               + "VALUES (" + diaria.getSubFuncao().getCodSubFun() + ", " + diaria.getSubFuncao().getNomeSubFun() + ");"; 
-	         stmt.executeUpdate(subFunSql);
-	         
-	         stmt = c.createStatement();
-	         String orgSupSql = "INSERT INTO ORGAOSUPERIOR (CODORGSUP, NOMEORGSUP) "
-		               + "VALUES (" + diaria.getGestor().getOrgaoSub().getOrgSup().getCodOrgSup() + ", " + diaria.getGestor().getOrgaoSub().getOrgSup().getNomeOrgSup() + ");";
-	         stmt.executeUpdate(orgSupSql);
-	         
-	         stmt = c.createStatement();
-	         String orgSubSql = "INSERT INTO ORGAOSUBORDINADO (CODORGSUB, CODORGSUP, NOMEORGSUB) "
-		               + "VALUES (" + diaria.getGestor().getOrgaoSub().getCodOrgaoSub() + ", " + diaria.getGestor().getOrgaoSub().getOrgSup().getCodOrgSup() + ", " + diaria.getGestor().getOrgaoSub().getNomeOrgaoSub() + ");";
-	         stmt.executeUpdate(orgSubSql);
-	         
-	         stmt = c.createStatement();
-	         String gestorSql = "INSERT INTO UNIDADEGESTORA (CODUNIGES, CODORGSUB, NOMEUNIGES) "
-		               + "VALUES (" + diaria.getGestor().getCodUniGes() + ", " + diaria.getGestor().getOrgaoSub().getCodOrgaoSub() + ", " + diaria.getGestor().getNomeUnidadeGestora() + ");";
-	         stmt.executeUpdate(gestorSql);
 	         
 	         stmt = c.createStatement();
 	         String diariaSql = "INSERT INTO DIARIA (CODDIARIA, DOCPAGAMENTO, CODUNIGES, CODSUBFUN, CODFUN, CODACAO, CODPROG, CODFAVORECIDO, VALORPAGAMENTO, GESTAOPAGAMENTO, DATAPAGAMENTO) "
@@ -407,8 +376,8 @@ public class DaoDiaria {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String sql = "DELETE FROM DIARIA WHERE CODDIARIA = " + diaria.getCodDiaria() + ";";
 		    stmt = c.createStatement();
@@ -433,8 +402,8 @@ public class DaoDiaria {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String query = "SELECT codDiaria, docPagamento, valorPagamento, gestaoPagamento, datapagamento, acao.*, favorecido.*, programa.*, funcao.*, subfuncao.*, unidadeGestora.coduniges, unidadeGestora.nomeuniges, orgaoSubordinado.codOrgSub, orgaoSubordinado.nomeOrgSub, orgaoSuperior.* FROM diaria  "
 	    			+ "JOIN acao ON diaria.codAcao = acao.codAcao "
@@ -526,8 +495,8 @@ public class DaoDiaria {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String query = "UPDATE Diaria set codDiaria = " + diaria.getCodDiaria() 
 	    					+ "codAcao = " + diaria.getAcao().getCodAcao() + ", "

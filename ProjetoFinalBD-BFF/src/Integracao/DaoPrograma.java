@@ -5,19 +5,20 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import Negocio.Acao;
+import Negocio.Favorecido;
+import Negocio.Programa;
 
-public class DaoAcao {
+public class DaoPrograma {
 	String bd;
 	String senha;
 	
 	
-	public DaoAcao(String bd, String senha){
+	public DaoPrograma(String bd, String senha){
 		this.bd = bd;
 		this.senha = senha;
 	}
 	
-	public void createAcao(Acao acao){
+	public void createPrograma(Programa programa){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -28,11 +29,9 @@ public class DaoAcao {
 	    	"postgres", senha);
 	    	
 	    	stmt = c.createStatement();
-	        String acaoSql = "INSERT INTO ACAO (CODACAO,NOMEMACAO,LINGUAGEMCIDADA) "
-	               + "VALUES (" + acao.getCodAcao() + ", " + acao.getNome() + ", " + acao.getLinguagemCidada() + ");";
-	        stmt.executeUpdate(acaoSql);
-	        
-	     
+	         String progSql = "INSERT INTO PROGRAMA (CODPROG, NOMEPROG) "
+	               + "VALUES (" + programa.getCodProg() + ", " + programa.getNomeProg() + ");";
+	         stmt.executeUpdate(progSql);
 		    
 		    stmt.close();
 		    c.close();
@@ -44,7 +43,7 @@ public class DaoAcao {
 	      }
 	}
 	
-	public void updateAcao(Acao acao){
+	public void updateFavorecido(Programa programa){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -54,10 +53,9 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
 	    	"postgres", senha);
 	    	
-	    	String sql = "UPDATE ACAO SET codacao = " + acao.getCodAcao() + ", "
-	    				+ "nomeacao = " + acao.getNome() + ", "
-	    				+ "ligaugemcidada = " + acao.getLinguagemCidada()
-	    				+ " WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "UPDATE PROGRAMA SET codprog = " + programa.getCodProg() + ", "
+	    				+ "nomeprog = " + programa.getNomeProg()
+	    				+ " WHERE Codprog = " + programa.getCodProg() + ";";
 		    stmt = c.createStatement();
 		    stmt.executeQuery(sql);
 		    
@@ -71,8 +69,8 @@ public class DaoAcao {
 	      }
 	}
 	
-	public Acao recuperaAcao(String codAcao){
-		Acao acao = new Acao();
+	public Programa recuperaPrograma(int codProg){
+		Programa programa = new Programa();
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -82,14 +80,14 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "SELECT * FROM ACAO WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "SELECT * FROM Programa WHERE Codprog = " + codProg + ";";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
-		    acao.setCodAcao(rs.getString("codacao"));
-		    acao.setLinguagemCidada(rs.getString("liguagemcidada"));
-		    acao.setNome(rs.getString("nomeacao"));
+		    programa.setCodProg(rs.getInt("codprog"));
+		    programa.setNomeProg(rs.getString("nomeprog"));
 		    
+		    rs.close();
 		    stmt.close();
 		    c.close();
 	    	
@@ -99,10 +97,10 @@ public class DaoAcao {
 	    	  System.exit(0);
 	      }
 
-		return acao;
+		return programa;
 	}
 	
-	public void deletaAcao(Acao acao){
+	public void deletaPrograma(Programa programa){
 		Connection c = null;
 		Statement stmt = null;
 		
@@ -112,7 +110,7 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "DELETE FROM ACAO WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "DELETE FROM PROGRAMA WHERE CodProg = " + programa.getCodProg() + ";";
 		    stmt = c.createStatement();
 		    stmt.executeQuery(sql);
 		    

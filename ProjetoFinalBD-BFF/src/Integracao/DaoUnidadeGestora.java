@@ -10,14 +10,23 @@ import Negocio.OrgaoSup;
 import Negocio.UnidadeGestora;
 
 public class DaoUnidadeGestora {
+	String bd;
+	String senha;
+	
+	
+	public DaoUnidadeGestora(String bd, String senha){
+		this.bd = bd;
+		this.senha = senha;
+	}
+	
 	public void createUnidadeGestora(UnidadeGestora uniGes){
 		Connection c = null;
 		Statement stmt = null;
 		
 	    try {
 	    	Class.forName("org.postgresql.Driver");
-	    	c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	stmt = c.createStatement();
 	         String gestorSql = "INSERT INTO UNIDADEGESTORA (CODUNIGES, CODORGSUB, NOMEUNIGES) "
@@ -44,7 +53,7 @@ public class DaoUnidadeGestora {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
-	    	"postgres", "senha123");
+	    	"postgres", senha);
 	    	
 	    	String sql = "UPDATE unidadegestora SET coduniges = " + uniGes.getCodUniGes() + ", "
 	    				+ "codorgsub = " + uniGes.getOrgaoSub() + ", "
@@ -74,8 +83,8 @@ public class DaoUnidadeGestora {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String sql = "SELECT * FROM unidadegestora WHERE Coduniges = " + uniGes + ";";
 		    stmt = c.createStatement();
@@ -123,8 +132,8 @@ public class DaoUnidadeGestora {
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
-	    	.getConnection("jdbc:postgresql://localhost:5432/testdb",
-	    	"postgres", "senha123");
+	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
+	    	"postgres", senha);
 	    	
 	    	String sql = "DELETE FROM unidadegestora WHERE CodUniGes = " + uniGes.getCodUniGes() + ";";
 		    stmt = c.createStatement();
