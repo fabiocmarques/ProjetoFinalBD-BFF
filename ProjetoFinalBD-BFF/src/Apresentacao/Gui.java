@@ -737,6 +737,8 @@ public class Gui {
 		painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
 		
 		painel.add(buscaReg);
+		painel.add(gastoFuncionario);
+		painel.add(numeroDeDiarias);
 		
 		painelInf.add(painel);
 		painelInf.repaint();
@@ -772,6 +774,12 @@ public class Gui {
 				}
 			}
 		});
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+		p.add(comboBox);
+		p.add(t);
+		p.add(nomeOrgao);
+		p.add(buscaNumDiarias);
+		painelInf.add(p);
 	}
 	
 	protected void gastoFuncionario(JPanel painelInf){
@@ -788,6 +796,13 @@ public class Gui {
 				exibeGasto(painelInf, resultado);
 			}
 		});
+		
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+		p.add(t);
+		p.add(nomeFunc);
+		p.add(buscaGasto);
+		
+		painelInf.add(p);
 	}
 	
 	protected void exibeGasto(JPanel painelInf, float gasto){
