@@ -43,7 +43,7 @@ public class DaoPrograma {
 	      }
 	}
 	
-	public void updateFavorecido(Programa programa){
+	public void updatePrograma(Programa programa){
 		Connection c = null;
 		Statement stmt = null;
 		

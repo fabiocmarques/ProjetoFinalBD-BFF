@@ -6,11 +6,19 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import Integracao.DaoAcao;
+import Integracao.DaoDiaria;
+import Integracao.DaoFavorecido;
+import Integracao.DaoFuncao;
 import Integracao.DaoOrgaoSub;
 import Integracao.DaoOrgaoSup;
 import Integracao.DaoPrograma;
 import Integracao.DaoSubfuncao;
 import Integracao.DaoUnidadeGestora;
+import Negocio.Acao;
+import Negocio.Diaria;
+import Negocio.Favorecido;
+import Negocio.Funcao;
 import Negocio.OrgaoSub;
 import Negocio.OrgaoSup;
 import Negocio.Programa;
@@ -289,9 +297,52 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * Realizar a remoção com a chave em "chave.getText()".
-				 * */
+				switch(nome){
+					case "acao":
+						Acao acao = new Acao();
+						acao.setCodAcao(chave.getText());
+						new DaoAcao("Diarias", "senha123").deletaAcao(acao);
+						break;
+					case "diaria":
+						Diaria diaria = new Diaria();
+						diaria.setCodDiaria(Integer.parseInt(chave.getText()));
+						new DaoDiaria("Diaria", "senha123").deleteDiaria(diaria);
+						break;
+					case "favorecido":
+						Favorecido fav = new Favorecido();
+						fav.setCodFavorecido(Integer.parseInt(chave.getText()));
+						new DaoFavorecido("Diarias", "senha123").deletaFavorecido(fav);;
+						break;
+					case "orgaosubordinado":
+						OrgaoSub oSub = new OrgaoSub();
+						oSub.setCodOrgaoSub(Integer.parseInt(chave.getText()));
+						new DaoOrgaoSub("Diarias", "senha123").deletaOrgaoSub(oSub);;
+						break;
+					case "funcao":
+						Funcao fun = new Funcao();
+						fun.setCodFuncao(Integer.parseInt(chave.getText()));
+						new DaoFuncao("Diarias", "senha123").deletaFuncao(fun);;
+						break;
+					case "subfuncao":
+						SubFuncao subFun = new SubFuncao();
+						subFun.setCodSubFun(Integer.parseInt(chave.getText()));
+						new DaoSubfuncao("Diarias", "senha123").deletaSubfuncao(subFun);
+						break;
+					case "orgaosuperior":
+						OrgaoSup oSup = new OrgaoSup();
+						oSup.setCodOrgSup(Integer.parseInt(chave.getText()));
+						new DaoOrgaoSup("Diarias", "senha123").deletaOrgaoSup(oSup);;
+						break;
+					case "programa":
+						Programa prog = new Programa();
+						prog.setCodProg(Integer.parseInt(chave.getText()));
+						new DaoPrograma("Diarias", "senha123").deletaPrograma(prog);;
+						break;
+					default : 
+						UnidadeGestora uniGes = new UnidadeGestora();
+						uniGes.setCodUniGes(Integer.parseInt(chave.getText()));
+						new DaoUnidadeGestora("Diarias", "senha123").deletaUnidadeGestora(uniGes);;
+				}
 			}
 		});
 		
@@ -403,7 +454,120 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-								
+				Funcao fun;
+				Favorecido fav;
+				Acao a;
+				SubFuncao sf;
+				Programa prog;
+				UnidadeGestora ug;
+				OrgaoSub oSub;
+				OrgaoSup oSup;
+				
+				switch(tabela){
+				case "acao":
+					Acao acao = new Acao();
+					acao.setCodAcao(in[0].getText());
+					acao.setLinguagemCidada(in[2].getText());
+					acao.setNome(in[1].getText());
+					new DaoAcao("Diarias", "senha123").updateAcao(acao);
+					break;
+					
+				case "diaria":
+					a = new Acao();
+					a.setCodAcao(in[5].getText());
+					fav = new Favorecido();
+					fav.setCodFavorecido(Integer.parseInt(in[7].getText()));
+					ug = new UnidadeGestora();
+					ug.setCodUniGes(Integer.parseInt(in[2].getText()));
+					fun = new Funcao();
+					fun.setCodFuncao(Integer.parseInt(in[4].getText()));
+					sf = new SubFuncao();
+					sf.setCodSubFun(Integer.parseInt(in[3].getText()));
+					prog = new Programa();
+					prog.setCodProg(Integer.parseInt(in[6].getText()));
+					
+					Diaria diaria = new Diaria();
+					diaria.setAcao(a);
+					diaria.setCodDiaria(Integer.parseInt(in[0].getText()));
+					diaria.setDocPagamento(in[1].getText());
+					diaria.setFavorecido(fav);
+					diaria.setFuncao(fun);
+					diaria.setGestaoPag(Integer.parseInt(in[9].getText()));
+					diaria.setGestor(ug);
+					diaria.setPrograma(prog);
+					diaria.setSubFuncao(sf);
+					diaria.setValorPagamento(Float.parseFloat(in[8].getText()));
+//					Colocar data de pagamento!!!! (Fuck Apple)
+					
+					
+					new DaoDiaria("Diarias", "senha123").updateDiaria(diaria);
+					break;
+				case "funcao":
+					fun = new Funcao();
+					fun.setCodFuncao(Integer.parseInt(in[0].getText()));
+					fun.setNomeFuncao(in[1].getText());
+					
+					new DaoFuncao("Diarias", "senha123").updateFuncao(fun);
+					break;
+				
+				case "programa":
+					prog = new Programa();
+					prog.setCodProg(Integer.parseInt(in[0].getText()));
+					prog.setNomeProg(in[1].getText());
+					new DaoPrograma("Diarias", "senha123").updatePrograma(prog);
+					break;
+				
+				case "favorecido":
+					fav = new Favorecido();
+					fav.setCodFavorecido(Integer.parseInt(in[0].getText()));
+					fav.setCpf(in[1].getText());
+					fav.setNomeFavorecido(in[2].getText());
+					
+					new DaoFavorecido("Diarias", "senha123").updateFavorecido(fav);
+					break;
+					
+				case "subfuncao":			
+					sf = new SubFuncao();
+					sf.setCodSubFun(Integer.parseInt(in[0].getText()));
+					sf.setNomeSubFun(in[1].getText());
+					
+					new DaoSubfuncao("Diarias", "senha123").updateSubfuncao(sf);
+					
+					break;
+					
+				case "unidadegestora":
+					oSub = new OrgaoSub();
+					oSub.setCodOrgaoSub(Integer.parseInt(in[1].getText()));
+					ug = new UnidadeGestora();
+					ug.setCodUniGes(Integer.parseInt(in[0].getText()));
+					ug.setNomeUnidadeGestora(in[2].getText());
+					ug.setOrgaoSub(oSub);
+					
+					new DaoUnidadeGestora("Diarias", "senha123").updateUnidadeGestora(ug);
+					break;
+					
+				case "orgaosubordinado":
+					oSup = new OrgaoSup();
+					oSup.setCodOrgSup(Integer.parseInt(in[1].getText()));
+					
+					oSub = new OrgaoSub();
+					oSub.setOrgSup(oSup);
+					oSub.setCodOrgaoSub(Integer.parseInt(in[0].getText()));
+					oSub.setNomeOrgaoSub(in[2].getText());
+					
+					new DaoOrgaoSub("Diarias", "senha123").updateOrgaoSub(oSub);
+					break;
+					
+				case "orgaosuperior":
+					oSup = new OrgaoSup();
+					oSup.setCodOrgSup(Integer.parseInt(in[0].getText()));
+					oSup.setNomeOrgSup(in[1].getText());
+					new DaoOrgaoSup("Diarias", "senha123").updateOrgaoSup(oSup);
+					break;
+				
+				default:
+					break;
+				}
 			}
 		});
 		
@@ -419,8 +583,6 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
-				break;
 				
 			case "diaria":
 				t[0] = new JLabel("Código da Diária (PK): ");
@@ -438,9 +600,8 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
-				break;
 				
+				break;
 			case "funcao":
 				t[0].setText("Código da Função (PK): ");
 				t[1].setText("Nome da Função: ");
@@ -448,7 +609,6 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
 				break;
 			
 			case "programa":
@@ -458,7 +618,7 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
+				
 				break;
 			
 			case "favorecido":
@@ -469,7 +629,7 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
+				
 				break;
 				
 			case "subfuncao":
@@ -479,7 +639,7 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
+				
 				break;
 				
 			case "unidadegestora":
@@ -490,7 +650,7 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
+				
 				break;
 				
 			case "orgaosubordinado":
@@ -501,7 +661,7 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
+				
 				break;
 				
 			case "orgaosuperior":
@@ -511,7 +671,6 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
 				break;
 			
 			default:
@@ -801,6 +960,7 @@ public class Gui {
 
 
 	protected void insereFavorecido(JPanel painelInserir) {
+		DaoFavorecido dao = new DaoFavorecido("Diarias", "senha123");
 		JPanel p = new JPanel();
 		JLabel lbCPF = new JLabel("CPF do Favorecido: "), lbNomeFav = new JLabel("Nome do Favorecido: ");
 		JTextField CPF = new JTextField(), nomeFav = new JTextField();
@@ -818,10 +978,12 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * Insere no banco com os dados conseguidos.
-				 * 
-				 * */				
+				Favorecido fav = new Favorecido();
+				
+				fav.setCpf(CPF.getText());
+				fav.setNomeFavorecido(nomeFav.getText());
+				
+				dao.createFavorecido(fav);
 			}
 		});
 		

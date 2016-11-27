@@ -353,8 +353,8 @@ public class DaoDiaria {
 	         System.out.println("Opened database successfully");
 	         
 	         stmt = c.createStatement();
-	         String diariaSql = "INSERT INTO DIARIA (CODDIARIA, DOCPAGAMENTO, CODUNIGES, CODSUBFUN, CODFUN, CODACAO, CODPROG, CODFAVORECIDO, VALORPAGAMENTO, GESTAOPAGAMENTO, DATAPAGAMENTO) "
-		               + "VALUES (" + diaria.getCodDiaria() + ", "  + diaria.getDocPagamento() + ", "  + diaria.getGestor().getCodUniGes() + ", "  + diaria.getSubFuncao().getCodSubFun() + ", "  
+	         String diariaSql = "INSERT INTO DIARIA (DOCPAGAMENTO, CODUNIGES, CODSUBFUN, CODFUN, CODACAO, CODPROG, CODFAVORECIDO, VALORPAGAMENTO, GESTAOPAGAMENTO, DATAPAGAMENTO) "
+		               + "VALUES (" + diaria.getDocPagamento() + ", "  + diaria.getGestor().getCodUniGes() + ", "  + diaria.getSubFuncao().getCodSubFun() + ", "  
 		               + diaria.getFuncao().getCodFuncao() +  ", "  + diaria.getAcao().getCodAcao()  + ", "  + diaria.getPrograma().getCodProg() +  ", "  + diaria.getFavorecido().getCodFavorecido() + ", "  
 		               + diaria.getValorPagamento() + ", "  + diaria.getGestaoPag() + ", "  + diaria.getDataPagamento() +  ");";
 	         stmt.executeUpdate(diariaSql);
@@ -498,7 +498,7 @@ public class DaoDiaria {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String query = "UPDATE Diaria set codDiaria = " + diaria.getCodDiaria() 
+	    	String query = "UPDATE Diaria set "
 	    					+ "codAcao = " + diaria.getAcao().getCodAcao() + ", "
 	    					+ "codFav = " + diaria.getFavorecido().getCodFavorecido() + ", "
 	    					+ "codProg = " + diaria.getPrograma().getCodProg() + ", "
