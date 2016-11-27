@@ -3,14 +3,22 @@ package Apresentacao;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 
 import javax.swing.*;
 
+import Integracao.DaoAcao;
+import Integracao.DaoDiaria;
+import Integracao.DaoFuncao;
 import Integracao.DaoOrgaoSub;
 import Integracao.DaoOrgaoSup;
 import Integracao.DaoPrograma;
 import Integracao.DaoSubfuncao;
 import Integracao.DaoUnidadeGestora;
+import Negocio.Acao;
+import Negocio.Diaria;
+import Negocio.Favorecido;
+import Negocio.Funcao;
 import Negocio.OrgaoSub;
 import Negocio.OrgaoSup;
 import Negocio.Programa;
@@ -387,15 +395,15 @@ public class Gui {
 
 	protected void attTab(JPanel painelInf, String nome, String tabela) {
 		JPanel p = new JPanel();
-		JLabel t[] = new JLabel[11];
-		JTextField in[] = new JTextField[11];
+		JLabel t[] = new JLabel[13];
+		JTextField in[] = new JTextField[13];
 		JButton confirma = new JButton("Confirmar");
 		int camposLeitura, i;
 		
-		for(i = 0; i < 11; ++i)
+		for(i = 0; i < 13; ++i)
 			t[i] = new JLabel();		
 		
-		for(i = 0; i < 11; ++i)
+		for(i = 0; i < 13; ++i)
 			in[i] = new JTextField();
 		
 		
@@ -758,6 +766,7 @@ public class Gui {
 
 
 	protected void insereFuncao(JPanel painelInserir) {
+		DaoFuncao dao = new DaoFuncao("Diarias", "1234");
 		JPanel p = new JPanel();
 		JLabel lbCodFunc = new JLabel("Código da Função (PK): "), lbNomeFunc = new JLabel("Nome da Função: ");
 		JTextField codFunc = new JTextField(), nomeFunc = new JTextField();
@@ -775,12 +784,12 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * Insere no banco com os dados conseguidos.
-				 * 
-				 * Precisa confirmar se o codFunc é único.
-				 *
-				 * */				
+				Funcao func = new Funcao();
+				
+				func.setCodFuncao(Integer.parseInt(codFunc.getText()));
+				func.setNomeFuncao(nomeFunc.getText());
+				
+				dao.createFuncao(func);
 			}
 		});
 		
@@ -841,13 +850,14 @@ public class Gui {
 
 
 	protected void insereDiaria(JPanel painelInserir) {
+		DaoDiaria dao = new DaoDiaria("Diarias", "1234");
 		JPanel p = new JPanel();
-		JLabel t[] = new JLabel[10];
-		JTextField in[] = new JTextField[10];
+		JLabel t[] = new JLabel[12];
+		JTextField in[] = new JTextField[12];
 		JButton confirmar = new JButton("Confirmar");
 		int i;
 		
-		for(i = 0; i < 10; ++i){
+		for(i = 0; i < 12; ++i){
 			in[i] = new JTextField();
 		}
 		
@@ -860,16 +870,43 @@ public class Gui {
 		t[6] = new JLabel("Código do Favorecido (FK): ");
 		t[7] = new JLabel("Valor do pagamento: ");
 		t[8] = new JLabel("Gestão do pagamento: ");
-		t[9] = new JLabel("Data do pagamento: ");
+		t[9] = new JLabel("Dia do pagamento: ");
+		t[10] = new JLabel("Mês do pagamento: ");
+		t[11] = new JLabel("Ano do pagamento: ");
 		
 		confirmar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * 
-				 * 
-				 * */				
+				Diaria diaria = new Diaria();
+				Acao acao = new Acao();
+				Date data = new Date(Integer.parseInt(in[11].getText()), Integer.parseInt(in[10].getText()), Integer.parseInt(in[9].getText()));
+				Favorecido fav = new Favorecido();
+				Funcao func = new Funcao();
+				SubFuncao subf = new SubFuncao();
+				Programa prog = new Programa();
+				UnidadeGestora uGest = new UnidadeGestora();
+				
+				acao.setCodAcao(in[4].getText());
+				uGest.setCodUniGes(Integer.parseInt(in[1].getText()));
+				fav.setCodFavorecido(Integer.parseInt(in[6].getText()));
+				func.setCodFuncao(Integer.parseInt(in[3].getText()));
+				subf.setCodSubFun(Integer.parseInt(in[2].getText()));
+				prog.setCodProg(Integer.parseInt(in[5].getText()));
+				
+				
+				diaria.setAcao(acao);
+				diaria.setDataPagamento(data);
+				diaria.setDocPagamento(in[0].getText());				
+				diaria.setFavorecido(fav);				
+				diaria.setFuncao(func);				
+				diaria.setSubFuncao(subf);
+				diaria.setGestaoPag(Integer.parseInt(in[8].getText()));				
+				diaria.setGestor(uGest);				
+				diaria.setPrograma(prog);
+				diaria.setValorPagamento(Float.parseFloat(in[7].getText()));
+				
+				dao.createDiaria(diaria);
 			}
 		});
 		
@@ -886,6 +923,7 @@ public class Gui {
 
 
 	protected void insereAcao(JPanel painelInserir) {
+		DaoAcao dao = new DaoAcao("Diarias", "1234");
 		JPanel p = new JPanel();
 		JLabel lbCodAcao = new JLabel("Código da Ação (4 caracteres, PK): "), lbNomeAcao = new JLabel("Nome da Ação: "), lbLinguagem = new JLabel("Linguagem citada: ");
 		JTextField codAcao = new JTextField(), nomeAcao = new JTextField(), linguagem = new JTextField();
@@ -903,12 +941,13 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * Insere no banco com os dados conseguidos.
-				 * 
-				 * Precisa confirmar se o "codAcao" é único.
-				 *
-				 * */				
+				Acao acao = new Acao();
+				
+				acao.setCodAcao(codAcao.getText());
+				acao.setLinguagemCidada(linguagem.getText());
+				acao.setNome(nomeAcao.getText());
+				
+				dao.createAcao(acao);				
 			}
 		});
 		
