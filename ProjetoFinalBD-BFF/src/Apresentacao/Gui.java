@@ -441,7 +441,7 @@ public class Gui {
 		JLabel t[] = new JLabel[13];
 		JTextField in[] = new JTextField[13];
 		JButton confirma = new JButton("Confirmar");
-		int i;
+		int camposLeitura, i;
 		
 		for(i = 0; i < 13; ++i)
 			t[i] = new JLabel();		
@@ -452,7 +452,6 @@ public class Gui {
 		
 		confirma.addActionListener(new ActionListener() {
 			
-			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Funcao fun;
@@ -571,7 +570,7 @@ public class Gui {
 			}
 		});
 		
-		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));		
 		
 		
 		switch(tabela){
@@ -698,7 +697,17 @@ public class Gui {
 	protected void Buscar(JPanel painelInf){
 		JPanel painel = new JPanel();
 		JButton buscaReg = new JButton("Procurar registro em tabela.");
-		
+		JButton gastoFuncionario = new JButton("Gasto de um funcionario");
+		JButton numeroDeDiarias = new JButton("Numero de diarias concedidas a um Orgao/UnidadeGestora");
+		/*	Fernando -
+		 * 		gastoFUncionario
+		 * 		numDiariasPor Orgao
+		 * 	Fabio
+		 * 		Diarias concedidas
+		 * 		Favorecidos fun/sub
+		 * 		Listar Progs
+		 * 
+		 * */
 		buscaReg.addActionListener(new ActionListener() {
 			
 			@Override
@@ -708,7 +717,22 @@ public class Gui {
 			}
 		});
 		
-		
+		gastoFuncionario.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				painel.setVisible(false);
+				gastoFuncionario(painelInf);
+			}
+		});
+		numeroDeDiarias.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				painel.setVisible(false);
+				numDeDiarias(painelInf);
+			}
+		});
 	
 		painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
 		
@@ -717,6 +741,87 @@ public class Gui {
 		painelInf.add(painel);
 		painelInf.repaint();
 		painelInf.revalidate();	
+	}
+	
+	protected void numDeDiarias(JPanel painelInf){
+		JPanel p = new JPanel();
+		String[] tipos = new String[]{"Orgao Superior", "Orgao Subordinado", "Unidade Gestora"}; 
+		JComboBox<String> comboBox = new JComboBox<>(tipos);
+		JLabel t = new JLabel("Digite o nome do orgao/unidade gestora a ser pesquisado: ");
+		JTextField nomeOrgao = new JTextField();
+		JButton buscaNumDiarias = new JButton("Confirmar");
+		
+		buscaNumDiarias.addActionListener(new ActionListener() {
+			int resultado = 0;
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				switch(comboBox.getSelectedIndex()){
+					case 0:
+						resultado = new DaoDiaria("Diarias", "senha123").numDiariaPorOrgaoSuperior(nomeOrgao.getText());
+						exibeNumDiarias(painelInf, resultado);
+						break;
+					case 1:
+						resultado = new DaoDiaria("Diarias", "senha123").numDiariaPorOrgaoSubordinado(nomeOrgao.getText());
+						exibeNumDiarias(painelInf, resultado);
+						break;
+					default:
+						resultado = new DaoDiaria("Diarias", "senha123").numDiariaPorUnidadeGestora(nomeOrgao.getText());
+						exibeNumDiarias(painelInf, resultado);
+						break;
+				}
+			}
+		});
+	}
+	
+	protected void gastoFuncionario(JPanel painelInf){
+		JPanel p = new JPanel();
+		JLabel t = new JLabel("Digite o nome completo do funcionario a ser pesquisado: ");
+		JTextField nomeFunc = new JTextField();
+		JButton buscaGasto = new JButton("Confirmar");
+		
+		buscaGasto.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				float resultado = new DaoDiaria("Diarias", "senha123").gastoFuncionario(nomeFunc.getText());
+				exibeGasto(painelInf, resultado);
+			}
+		});
+	}
+	
+	protected void exibeGasto(JPanel painelInf, float gasto){
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"Gasto Total"};
+		
+		Object linhas[][] = { {gasto}};
+		
+		tabela = new JTable(linhas, colunas);
+		sc = new JScrollPane(tabela);
+		
+		p.setLayout(new GridLayout(1, 1));
+		p.add(sc);
+		
+		painelInf.add(p);
+	}
+	
+	protected void exibeNumDiarias(JPanel painelInf, int diarias){
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"Num de Diarias"};
+		
+		Object linhas[][] = { {diarias}};
+		
+		tabela = new JTable(linhas, colunas);
+		sc = new JScrollPane(tabela);
+		
+		p.setLayout(new GridLayout(1, 1));
+		p.add(sc);
+		
+		painelInf.add(p);
 	}
 
 	
@@ -810,7 +915,7 @@ public class Gui {
 					case "diaria":
 						Diaria diaria = new Diaria();
 						diaria = new DaoDiaria("Diaria", "senha123").recuperaDiaria(Integer.parseInt(chave.getText()));
-						exibeDiaria(painelInf, diaria);
+						//exibe
 						break;
 					case "favorecido":
 						Favorecido fav = new Favorecido();
@@ -1067,8 +1172,6 @@ public class Gui {
 			painelInf.add(p);
 		}
 	}
-	
-	
 	
 	
 	
@@ -1437,7 +1540,6 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				Diaria diaria = new Diaria();
 				Acao acao = new Acao();
-				@SuppressWarnings("deprecation")
 				Date data = new Date(Integer.parseInt(in[11].getText()), Integer.parseInt(in[10].getText()), Integer.parseInt(in[9].getText()));
 				Favorecido fav = new Favorecido();
 				Funcao func = new Funcao();
