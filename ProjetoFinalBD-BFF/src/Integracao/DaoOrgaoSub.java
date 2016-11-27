@@ -54,10 +54,10 @@ public class DaoOrgaoSub {
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
 	    	"postgres", senha);
 	    	
-	    	String sql = "UPDATE OrgaoSub SET codorgsub = '" + orgaoSub.getCodOrgaoSub() + "', "
+	    	String sql = "UPDATE OrgaoSubordinado SET codorgsub = '" + orgaoSub.getCodOrgaoSub() + "', "
 	    				+ "nomeorgsub = '" + orgaoSub.getNomeOrgaoSub() + "', "
 	    				+ "codorgsup = '" + orgaoSub.getOrgSup().getCodOrgSup()
-	    				+ "' WHERE CodOrgSup = '" + orgaoSub.getCodOrgaoSub() + "';";
+	    				+ "' WHERE CodOrgSub = '" + orgaoSub.getCodOrgaoSub() + "';";
 		    stmt = c.createStatement();
 		    stmt.execute(sql);
 		    
@@ -82,9 +82,9 @@ public class DaoOrgaoSub {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "SELECT ORGAOSUBORDINADO.* AND ORGAOSUPERIOR.NOMEORGSUP FROM ORGAOSUBORDINADO "
+	    	String sql = "SELECT ORGAOSUBORDINADO.*, ORGAOSUPERIOR.NOMEORGSUP FROM ORGAOSUBORDINADO "
 	    			+ "JOIN  ORGAOSUPERIOR ON ORGAOSUBORDINADO.codorgsup = ORGAOSUPERIOR.codorgsup" 
-	    			+ "WHERE CodOrgSub = '" + codOrgaoSub + "';";
+	    			+ " WHERE orgaosubordinado.codorgsub = '" + codOrgaoSub + "';";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    

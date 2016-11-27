@@ -54,7 +54,7 @@ public class DaoSubfuncao {
 	    	"postgres", senha);
 	    	
 	    	String sql = "UPDATE subfuncao SET codsubfun = '" + subf.getCodSubFun() + "', "
-	    				+ "nomesubfun = '" + subf.getNomeSubFun() + "', "
+	    				+ "nomesubfun = '" + subf.getNomeSubFun() + "'"
 	    				+ " WHERE codsubfun = '" + subf.getCodSubFun() + "';";
 		    stmt = c.createStatement();
 		    stmt.execute(sql);

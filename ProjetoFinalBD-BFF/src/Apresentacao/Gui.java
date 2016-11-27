@@ -584,6 +584,7 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
+				break;
 				
 			case "diaria":
 				t[0] = new JLabel("Código da Diária (PK): ");

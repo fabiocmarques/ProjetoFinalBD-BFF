@@ -516,7 +516,7 @@ public class DaoDiaria {
 	    	
 	    	String sql = "UPDATE Diaria set "
 	    					+ "codAcao = '" + diaria.getAcao().getCodAcao() + "', "
-	    					+ "codFav = '" + diaria.getFavorecido().getCodFavorecido() + "', "
+	    					+ "codFavorecido = '" + diaria.getFavorecido().getCodFavorecido() + "', "
 	    					+ "codProg = '" + diaria.getPrograma().getCodProg() + "', "
 	    					+ "codFun = '" + diaria.getFuncao().getCodFuncao() + "', "
 	    					+ "codSubFun = '" + diaria.getSubFuncao().getCodSubFun() + "', "
@@ -525,7 +525,7 @@ public class DaoDiaria {
 	    					+ "valorPagamento = '" + diaria.getValorPagamento() + "', "
 	    					+ "gestaoPagamento = '" + diaria.getGestaoPag() + "', "
 	    					+ "dataPagamento = '" + diaria.getDataPagamento()
-	    					+ "' where ID ='" + diaria.getCodDiaria() +  "';";
+	    					+ "' where coddiaria ='" + diaria.getCodDiaria() +  "';";
 	    	
 		    stmt = c.createStatement();
 		    stmt.execute(sql);

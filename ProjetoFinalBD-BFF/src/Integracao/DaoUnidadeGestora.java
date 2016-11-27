@@ -56,7 +56,7 @@ public class DaoUnidadeGestora {
 	    	"postgres", senha);
 	    	
 	    	String sql = "UPDATE unidadegestora SET coduniges = '" + uniGes.getCodUniGes() + "', "
-	    				+ "codorgsub = '" + uniGes.getOrgaoSub() + "', "
+	    				+ "codorgsub = '" + uniGes.getOrgaoSub().getCodOrgaoSub() + "', "
 	    				+ "nomeuniges = '" + uniGes.getNomeUnidadeGestora()
 	    				+ "' WHERE coduniges = '" + uniGes.getCodUniGes() + "';";
 		    stmt = c.createStatement();
