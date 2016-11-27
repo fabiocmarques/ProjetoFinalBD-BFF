@@ -4,7 +4,7 @@
 SELECT NomeFav, Cpf, SUM(ValorPagamento) AS Total_Gastos
 FROM Favorecido JOIN Diaria ON Favorecido.CodFavorecido = Diaria.CodFavorecido
 WHERE NomeFav = 'MARCIO RODRIGUES DE CARVALHO'
-GROUP BY Diaria.CodFavorecido;
+GROUP BY Favorecido.CodFavorecido;
 
 -- Quantas diárias estão atreladas a um órgão superior, órgão subordinado ou unidade gestora.
 -- Órgão Superior
