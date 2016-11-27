@@ -871,7 +871,35 @@ public class Gui {
 			System.out.println("É null");
 		}
 		else{
-			Object linhas[][] = { {acao.getCodAcao().toString(), acao.getNome(), acao.getLinguagemCidada()}};
+			Object linhas[][] = { {acao.getCodAcao(), acao.getNome(), acao.getLinguagemCidada()}};
+			
+			
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
+	
+	protected void exibeDiaria(JPanel painelInf, Diaria diaria) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"CodDiaria", "DocPagamento", "CodUniGes", "CodSubFun", "CodFun", "CodAcao", "CodProg", 
+				"CodFavorecido", "ValorPagamento", "GestaoPagamento", "DataPagamento"};
+		
+		if(diaria == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {""+diaria.getCodDiaria(), diaria.getDocPagamento(), ""+diaria.getGestor().getCodUniGes(), 
+				""+diaria.getSubFuncao().getCodSubFun(), ""+diaria.getFuncao().getCodFuncao(), ""+diaria.getAcao().getCodAcao(),
+				""+diaria.getPrograma().getCodProg(), ""+diaria.getFavorecido().getCodFavorecido(), ""+diaria.getValorPagamento(),
+				""+diaria.getGestaoPag(), ""+diaria.getDataPagamento().toString()}};
 			
 			
 			
