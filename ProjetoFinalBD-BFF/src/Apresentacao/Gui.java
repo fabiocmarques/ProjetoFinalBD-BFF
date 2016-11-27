@@ -815,35 +815,37 @@ public class Gui {
 					case "favorecido":
 						Favorecido fav = new Favorecido();
 						fav = new DaoFavorecido("Diarias", "senha123").recuperaFavorecido(Integer.parseInt(chave.getText()));
+						exibeFavorecido(painelInf, fav);
 						break;
 					case "orgaosubordinado":
 						OrgaoSub oSub = new OrgaoSub();
 						oSub = new DaoOrgaoSub("Diarias", "senha123").recuperaOrgaoSub(Integer.parseInt(chave.getText()));
-						//exibe
+						exibeOrgSub(painelInf, oSub);
 						break;
 					case "funcao":
 						Funcao fun = new Funcao();
 						fun = new DaoFuncao("Diarias", "senha123").recuperaFuncao(Integer.parseInt(chave.getText()));
-						//exibe
+						exibeFuncao(painelInf, fun);
 						break;
 					case "subfuncao":
 						SubFuncao subFun = new SubFuncao();
 						subFun = new DaoSubfuncao("Diarias", "senha123").recuperaSubfuncao(chave.getText());
-						//exibe
+						exibeSubFuncao(painelInf, subFun);
 						break;
 					case "orgaosuperior":
 						OrgaoSup oSup = new OrgaoSup();
 						oSup = new DaoOrgaoSup("Diarias", "senha123").recuperaOrgSup(Integer.parseInt(chave.getText()));
-						//exibe
+						exibeOrgSup(painelInf, oSup);
 						break;
 					case "programa":
 						Programa prog = new Programa();
 						prog = new DaoPrograma("Diarias", "senha123").recuperaPrograma(Integer.parseInt(chave.getText()));
-						//exibe
+						exibePrograma(painelInf, prog);
 						break;
 					default : 
 						UnidadeGestora uniGes = new UnidadeGestora();
 						uniGes = new DaoUnidadeGestora("Diarias", "senha123").recuperaUnidadeGestora(chave.getText());;
+						exibeUnidadeGestora(painelInf, uniGes);
 						break;
 				}
 			}
@@ -883,9 +885,160 @@ public class Gui {
 		}
 	}
 	
+	protected void exibeFavorecido(JPanel painelInf, Favorecido fav) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"CodFavorecido", "CPF", "NomeFavorecido"};
+		
+		if(fav == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {fav.getCodFavorecido(), fav.getCpf(), fav.getNomeFavorecido()}};
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
+	
+	protected void exibePrograma(JPanel painelInf, Programa prog) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"CodProg", "nomeProg"};
+		
+		if(prog == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {prog.getCodProg(), prog.getNomeProg()}};
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
+	
+	protected void exibeFuncao(JPanel painelInf, Funcao fun) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"CodFuncao", "nomeFuncao"};
+		
+		if(fun == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {fun.getCodFuncao(), fun.getNomeFuncao()}};
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
+	
+	protected void exibeSubFuncao(JPanel painelInf, SubFuncao sFun) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"CodSubFuncao", "nomeSubFuncao"};
+		
+		if(sFun == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {sFun.getCodSubFun(), sFun.getNomeSubFun()}};
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
+	
+	protected void exibeOrgSup(JPanel painelInf, OrgaoSup oSup) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"CodOrgSup", "nomeOrgSup"};
+		
+		if(oSup == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {oSup.getCodOrgSup(), oSup.getNomeOrgSup()}};
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
+	
+	protected void exibeUnidadeGestora(JPanel painelInf, UnidadeGestora uniGes) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"codUnidadeGestora", "nomeUnidadeGestora", "codOrgaoSubordinado", "nomeOrgaoSubordinado", "codOrgaoSuperior", "nomeOrgaoSuperior"};
+		
+		if(uniGes == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {uniGes.getCodUniGes(), uniGes.getNomeUnidadeGestora(), uniGes.getOrgaoSub().getCodOrgaoSub(), uniGes.getOrgaoSub().getNomeOrgaoSub(), uniGes.getOrgaoSub().getOrgSup().getCodOrgSup(), uniGes.getOrgaoSub().getOrgSup().getNomeOrgSup()}};
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
 	
 	
-	
+	protected void exibeOrgSub(JPanel painelInf, OrgaoSub oSub) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"CodOrgSub", "nomeOrgSub", "codOrgSup", "nomeOrgaoSup"};
+		
+		if(oSub == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {oSub.getCodOrgaoSub(), oSub.getNomeOrgaoSub(), oSub.getOrgSup().getCodOrgSup(), oSub.getOrgSup().getNomeOrgSup()}};
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
 	
 	
 	
