@@ -39,8 +39,8 @@ public class DaoOrgaoSub {
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 	}
 	
@@ -54,20 +54,20 @@ public class DaoOrgaoSub {
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
 	    	"postgres", senha);
 	    	
-	    	String sql = "UPDATE OrgaoSub SET codorgsub = " + orgaoSub.getCodOrgaoSub() + ", "
-	    				+ "nomeorgsub = " + orgaoSub.getNomeOrgaoSub() + ", "
-	    				+ "codorgsup = " + orgaoSub.getOrgSup().getCodOrgSup()
-	    				+ " WHERE CodOrgSup = " + orgaoSub.getCodOrgaoSub() + ";";
+	    	String sql = "UPDATE OrgaoSub SET codorgsub = '" + orgaoSub.getCodOrgaoSub() + "', "
+	    				+ "nomeorgsub = '" + orgaoSub.getNomeOrgaoSub() + "', "
+	    				+ "codorgsup = '" + orgaoSub.getOrgSup().getCodOrgSup()
+	    				+ "' WHERE CodOrgSup = '" + orgaoSub.getCodOrgaoSub() + "';";
 		    stmt = c.createStatement();
-		    stmt.executeQuery(sql);
+		    stmt.execute(sql);
 		    
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 	}
 	
@@ -84,18 +84,22 @@ public class DaoOrgaoSub {
 	    	
 	    	String sql = "SELECT ORGAOSUBORDINADO.* AND ORGAOSUPERIOR.NOMEORGSUP FROM ORGAOSUBORDINADO "
 	    			+ "JOIN  ORGAOSUPERIOR ON ORGAOSUBORDINADO.codorgsup = ORGAOSUPERIOR.codorgsup" 
-	    			+ "WHERE CodOrgSub = " + codOrgaoSub + ";";
+	    			+ "WHERE CodOrgSub = '" + codOrgaoSub + "';";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
-		    orgSub.setCodOrgaoSub(rs.getInt("codorgsub"));
-		    orgSub.setNomeOrgaoSub(rs.getString("nomeorgsub"));
-		    
-		    OrgaoSup orgSup = new OrgaoSup();
-		    
-		    orgSup.setCodOrgSup(rs.getInt("codorgsup"));
-		    orgSup.setNomeOrgSup(rs.getString("nomeorgsup"));
-		    orgSub.setOrgSup(orgSup);
+		    if(rs.next()){
+			    orgSub.setCodOrgaoSub(rs.getInt("codorgsub"));
+			    orgSub.setNomeOrgaoSub(rs.getString("nomeorgsub"));
+			    
+			    OrgaoSup orgSup = new OrgaoSup();
+			    
+			    orgSup.setCodOrgSup(rs.getInt("codorgsup"));
+			    orgSup.setNomeOrgSup(rs.getString("nomeorgsup"));
+			    orgSub.setOrgSup(orgSup);
+		    }
+		    else
+		    	orgSub = null;
 		    
 		    rs.close();
 		    stmt.close();
@@ -103,8 +107,8 @@ public class DaoOrgaoSub {
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 
 		return orgSub;
@@ -120,17 +124,17 @@ public class DaoOrgaoSub {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "DELETE FROM ORGAOSUBORDINADO WHERE CodOrgSub = " + orgSub.getCodOrgaoSub() + ";";
+	    	String sql = "DELETE FROM ORGAOSUBORDINADO WHERE CodOrgSub = '" + orgSub.getCodOrgaoSub() + "';";
 		    stmt = c.createStatement();
-		    stmt.executeQuery(sql);
+		    stmt.execute(sql);
 		    
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 
 	}

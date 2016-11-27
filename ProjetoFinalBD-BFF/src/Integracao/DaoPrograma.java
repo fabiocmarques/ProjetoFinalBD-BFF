@@ -30,8 +30,8 @@ public class DaoPrograma {
 	    	
 	    	stmt = c.createStatement();
 	         String progSql = "INSERT INTO PROGRAMA (CODPROG, NOMEPROG) "
-	               + "VALUES (" + programa.getCodProg() + ", " + programa.getNomeProg() + ");";
-	         stmt.executeUpdate(progSql);
+	               + "VALUES ('" + programa.getCodProg() + "', '" + programa.getNomeProg() + "');";
+	         stmt.execute(progSql);
 		    
 		    stmt.close();
 		    c.close();
@@ -39,7 +39,7 @@ public class DaoPrograma {
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
 	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  
 	      }
 	}
 	
@@ -53,11 +53,11 @@ public class DaoPrograma {
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
 	    	"postgres", senha);
 	    	
-	    	String sql = "UPDATE PROGRAMA SET codprog = " + programa.getCodProg() + ", "
-	    				+ "nomeprog = " + programa.getNomeProg()
-	    				+ " WHERE Codprog = " + programa.getCodProg() + ";";
+	    	String sql = "UPDATE PROGRAMA SET codprog = '" + programa.getCodProg() + "', "
+	    				+ "nomeprog = '" + programa.getNomeProg()
+	    				+ "' WHERE Codprog = '" + programa.getCodProg() + "';";
 		    stmt = c.createStatement();
-		    stmt.executeQuery(sql);
+		    stmt.execute(sql);
 		    
 		    stmt.close();
 		    c.close();
@@ -65,7 +65,7 @@ public class DaoPrograma {
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
 	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  
 	      }
 	}
 	
@@ -80,12 +80,16 @@ public class DaoPrograma {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "SELECT * FROM Programa WHERE Codprog = " + codProg + ";";
+	    	String sql = "SELECT * FROM Programa WHERE Codprog = '" + codProg + "';";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
-		    programa.setCodProg(rs.getInt("codprog"));
-		    programa.setNomeProg(rs.getString("nomeprog"));
+		    if(rs.next()){
+			    programa.setCodProg(rs.getInt("codprog"));
+			    programa.setNomeProg(rs.getString("nomeprog"));
+		    }
+		    else
+		    	programa = null;
 		    
 		    rs.close();
 		    stmt.close();
@@ -93,8 +97,8 @@ public class DaoPrograma {
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 
 		return programa;
@@ -110,9 +114,9 @@ public class DaoPrograma {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "DELETE FROM PROGRAMA WHERE CodProg = " + programa.getCodProg() + ";";
+	    	String sql = "DELETE FROM PROGRAMA WHERE CodProg = '" + programa.getCodProg() + "';";
 		    stmt = c.createStatement();
-		    stmt.executeQuery(sql);
+		    stmt.execute(sql);
 		    
 		    stmt.close();
 		    c.close();
@@ -120,7 +124,7 @@ public class DaoPrograma {
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
 	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  
 	      }
 
 	}

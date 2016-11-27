@@ -29,7 +29,7 @@ public class DaoSubfuncao {
 	    	
 	    	stmt = c.createStatement();
 	        String subfSql = "INSERT INTO subfuncao (codsubfun, nomesubfun) "
-	               + "VALUES (" + subf.getCodSubFun() + ", " + subf.getNomeSubFun() + ");";
+	               + "VALUES ('" + subf.getCodSubFun() + "', '" + subf.getNomeSubFun() + "');";
 	        stmt.executeUpdate(subfSql);     
 	     
 		    
@@ -38,8 +38,8 @@ public class DaoSubfuncao {
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 	}
 	
@@ -53,19 +53,19 @@ public class DaoSubfuncao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
 	    	"postgres", senha);
 	    	
-	    	String sql = "UPDATE subfuncao SET codsubfun = " + subf.getCodSubFun() + ", "
-	    				+ "nomesubfun = " + subf.getNomeSubFun() + ", "
-	    				+ " WHERE codsubfun = " + subf.getCodSubFun() + ";";
+	    	String sql = "UPDATE subfuncao SET codsubfun = '" + subf.getCodSubFun() + "', "
+	    				+ "nomesubfun = '" + subf.getNomeSubFun() + "', "
+	    				+ " WHERE codsubfun = '" + subf.getCodSubFun() + "';";
 		    stmt = c.createStatement();
-		    stmt.executeQuery(sql);
+		    stmt.execute(sql);
 		    
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 	}
 	
@@ -80,20 +80,23 @@ public class DaoSubfuncao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "SELECT * FROM subfuncao WHERE Codsubfuncao = " + codSubf + ";";
+	    	String sql = "SELECT * FROM subfuncao WHERE Codsubfuncao = '" + codSubf + "';";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
-		    sub.setCodSubFun(rs.getInt("codsubfuncao"));
-		    sub.setNomeSubFun(rs.getString("nomesubfun"));
-		    
+		    if(rs.next()){
+			    sub.setCodSubFun(rs.getInt("codsubfuncao"));
+			    sub.setNomeSubFun(rs.getString("nomesubfun"));
+		    }
+		    else
+		    	sub = null;
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 
 		return sub;
@@ -109,17 +112,17 @@ public class DaoSubfuncao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "DELETE FROM ACAO WHERE CodAcao = " + subf.getCodSubFun() + ";";
+	    	String sql = "DELETE FROM ACAO WHERE CodAcao = '" + subf.getCodSubFun() + "';";
 		    stmt = c.createStatement();
-		    stmt.executeQuery(sql);
+		    stmt.execute(sql);
 		    
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 
 	}

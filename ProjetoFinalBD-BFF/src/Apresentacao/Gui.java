@@ -758,10 +758,12 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				p.setVisible(false);
 				switch(comboBox.getSelectedIndex()){
 					case 0:
 						resultado = new DaoDiaria("Diarias", "senha123").numDiariaPorOrgaoSuperior(nomeOrgao.getText());
 						exibeNumDiarias(painelInf, resultado);
+						
 						break;
 					case 1:
 						resultado = new DaoDiaria("Diarias", "senha123").numDiariaPorOrgaoSubordinado(nomeOrgao.getText());
@@ -793,6 +795,7 @@ public class Gui {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				float resultado = new DaoDiaria("Diarias", "senha123").gastoFuncionario(nomeFunc.getText());
+				p.setVisible(false);
 				exibeGasto(painelInf, resultado);
 			}
 		});
@@ -818,7 +821,6 @@ public class Gui {
 		
 		p.setLayout(new GridLayout(1, 1));
 		p.add(sc);
-		
 		painelInf.add(p);
 	}
 	
@@ -1013,7 +1015,7 @@ public class Gui {
 				"CodFavorecido", "ValorPagamento", "GestaoPagamento", "DataPagamento"};
 		
 		if(diaria == null){
-			System.out.println("É null");
+			System.out.println("Nenhum resultado encontrado");
 		}
 		else{
 			Object linhas[][] = { {""+diaria.getCodDiaria(), diaria.getDocPagamento(), ""+diaria.getGestor().getCodUniGes(), 

@@ -30,7 +30,7 @@ public class DaoUnidadeGestora {
 	    	
 	    	stmt = c.createStatement();
 	         String gestorSql = "INSERT INTO UNIDADEGESTORA (CODUNIGES, CODORGSUB, NOMEUNIGES) "
-		               + "VALUES (" + uniGes.getCodUniGes() + ", " + uniGes.getOrgaoSub() + ", " + uniGes.getNomeUnidadeGestora() + ");";
+		               + "VALUES ('" + uniGes.getCodUniGes() + "', '" + uniGes.getOrgaoSub() + "', '" + uniGes.getNomeUnidadeGestora() + "');";
 	         stmt.executeUpdate(gestorSql);
 	        
 	     
@@ -40,8 +40,8 @@ public class DaoUnidadeGestora {
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 	}
 	
@@ -55,20 +55,20 @@ public class DaoUnidadeGestora {
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
 	    	"postgres", senha);
 	    	
-	    	String sql = "UPDATE unidadegestora SET coduniges = " + uniGes.getCodUniGes() + ", "
-	    				+ "codorgsub = " + uniGes.getOrgaoSub() + ", "
-	    				+ "nomeuniges = " + uniGes.getNomeUnidadeGestora()
-	    				+ " WHERE coduniges = " + uniGes.getCodUniGes() + ";";
+	    	String sql = "UPDATE unidadegestora SET coduniges = '" + uniGes.getCodUniGes() + "', "
+	    				+ "codorgsub = '" + uniGes.getOrgaoSub() + "', "
+	    				+ "nomeuniges = '" + uniGes.getNomeUnidadeGestora()
+	    				+ "' WHERE coduniges = '" + uniGes.getCodUniGes() + "';";
 		    stmt = c.createStatement();
-		    stmt.executeQuery(sql);
+		    stmt.execute(sql);
 		    
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 	}
 	
@@ -86,41 +86,47 @@ public class DaoUnidadeGestora {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "SELECT * FROM unidadegestora WHERE Coduniges = " + uniGes + ";";
+	    	String sql = "SELECT * FROM unidadegestora WHERE Coduniges = '" + uniGes + "';";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
-		    rs.next();
+		    if(rs.next()){
+		    	uGes.setCodUniGes(rs.getInt("coduniges"));
+			    sub = rs.getString("codorgsub");
+			    uGes.setNomeUnidadeGestora(rs.getString("nomeuniges"));
+			    
+			    sql = "SELECT * FROM orgaosubordinado WHERE codorgsub = '" + sub + "';";
+			    stmt = c.createStatement();
+			    rs = stmt.executeQuery(sql);
+			    
+			    sup = rs.getString("codorgsup");
+			    oSub.setCodOrgaoSub(rs.getInt("codorgsub"));
+			    oSub.setNomeOrgaoSub(rs.getString("nomeorgsub"));
+			    
+			    sql = "SELECT * FROM orgaosuperior WHERE codorgsup = '" + sup + "';";
+			    stmt = c.createStatement();
+			    rs = stmt.executeQuery(sql);
+			    
+			    oSup.setCodOrgSup(rs.getInt("codorgsup"));
+			    oSup.setNomeOrgSup(rs.getString("nomeorgsup"));
+			    
+			    oSub.setOrgSup(oSup);
+			    
+			    uGes.setOrgaoSub(oSub);
+
+		    }
+		    else
+		    	uGes = null;
 		    
-		    uGes.setCodUniGes(rs.getInt("coduniges"));
-		    sub = rs.getString("codorgsub");
-		    uGes.setNomeUnidadeGestora(rs.getString("nomeuniges"));
 		    
-		    sql = "SELECT * FROM orgaosubordinado WHERE codorgsub = " + sub + ";";
-		    stmt = c.createStatement();
-		    rs = stmt.executeQuery(sql);
 		    
-		    sup = rs.getString("codorgsup");
-		    oSub.setCodOrgaoSub(rs.getInt("codorgsub"));
-		    oSub.setNomeOrgaoSub(rs.getString("nomeorgsub"));
-		    
-		    sql = "SELECT * FROM orgaosuperior WHERE codorgsup = " + sup + ";";
-		    stmt = c.createStatement();
-		    rs = stmt.executeQuery(sql);
-		    
-		    oSup.setCodOrgSup(rs.getInt("codorgsup"));
-		    oSup.setNomeOrgSup(rs.getString("nomeorgsup"));
-		    
-		    oSub.setOrgSup(oSup);
-		    
-		    uGes.setOrgaoSub(oSub);
-		    
+		    rs.close();		    
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 
 		return uGes;
@@ -136,17 +142,17 @@ public class DaoUnidadeGestora {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "DELETE FROM unidadegestora WHERE CodUniGes = " + uniGes.getCodUniGes() + ";";
+	    	String sql = "DELETE FROM unidadegestora WHERE CodUniGes = '" + uniGes.getCodUniGes() + "';";
 		    stmt = c.createStatement();
-		    stmt.executeQuery(sql);
+		    stmt.execute(sql);
 		    
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 
 	}

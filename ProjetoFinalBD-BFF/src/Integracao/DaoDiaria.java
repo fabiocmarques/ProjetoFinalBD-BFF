@@ -39,20 +39,23 @@ public class DaoDiaria {
 	    	
 	    	String query = "SELECT NomeFav, Cpf, SUM(ValorPagamento) AS Total_Gastos "
 		    		+ "FROM Favorecido JOIN Diaria ON Favorecido.CodFavorecido = Diaria.CodFavorecido "
-		    		+ "WHERE NomeFav = " + nome + " GROUP BY Diaria.CodFavorecido";
+		    		+ "WHERE NomeFav = '" + nome + "' GROUP BY favorecido.CodFavorecido";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(query);
 		    
-		    result = rs.getFloat("Total_Gastos");
-		    
+		    if(rs.next()){
+		    	result = rs.getFloat("Total_Gastos");
+		    }
+		    else
+		    	result = -1;
 		    rs.close();
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 	    
 	    return result;
@@ -74,11 +77,14 @@ public class DaoDiaria {
 	    			+ "FROM Diaria JOIN UnidadeGestora ON Diaria.CodUniGes = UnidadeGestora.CodUniGes "
 	    			+ "JOIN OrgaoSubordinado ON UnidadeGestora.CodOrgSub = OrgaoSubordinado.CodOrgSub "
 	    			+ "JOIN OrgaoSuperior ON OrgaoSubordinado.CodOrgSup = OrgaoSuperior.CodOrgSup "
-	    			+ "WHERE NomeOrgSup =  " + nomeOrgaoSup + " GROUP BY OrgaoSuperior.CodOrgSup;";
+	    			+ "WHERE NomeOrgSup =  '" + nomeOrgaoSup + "' GROUP BY OrgaoSuperior.CodOrgSup;";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(query);
 		    
-		    result = rs.getInt("Num_Diarias");
+		    if(rs.next())
+		    	result = rs.getInt("Num_Diarias");
+		    else
+		    	result = -1;
 		    
 		    rs.close();
 		    stmt.close();
@@ -86,8 +92,8 @@ public class DaoDiaria {
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 	    
 	    return result;
@@ -107,20 +113,22 @@ public class DaoDiaria {
 	    	String query = "SELECT NomeOrgSub, COUNT(CodDiaria) AS Num_Diarias "
 	    			+ "FROM Diaria JOIN UnidadeGestora ON Diaria.CodUniGes = UnidadeGestora.CodUniGes "
 	    			+ "JOIN OrgaoSubordinado ON UnidadeGestora.CodOrgSub = OrgaoSubordinado.CodOrgSub "
-	    			+ "WHERE NomeOrgSub = " + nomeOrgaoSub + " GROUP BY OrgaoSubordinado.CodOrgSub;";
+	    			+ "WHERE NomeOrgSub = '" + nomeOrgaoSub + "' GROUP BY OrgaoSubordinado.CodOrgSub;";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(query);
 		    
-		    result = rs.getInt("Num_Diarias");
-		    
+		    if(rs.next())
+		    	result = rs.getInt("Num_Diarias");
+		    else 
+		    	result = -1;
 		    rs.close();
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 	    
 	    return result;
@@ -139,21 +147,23 @@ public class DaoDiaria {
 	    	
 	    	String query = "SELECT NomeUniGes, COUNT(CodDiaria) AS Num_Diarias "
 	    			+ "FROM Diaria JOIN UnidadeGestora ON Diaria.CodUniGes = UnidadeGestora.CodUniGes  "
-	    			+ "WHERE NomeUniGes = " + nomeUnidadeGestora
-	    			+ "GROUP BY UnidadeGestora.CodUniGes;";
+	    			+ "WHERE NomeUniGes = '" + nomeUnidadeGestora
+	    			+ "' GROUP BY UnidadeGestora.CodUniGes;";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(query);
 		    
-		    result = rs.getInt("Num_Diarias");
-		    
+		    if(rs.next())
+		    	result = rs.getInt("Num_Diarias");
+		    else 
+		    	result = -1;
 		    rs.close();
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 	    
 	    return result;
@@ -172,8 +182,8 @@ public class DaoDiaria {
 	    	
 	    	String query = "SELECT NomeFav, Cpf, DocPagamento, GestaoPagamento, DataPagamento, ValorPagamento "
 	    			+ "FROM Favorecido JOIN Diaria ON Favorecido.CodFavorecido = Diaria.CodFavorecido "
-	    			+ "WHERE NomeFav = " + nomeFuncionario
-	    			+ " ORDER BY NomeFav, DataPagamento;";
+	    			+ "WHERE NomeFav = '" + nomeFuncionario
+	    			+ "' ORDER BY NomeFav, DataPagamento;";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(query);
 		    
@@ -202,8 +212,8 @@ public class DaoDiaria {
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 	    
 	    return diarias;
@@ -223,8 +233,8 @@ public class DaoDiaria {
 	    	String query = "SELECT NomeFav, Cpf, SUM(ValorPagamento) AS Total_Gastos "
 	    			+ "FROM Favorecido JOIN Diaria ON Favorecido.CodFavorecido = Diaria.CodFavorecido "
 	    			+ "JOIN Funcao ON Diaria.CodFun = Funcao.CodFun "
-	    			+ "WHERE NomeFun = " + nomeFuncao
-	    			+ " GROUP BY Favorecido.CodFavorecido "
+	    			+ "WHERE NomeFun = '" + nomeFuncao
+	    			+ "' GROUP BY Favorecido.CodFavorecido "
 	    			+ "ORDER BY Total_Gastos " + (isAsc ? "ASC;" : "DESC;");
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(query);
@@ -246,8 +256,8 @@ public class DaoDiaria {
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 		
 		return favorecidos;
@@ -268,8 +278,8 @@ public class DaoDiaria {
 	    	String query = "SELECT NomeFav, Cpf, SUM(ValorPagamento) AS Total_Gastos "
 	    			+ "FROM Favorecido JOIN Diaria ON Favorecido.CodFavorecido = Diaria.CodFavorecido "
 	    			+ "JOIN Subfuncao ON Diaria.CodSubFun = Subfuncao.CodSubFun "
-	    			+ "WHERE NomeSubFun = " + nomeSubFuncao
-	    			+ " GROUP BY Favorecido.CodFavorecido "
+	    			+ "WHERE NomeSubFun = '" + nomeSubFuncao
+	    			+ "' GROUP BY Favorecido.CodFavorecido "
 	    			+ "ORDER BY Total_Gastos " + (isAsc ? "ASC;" : "DESC;");
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(query);
@@ -291,8 +301,8 @@ public class DaoDiaria {
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 		
 		return favorecidos;
@@ -334,8 +344,8 @@ public class DaoDiaria {
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 		
 		return programas;
@@ -354,17 +364,17 @@ public class DaoDiaria {
 	         
 	         stmt = c.createStatement();
 	         String diariaSql = "INSERT INTO DIARIA (DOCPAGAMENTO, CODUNIGES, CODSUBFUN, CODFUN, CODACAO, CODPROG, CODFAVORECIDO, VALORPAGAMENTO, GESTAOPAGAMENTO, DATAPAGAMENTO) "
-		               + "VALUES (" + diaria.getDocPagamento() + ", "  + diaria.getGestor().getCodUniGes() + ", "  + diaria.getSubFuncao().getCodSubFun() + ", "  
-		               + diaria.getFuncao().getCodFuncao() +  ", "  + diaria.getAcao().getCodAcao()  + ", "  + diaria.getPrograma().getCodProg() +  ", "  + diaria.getFavorecido().getCodFavorecido() + ", "  
-		               + diaria.getValorPagamento() + ", "  + diaria.getGestaoPag() + ", "  + diaria.getDataPagamento() +  ");";
+		               + "VALUES ('" + diaria.getDocPagamento() + "', '"  + diaria.getGestor().getCodUniGes() + "', '"  + diaria.getSubFuncao().getCodSubFun() + "', '"  
+		               + diaria.getFuncao().getCodFuncao() +  "', '"  + diaria.getAcao().getCodAcao()  + "', '"  + diaria.getPrograma().getCodProg() +  "', '"  + diaria.getFavorecido().getCodFavorecido() + "', '"  
+		               + diaria.getValorPagamento() + "', '"  + diaria.getGestaoPag() + "', '"  + diaria.getDataPagamento() +  "');";
 	         stmt.executeUpdate(diariaSql);
 	        
 	         stmt.close();
 	         c.commit();
 	         c.close();
 	      } catch (Exception e) {
-	         System.err.println( e.getClass().getName()+": "+ e.getMessage() );
-	         System.exit(0);
+	         System.out.println( e.getClass().getName()+": "+ e.getMessage() );
+	         
 	      }
 	      System.out.println("Records created successfully");
 	   }
@@ -379,16 +389,16 @@ public class DaoDiaria {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "DELETE FROM DIARIA WHERE CODDIARIA = " + diaria.getCodDiaria() + ";";
+	    	String sql = "DELETE FROM DIARIA WHERE CODDIARIA = '" + diaria.getCodDiaria() + "';";
 		    stmt = c.createStatement();
-		    stmt.executeQuery(sql);		    
+		    stmt.execute(sql);		    
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 
 	}
@@ -414,64 +424,70 @@ public class DaoDiaria {
 	    			+ "JOIN unidadeGestora ON diaria.codUniGes = unidadeGestora.codUniGes "
 	    			+ "JOIN orgaoSubordinado ON orgaoSubordinado.codOrgSub = unidadeGestora.codOrgSub "
 	    			+ "JOIN orgaoSuperior ON orgaoSuperior.codOrgSup = orgaoSubordinado.codOrgSup "
-	    			+ "WHERE codDiaria = " + codDiaria + ";";
+	    			+ "WHERE codDiaria = '" + codDiaria + "';";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(query);
 		    
-		    diaria.setCodDiaria(rs.getInt("codDiaria"));
-		    diaria.setDocPagamento(rs.getString("docPagamento"));
-		    diaria.setValorPagamento(rs.getFloat("valorPagamento"));
-		    diaria.setGestaoPag(rs.getInt("gestaoPagamento"));
-		    diaria.setDataPagamento(rs.getDate("dataPagamento"));
-		    
-		    Acao acao = new Acao();
-		    
-		    acao.setCodAcao(rs.getString("codAcao"));
-		    acao.setLinguagemCidada(rs.getString("linguagemCidada"));
-		    acao.setNome(rs.getString("nomeAcao"));
-		    diaria.setAcao(acao);
-		    
-		    Favorecido favorecido = new Favorecido();
-		    
-		    favorecido.setCodFavorecido(rs.getInt("codFavorecido"));
-		    favorecido.setCpf(rs.getString("cpf"));
-		    favorecido.setNomeFavorecido(rs.getString("nomeFav"));
-		    diaria.setFavorecido(favorecido);
-		    
-		    Programa programa = new Programa();
-		    
-		    programa.setCodProg(rs.getInt("codProg"));
-		    programa.setNomeProg(rs.getString("nomeProg"));
-		    diaria.setPrograma(programa);
-		    
-		    Funcao funcao = new Funcao();
-		    
-		    funcao.setCodFuncao(rs.getInt("codfun"));
-		    funcao.setNomeFuncao(rs.getString("nomefun"));
-		    diaria.setFuncao(funcao);
-		    
-		    SubFuncao subFuncao = new SubFuncao();
-		    
-		    subFuncao.setCodSubFun(rs.getInt("codsubfun"));
-		    subFuncao.setNomeSubFun(rs.getString("nomesubfun"));
-		    diaria.setSubFuncao(subFuncao);
-		    
-		    UnidadeGestora unidadeGestora = new UnidadeGestora();
-		    
-		    unidadeGestora.setCodUniGes(rs.getInt("coduniges"));
-		    unidadeGestora.setNomeUnidadeGestora(rs.getString("nomeuniges"));
-		    diaria.setGestor(unidadeGestora);
-		    
-		    OrgaoSub orgaoSub = new OrgaoSub();
-		    
-		    orgaoSub.setCodOrgaoSub(rs.getInt("codOrgSub"));
-		    orgaoSub.setNomeOrgaoSub(rs.getString("nomeorgaosub"));
-		    unidadeGestora.setOrgaoSub(orgaoSub);
-		    
-		    OrgaoSup orgaoSup = new OrgaoSup();
-		    orgaoSup.setCodOrgSup(rs.getInt("codorgsup"));
-		    orgaoSup.setNomeOrgSup(rs.getString("nomeorgsup"));
-		    orgaoSub.setOrgSup(orgaoSup);
+		    if(rs.next()){
+			    
+			    diaria.setCodDiaria(rs.getInt("codDiaria"));
+			    diaria.setDocPagamento(rs.getString("docPagamento"));
+			    diaria.setValorPagamento(rs.getFloat("valorPagamento"));
+			    diaria.setGestaoPag(rs.getInt("gestaoPagamento"));
+			    diaria.setDataPagamento(rs.getDate("dataPagamento"));
+			    
+			    Acao acao = new Acao();
+			    
+			    acao.setCodAcao(rs.getString("codAcao"));
+			    acao.setLinguagemCidada(rs.getString("linguagemCidada"));
+			    acao.setNome(rs.getString("nomeAcao"));
+			    diaria.setAcao(acao);
+			    
+			    Favorecido favorecido = new Favorecido();
+			    
+			    favorecido.setCodFavorecido(rs.getInt("codFavorecido"));
+			    favorecido.setCpf(rs.getString("cpf"));
+			    favorecido.setNomeFavorecido(rs.getString("nomeFav"));
+			    diaria.setFavorecido(favorecido);
+			    
+			    Programa programa = new Programa();
+			    
+			    programa.setCodProg(rs.getInt("codProg"));
+			    programa.setNomeProg(rs.getString("nomeProg"));
+			    diaria.setPrograma(programa);
+			    
+			    Funcao funcao = new Funcao();
+			    
+			    funcao.setCodFuncao(rs.getInt("codfun"));
+			    funcao.setNomeFuncao(rs.getString("nomefun"));
+			    diaria.setFuncao(funcao);
+			    
+			    SubFuncao subFuncao = new SubFuncao();
+			    
+			    subFuncao.setCodSubFun(rs.getInt("codsubfun"));
+			    subFuncao.setNomeSubFun(rs.getString("nomesubfun"));
+			    diaria.setSubFuncao(subFuncao);
+			    
+			    UnidadeGestora unidadeGestora = new UnidadeGestora();
+			    
+			    unidadeGestora.setCodUniGes(rs.getInt("coduniges"));
+			    unidadeGestora.setNomeUnidadeGestora(rs.getString("nomeuniges"));
+			    diaria.setGestor(unidadeGestora);
+			    
+			    OrgaoSub orgaoSub = new OrgaoSub();
+			    
+			    orgaoSub.setCodOrgaoSub(rs.getInt("codOrgSub"));
+			    orgaoSub.setNomeOrgaoSub(rs.getString("nomeorgaosub"));
+			    unidadeGestora.setOrgaoSub(orgaoSub);
+			    
+			    OrgaoSup orgaoSup = new OrgaoSup();
+			    
+			    orgaoSup.setCodOrgSup(rs.getInt("codorgsup"));
+			    orgaoSup.setNomeOrgSup(rs.getString("nomeorgsup"));
+			    orgaoSub.setOrgSup(orgaoSup);
+		    }
+		    else
+		    	diaria = null;
 		    
 		    rs.close();
 		    stmt.close();
@@ -479,8 +495,8 @@ public class DaoDiaria {
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 		
 		
@@ -498,28 +514,28 @@ public class DaoDiaria {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String query = "UPDATE Diaria set "
-	    					+ "codAcao = " + diaria.getAcao().getCodAcao() + ", "
-	    					+ "codFav = " + diaria.getFavorecido().getCodFavorecido() + ", "
-	    					+ "codProg = " + diaria.getPrograma().getCodProg() + ", "
-	    					+ "codFun = " + diaria.getFuncao().getCodFuncao() + ", "
-	    					+ "codSubFun = " + diaria.getSubFuncao().getCodSubFun() + ", "
-	    					+ "codUniGes = " + diaria.getGestor().getCodUniGes() + ", "
-	    					+ "docPagamento = " + diaria.getDocPagamento() + ", "
-	    					+ "valorPagamento = " + diaria.getValorPagamento() + ", "
-	    					+ "gestaoPagamento = " + diaria.getGestaoPag() + ", "
-	    					+ "dataPagamento = " + diaria.getDataPagamento()
-	    					+ " where ID =" + diaria.getCodDiaria() +  ";";
+	    	String sql = "UPDATE Diaria set "
+	    					+ "codAcao = '" + diaria.getAcao().getCodAcao() + "', "
+	    					+ "codFav = '" + diaria.getFavorecido().getCodFavorecido() + "', "
+	    					+ "codProg = '" + diaria.getPrograma().getCodProg() + "', "
+	    					+ "codFun = '" + diaria.getFuncao().getCodFuncao() + "', "
+	    					+ "codSubFun = '" + diaria.getSubFuncao().getCodSubFun() + "', "
+	    					+ "codUniGes = '" + diaria.getGestor().getCodUniGes() + "', "
+	    					+ "docPagamento = '" + diaria.getDocPagamento() + "', "
+	    					+ "valorPagamento = '" + diaria.getValorPagamento() + "', "
+	    					+ "gestaoPagamento = '" + diaria.getGestaoPag() + "', "
+	    					+ "dataPagamento = '" + diaria.getDataPagamento()
+	    					+ "' where ID ='" + diaria.getCodDiaria() +  "';";
 	    	
 		    stmt = c.createStatement();
-		    
+		    stmt.execute(sql);
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 	    
 	}

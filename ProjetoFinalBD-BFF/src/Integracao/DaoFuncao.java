@@ -31,8 +31,8 @@ public class DaoFuncao {
 	    	
 	    	stmt = c.createStatement();
 	         String favSql = "INSERT INTO FUNCAO (CODFUN, NOMEFUN) "
-	               + "VALUES (" + funcao.getCodFuncao() + ", " + funcao.getNomeFuncao() + ");";
-	         stmt.executeUpdate(favSql);
+	               + "VALUES ('" + funcao.getCodFuncao() + "', '" + funcao.getNomeFuncao() + "');";
+	         stmt.execute(favSql);
 		    
 		    stmt.close();
 		    c.close();
@@ -40,7 +40,7 @@ public class DaoFuncao {
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
 	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  
 	      }
 	}
 	
@@ -54,11 +54,11 @@ public class DaoFuncao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
 	    	"postgres", senha);
 	    	
-	    	String sql = "UPDATE Funcao SET codfun = " + funcao.getCodFuncao() + ", "
-	    				+ "nomefun = " + funcao.getNomeFuncao()
-	    				+ " WHERE codFun = " + funcao.getCodFuncao() + ";";
+	    	String sql = "UPDATE Funcao SET codfun = '" + funcao.getCodFuncao() + "', "
+	    				+ "nomefun = '" + funcao.getNomeFuncao()
+	    				+ "' WHERE codFun = " + funcao.getCodFuncao() + ";";
 		    stmt = c.createStatement();
-		    stmt.executeQuery(sql);
+		    stmt.execute(sql);
 		    
 		    stmt.close();
 		    c.close();
@@ -66,7 +66,7 @@ public class DaoFuncao {
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
 	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  
 	      }
 	}
 	
@@ -81,21 +81,24 @@ public class DaoFuncao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "SELECT * FROM FUNCAO WHERE CodFun = " + codFun + ";";
+	    	String sql = "SELECT * FROM FUNCAO WHERE CodFun = '" + codFun + "';";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
-		    funcao.setCodFuncao(rs.getInt("codfun"));
-		    funcao.setNomeFuncao(rs.getString("nomefun"));
-		    
+		    if(rs.next()){
+			    funcao.setCodFuncao(rs.getInt("codfun"));
+			    funcao.setNomeFuncao(rs.getString("nomefun"));
+		    }
+		    else
+		    	funcao = null;
 		    rs.close();
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 
 		return funcao;
@@ -111,9 +114,9 @@ public class DaoFuncao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "DELETE FROM FUNCAO WHERE codFun = " + funcao.getCodFuncao() + ";";
+	    	String sql = "DELETE FROM FUNCAO WHERE codFun = '" + funcao.getCodFuncao() + "';";
 		    stmt = c.createStatement();
-		    stmt.executeQuery(sql);
+		    stmt.execute(sql);
 		    
 		    stmt.close();
 		    c.close();
@@ -121,7 +124,7 @@ public class DaoFuncao {
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
 	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  
 	      }
 
 	}

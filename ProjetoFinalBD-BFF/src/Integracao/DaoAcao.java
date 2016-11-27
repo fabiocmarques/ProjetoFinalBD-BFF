@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.swing.JDialog;
+
 import Negocio.Acao;
 
 public class DaoAcao {
@@ -37,8 +39,7 @@ public class DaoAcao {
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  
 	      }
 	}
 	
@@ -52,20 +53,20 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
 	    	"postgres", senha);
 	    	
-	    	String sql = "UPDATE ACAO SET codacao = " + acao.getCodAcao() + ", "
-	    				+ "nomeacao = " + acao.getNome() + ", "
-	    				+ "ligaugemcidada = " + acao.getLinguagemCidada()
-	    				+ " WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "UPDATE ACAO SET codacao = '" + acao.getCodAcao() + "', "
+	    				+ "nomeacao = '" + acao.getNome() + "', "
+	    				+ "ligaugemcidada = '" + acao.getLinguagemCidada()
+	    				+ "' WHERE CodAcao = '" + acao.getCodAcao() + "';";
 		    stmt = c.createStatement();
-		    stmt.executeQuery(sql);
+		    stmt.execute(sql);
 		    
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 	}
 	
@@ -80,7 +81,7 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "SELECT * FROM ACAO WHERE CodAcao = " + codAcao + ";";
+	    	String sql = "SELECT * FROM ACAO WHERE CodAcao = '" + codAcao + "';";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    if(rs.next()){
@@ -98,8 +99,8 @@ public class DaoAcao {
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 
 		return acao;
@@ -115,17 +116,17 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "DELETE FROM ACAO WHERE CodAcao = " + acao.getCodAcao() + ";";
-		    stmt = c.createStatement();
-		    stmt.executeQuery(sql);
+	    	String sql = "DELETE FROM ACAO WHERE codacao = '" + acao.getCodAcao() + "';";
+	    	stmt = c.createStatement();
+		    stmt.execute(sql);
 		    
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 
 	}

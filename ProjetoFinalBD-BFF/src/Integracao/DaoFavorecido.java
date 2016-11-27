@@ -33,7 +33,7 @@ public class DaoFavorecido {
 	    	
 	    	stmt = c.createStatement();
 	         String favSql = "INSERT INTO FAVORECIDO (CPF, NOMEFAV) "
-	               + "VALUES (" + favorecido.getCpf() + ", " + favorecido.getNomeFavorecido() + ");";
+	               + "VALUES ('" + favorecido.getCpf() + "', '" + favorecido.getNomeFavorecido() + "');";
 	         stmt.executeUpdate(favSql);
 		    
 		    stmt.close();
@@ -41,8 +41,8 @@ public class DaoFavorecido {
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 	}
 	
@@ -58,18 +58,18 @@ public class DaoFavorecido {
 	    	"postgres", senha);
 	    	
 	    	String sql = "UPDATE Favorecido SET "
-	    				+ "cpf = " + favorecido.getCpf() + ", "
-	    				+ "nomefav = " + favorecido.getNomeFavorecido()
-	    				+ " WHERE CodFavorecido = " + favorecido.getCodFavorecido() + ";";
+	    				+ "cpf = '" + favorecido.getCpf() + "', "
+	    				+ "nomefav = '" + favorecido.getNomeFavorecido()
+	    				+ "' WHERE CodFavorecido = '" + favorecido.getCodFavorecido() + "';";
 		    stmt = c.createStatement();
-		    stmt.executeQuery(sql);
+		    stmt.execute(sql);
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 	}
 	
@@ -84,13 +84,17 @@ public class DaoFavorecido {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "SELECT * FROM FAVORECIDO WHERE CodFavorecido = " + codFavorecido + ";";
+	    	String sql = "SELECT * FROM FAVORECIDO WHERE CodFavorecido = '" + codFavorecido + "';";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
-		    favorecido.setCodFavorecido(rs.getInt("codfavorecido"));
-		    favorecido.setCpf(rs.getString("cpf"));
-		    favorecido.setNomeFavorecido(rs.getString("nomefav"));
+		    if(rs.next()){
+			    favorecido.setCodFavorecido(rs.getInt("codfavorecido"));
+			    favorecido.setCpf(rs.getString("cpf"));
+			    favorecido.setNomeFavorecido(rs.getString("nomefav"));
+		    }
+		    else
+		    	favorecido = null;
 		    
 		    rs.close();
 		    stmt.close();
@@ -98,8 +102,8 @@ public class DaoFavorecido {
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 
 		return favorecido;
@@ -115,17 +119,17 @@ public class DaoFavorecido {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "DELETE FROM FAVORECIDO WHERE CodFavorecido = " + favorecido.getCodFavorecido() + ";";
+	    	String sql = "DELETE FROM FAVORECIDO WHERE CodFavorecido = '" + favorecido.getCodFavorecido() + "';";
 		    stmt = c.createStatement();
-		    stmt.executeQuery(sql);
+		    stmt.execute(sql);
 		    
 		    stmt.close();
 		    c.close();
 	    	
 	      } catch (Exception e) {
 	    	  e.printStackTrace();
-	    	  System.err.println(e.getClass().getName()+": "+e.getMessage());
-	    	  System.exit(0);
+	    	  System.out.println(e.getClass().getName()+": "+e.getMessage());
+	    	  
 	      }
 
 	}
