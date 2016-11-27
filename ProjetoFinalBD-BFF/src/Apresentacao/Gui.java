@@ -827,7 +827,7 @@ public class Gui {
 				mostraProgs(painelInf, lista);
 			}
 		});
-		
+		painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
 		painel.add(t);
 		painel.add(combo);
 		painel.add(confirma);
@@ -885,6 +885,7 @@ public class Gui {
 				mostraFav(painelInf, lista);
 			}
 		});
+		painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
 		
 		painel.add(t);
 		painel.add(in);
@@ -919,6 +920,8 @@ public class Gui {
 				mostraFav(painelInf, lista);
 			}
 		});
+		
+		painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
 		
 		painel.add(t);
 		painel.add(in);
@@ -961,19 +964,22 @@ public class Gui {
 	protected void DiariasConcedidas(JPanel painelInf) {
 		JPanel painel = new JPanel();
 		JLabel favorecidos = new JLabel("Digite o nome do favorecido: ");
-		JTextField t = new JTextField();
+		JTextField in = new JTextField();
 		JButton confirma= new JButton("Confirmar");
 		
 		confirma.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<Diaria> lista = new DaoDiaria("Diarias", "senha123").DiariasConcedidas(t.getText());
+				ArrayList<Diaria> lista = new DaoDiaria("Diarias", "senha123").DiariasConcedidas(in.getText());
 				painel.setVisible(false);
 				mostraDiariasConcedidas(painelInf, lista);
 			}
 		});
+		painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
 		
+		painel.add(favorecidos);
+		painel.add(in);
 		painel.add(confirma);
 		
 		painelInf.add(painel);
