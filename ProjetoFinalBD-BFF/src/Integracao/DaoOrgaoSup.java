@@ -68,7 +68,7 @@ public class DaoOrgaoSup {
 	      }
 	}
 	
-	public OrgaoSup recuperaFavorecido(int codOrgSup){
+	public OrgaoSup recuperaOrgSup(int codOrgSup){
 		OrgaoSup orgSup = new OrgaoSup();
 		Connection c = null;
 		Statement stmt = null;

@@ -1,9 +1,12 @@
 package Integracao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
+import javax.swing.JTextField;
 
 import Negocio.Acao;
 import Negocio.Favorecido;
@@ -29,8 +32,8 @@ public class DaoFavorecido {
 	    	"postgres", senha);
 	    	
 	    	stmt = c.createStatement();
-	         String favSql = "INSERT INTO FAVORECIDO (CODFAVORECIDO, CPF, NOMEFAV) "
-	               + "VALUES (" + favorecido.getCodFavorecido() + ", " + favorecido.getCpf() + ", " + favorecido.getNomeFavorecido() + ");";
+	         String favSql = "INSERT INTO FAVORECIDO (CPF, NOMEFAV) "
+	               + "VALUES (" + favorecido.getCpf() + ", " + favorecido.getNomeFavorecido() + ");";
 	         stmt.executeUpdate(favSql);
 		    
 		    stmt.close();
@@ -47,19 +50,19 @@ public class DaoFavorecido {
 		Connection c = null;
 		Statement stmt = null;
 		
+		
 	    try {
 	    	Class.forName("org.postgresql.Driver");
 	    	c = DriverManager 
 	    	.getConnection("jdbc:postgresql://localhost:5432/Diarias",
 	    	"postgres", senha);
 	    	
-	    	String sql = "UPDATE Favorecido SET codfavorecido = " + favorecido.getCodFavorecido() + ", "
+	    	String sql = "UPDATE Favorecido SET "
 	    				+ "cpf = " + favorecido.getCpf() + ", "
 	    				+ "nomefav = " + favorecido.getNomeFavorecido()
 	    				+ " WHERE CodFavorecido = " + favorecido.getCodFavorecido() + ";";
 		    stmt = c.createStatement();
 		    stmt.executeQuery(sql);
-		    
 		    stmt.close();
 		    c.close();
 	    	

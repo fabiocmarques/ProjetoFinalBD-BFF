@@ -28,11 +28,9 @@ public class DaoAcao {
 	    	"postgres", senha);
 	    	
 	    	stmt = c.createStatement();
-	        String acaoSql = "INSERT INTO ACAO (CODACAO,NOMEMACAO,LINGUAGEMCIDADA) "
-	               + "VALUES (" + acao.getCodAcao() + ", " + acao.getNome() + ", " + acao.getLinguagemCidada() + ");";
-	        stmt.executeUpdate(acaoSql);
-	        
-	     
+	        String acaoSql = "INSERT INTO ACAO (CODACAO,NOMEACAO,LINGUAGEMCIDADA) "
+	               + "VALUES ('" + acao.getCodAcao() + "', '" + acao.getNome() + "', '" + acao.getLinguagemCidada() + "');";
+	        stmt.executeUpdate(acaoSql);    
 		    
 		    stmt.close();
 		    c.close();
@@ -82,14 +80,19 @@ public class DaoAcao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "SELECT * FROM ACAO WHERE CodAcao = " + acao.getCodAcao() + ";";
+	    	String sql = "SELECT * FROM ACAO WHERE CodAcao = " + codAcao + ";";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
+		    if(rs.next()){
+		    	acao.setCodAcao(rs.getString("codacao"));
+			    acao.setLinguagemCidada(rs.getString("linguagemcidada"));
+			    acao.setNome(rs.getString("nomeacao"));
+		    }
+		    else{
+		    	acao = null;
+		    }
 		    
-		    acao.setCodAcao(rs.getString("codacao"));
-		    acao.setLinguagemCidada(rs.getString("liguagemcidada"));
-		    acao.setNome(rs.getString("nomeacao"));
-		    
+		    rs.close();
 		    stmt.close();
 		    c.close();
 	    	

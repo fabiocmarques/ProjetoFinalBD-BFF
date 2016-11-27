@@ -3,14 +3,23 @@ package Apresentacao;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 
 import javax.swing.*;
 
+import Integracao.DaoAcao;
+import Integracao.DaoDiaria;
+import Integracao.DaoFavorecido;
+import Integracao.DaoFuncao;
 import Integracao.DaoOrgaoSub;
 import Integracao.DaoOrgaoSup;
 import Integracao.DaoPrograma;
 import Integracao.DaoSubfuncao;
 import Integracao.DaoUnidadeGestora;
+import Negocio.Acao;
+import Negocio.Diaria;
+import Negocio.Favorecido;
+import Negocio.Funcao;
 import Negocio.OrgaoSub;
 import Negocio.OrgaoSup;
 import Negocio.Programa;
@@ -76,8 +85,7 @@ public class Gui {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				painelInf.removeAll();
-				Atualizar(painelInf);
-				
+				Atualizar(painelInf);				
 			}
 		});
 		
@@ -85,8 +93,8 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//Buscar(janela);
-				janela.getContentPane().remove(painelInf);
+				painelInf.removeAll();
+				Buscar(painelInf);
 			}
 		});
 		
@@ -289,9 +297,52 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * Realizar a remoção com a chave em "chave.getText()".
-				 * */
+				switch(tabela){
+					case "acao":
+						Acao acao = new Acao();
+						acao.setCodAcao(chave.getText());
+						new DaoAcao("Diarias", "senha123").deletaAcao(acao);
+						break;
+					case "diaria":
+						Diaria diaria = new Diaria();
+						diaria.setCodDiaria(Integer.parseInt(chave.getText()));
+						new DaoDiaria("Diaria", "senha123").deleteDiaria(diaria);
+						break;
+					case "favorecido":
+						Favorecido fav = new Favorecido();
+						fav.setCodFavorecido(Integer.parseInt(chave.getText()));
+						new DaoFavorecido("Diarias", "senha123").deletaFavorecido(fav);;
+						break;
+					case "orgaosubordinado":
+						OrgaoSub oSub = new OrgaoSub();
+						oSub.setCodOrgaoSub(Integer.parseInt(chave.getText()));
+						new DaoOrgaoSub("Diarias", "senha123").deletaOrgaoSub(oSub);;
+						break;
+					case "funcao":
+						Funcao fun = new Funcao();
+						fun.setCodFuncao(Integer.parseInt(chave.getText()));
+						new DaoFuncao("Diarias", "senha123").deletaFuncao(fun);;
+						break;
+					case "subfuncao":
+						SubFuncao subFun = new SubFuncao();
+						subFun.setCodSubFun(Integer.parseInt(chave.getText()));
+						new DaoSubfuncao("Diarias", "senha123").deletaSubfuncao(subFun);
+						break;
+					case "orgaosuperior":
+						OrgaoSup oSup = new OrgaoSup();
+						oSup.setCodOrgSup(Integer.parseInt(chave.getText()));
+						new DaoOrgaoSup("Diarias", "senha123").deletaOrgaoSup(oSup);;
+						break;
+					case "programa":
+						Programa prog = new Programa();
+						prog.setCodProg(Integer.parseInt(chave.getText()));
+						new DaoPrograma("Diarias", "senha123").deletaPrograma(prog);;
+						break;
+					default : 
+						UnidadeGestora uniGes = new UnidadeGestora();
+						uniGes.setCodUniGes(Integer.parseInt(chave.getText()));
+						new DaoUnidadeGestora("Diarias", "senha123").deletaUnidadeGestora(uniGes);;
+				}
 			}
 		});
 		
@@ -387,40 +438,151 @@ public class Gui {
 
 	protected void attTab(JPanel painelInf, String nome, String tabela) {
 		JPanel p = new JPanel();
-		JLabel t[] = new JLabel[11];
-		JTextField in[] = new JTextField[11];
+		JLabel t[] = new JLabel[13];
+		JTextField in[] = new JTextField[13];
 		JButton confirma = new JButton("Confirmar");
-		int camposLeitura, i;
+		int i;
 		
-		for(i = 0; i < 11; ++i)
+		for(i = 0; i < 13; ++i)
 			t[i] = new JLabel();		
 		
-		for(i = 0; i < 11; ++i)
+		for(i = 0; i < 13; ++i)
 			in[i] = new JTextField();
 		
 		
 		confirma.addActionListener(new ActionListener() {
 			
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-								
+				Funcao fun;
+				Favorecido fav;
+				Acao a;
+				SubFuncao sf;
+				Programa prog;
+				UnidadeGestora ug;
+				OrgaoSub oSub;
+				OrgaoSup oSup;
+				
+				switch(tabela){
+				case "acao":
+					Acao acao = new Acao();
+					acao.setCodAcao(in[0].getText());
+					acao.setLinguagemCidada(in[2].getText());
+					acao.setNome(in[1].getText());
+					new DaoAcao("Diarias", "senha123").updateAcao(acao);
+					break;
+					
+				case "diaria":
+					a = new Acao();
+					a.setCodAcao(in[5].getText());
+					fav = new Favorecido();
+					fav.setCodFavorecido(Integer.parseInt(in[7].getText()));
+					ug = new UnidadeGestora();
+					ug.setCodUniGes(Integer.parseInt(in[2].getText()));
+					fun = new Funcao();
+					fun.setCodFuncao(Integer.parseInt(in[4].getText()));
+					sf = new SubFuncao();
+					sf.setCodSubFun(Integer.parseInt(in[3].getText()));
+					prog = new Programa();
+					prog.setCodProg(Integer.parseInt(in[6].getText()));
+					
+					Diaria diaria = new Diaria();
+					diaria.setAcao(a);
+					diaria.setCodDiaria(Integer.parseInt(in[0].getText()));
+					diaria.setDocPagamento(in[1].getText());
+					diaria.setFavorecido(fav);
+					diaria.setFuncao(fun);
+					diaria.setGestaoPag(Integer.parseInt(in[9].getText()));
+					diaria.setGestor(ug);
+					diaria.setPrograma(prog);
+					diaria.setSubFuncao(sf);
+					diaria.setValorPagamento(Float.parseFloat(in[8].getText()));
+					diaria.setDataPagamento(new Date(Integer.parseInt(in[12].getText()), Integer.parseInt(in[11].getText()), Integer.parseInt(in[10].getText())));
+
+					new DaoDiaria("Diarias", "senha123").updateDiaria(diaria);
+					break;
+				case "funcao":
+					fun = new Funcao();
+					fun.setCodFuncao(Integer.parseInt(in[0].getText()));
+					fun.setNomeFuncao(in[1].getText());
+					
+					new DaoFuncao("Diarias", "senha123").updateFuncao(fun);
+					break;
+				
+				case "programa":
+					prog = new Programa();
+					prog.setCodProg(Integer.parseInt(in[0].getText()));
+					prog.setNomeProg(in[1].getText());
+					new DaoPrograma("Diarias", "senha123").updatePrograma(prog);
+					break;
+				
+				case "favorecido":
+					fav = new Favorecido();
+					fav.setCodFavorecido(Integer.parseInt(in[0].getText()));
+					fav.setCpf(in[1].getText());
+					fav.setNomeFavorecido(in[2].getText());
+					
+					new DaoFavorecido("Diarias", "senha123").updateFavorecido(fav);
+					break;
+					
+				case "subfuncao":			
+					sf = new SubFuncao();
+					sf.setCodSubFun(Integer.parseInt(in[0].getText()));
+					sf.setNomeSubFun(in[1].getText());
+					
+					new DaoSubfuncao("Diarias", "senha123").updateSubfuncao(sf);
+					
+					break;
+					
+				case "unidadegestora":
+					oSub = new OrgaoSub();
+					oSub.setCodOrgaoSub(Integer.parseInt(in[1].getText()));
+					ug = new UnidadeGestora();
+					ug.setCodUniGes(Integer.parseInt(in[0].getText()));
+					ug.setNomeUnidadeGestora(in[2].getText());
+					ug.setOrgaoSub(oSub);
+					
+					new DaoUnidadeGestora("Diarias", "senha123").updateUnidadeGestora(ug);
+					break;
+					
+				case "orgaosubordinado":
+					oSup = new OrgaoSup();
+					oSup.setCodOrgSup(Integer.parseInt(in[1].getText()));
+					
+					oSub = new OrgaoSub();
+					oSub.setOrgSup(oSup);
+					oSub.setCodOrgaoSub(Integer.parseInt(in[0].getText()));
+					oSub.setNomeOrgaoSub(in[2].getText());
+					
+					new DaoOrgaoSub("Diarias", "senha123").updateOrgaoSub(oSub);
+					break;
+					
+				case "orgaosuperior":
+					oSup = new OrgaoSup();
+					oSup.setCodOrgSup(Integer.parseInt(in[0].getText()));
+					oSup.setNomeOrgSup(in[1].getText());
+					new DaoOrgaoSup("Diarias", "senha123").updateOrgaoSup(oSup);
+					break;
+				
+				default:
+					break;
+				}
 			}
 		});
 		
-		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));		
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 		
 		
 		switch(tabela){
 			case "acao":
 				t[0].setText("Código da Ação (PK): ");
 				t[1].setText("Nome da Ação: ");
-				t[2].setText("Linguagem citada: ");
+				t[2].setText("Linguagem cidada: ");
 				for(i = 0; i < 3; ++i){
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
-				break;
 				
 			case "diaria":
 				t[0] = new JLabel("Código da Diária (PK): ");
@@ -433,14 +595,15 @@ public class Gui {
 				t[7] = new JLabel("Código do Favorecido (FK): ");
 				t[8] = new JLabel("Valor do pagamento: ");
 				t[9] = new JLabel("Gestão do pagamento: ");
-				t[10] = new JLabel("Data do pagamento: ");
-				for(i = 0; i < 11; ++i){
+				t[10] = new JLabel("Dia do pagamento: ");
+				t[11] = new JLabel("Mês do pagamento: ");
+				t[12] = new JLabel("Ano do pagamento: ");
+				for(i = 0; i < 13; ++i){
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
-				break;
 				
+				break;
 			case "funcao":
 				t[0].setText("Código da Função (PK): ");
 				t[1].setText("Nome da Função: ");
@@ -448,7 +611,6 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
 				break;
 			
 			case "programa":
@@ -458,7 +620,7 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
+				
 				break;
 			
 			case "favorecido":
@@ -469,7 +631,7 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
+				
 				break;
 				
 			case "subfuncao":
@@ -479,7 +641,7 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
+				
 				break;
 				
 			case "unidadegestora":
@@ -490,7 +652,7 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
+				
 				break;
 				
 			case "orgaosubordinado":
@@ -501,7 +663,7 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
+				
 				break;
 				
 			case "orgaosuperior":
@@ -511,7 +673,6 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
-				camposLeitura = i;
 				break;
 			
 			default:
@@ -522,14 +683,415 @@ public class Gui {
 		
 		painelInf.add(p);
 	}
-
-
-	protected void Buscar(JFrame janela){
 	
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	protected void Buscar(JPanel painelInf){
+		JPanel painel = new JPanel();
+		JButton buscaReg = new JButton("Procurar registro em tabela.");
+		
+		buscaReg.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				painel.setVisible(false);
+				BuscaReg(painelInf);
+			}
+		});
+		
+		
+	
+		painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+		
+		painel.add(buscaReg);
+		
+		painelInf.add(painel);
+		painelInf.repaint();
+		painelInf.revalidate();	
+	}
+
+	
+	protected void BuscaReg(JPanel painelInf){
+		JPanel p = new JPanel();
+		JLabel t = new JLabel("Selecione a tabela para realizar a busca: ");
+		JComboBox<String> comboTabelas = new JComboBox<String>(tabelas);
+		JButton buscaReg = new JButton("Confirmar");
+		
+		buscaReg.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				switch(comboTabelas.getSelectedIndex()){
+					case 0://Ação
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Ação", "acao");
+						break;
+						
+					case 1://Diária
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Diária", "diaria");
+						break;
+						
+					case 2://Favorecido
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Favorecido", "favorecido");
+						break;
+						
+					case 3://Função
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Função", "funcao");
+						break;
+						
+					case 4://Órgão Subordinado
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Órgão Subordinado", "orgaosubordinado");
+						break;
+						
+					case 5://Órgão Superior
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Órgão Superior", "orgaosuperior");
+						break;
+						
+					case 6://Programa
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Programa", "programa");
+						break;
+						
+					case 7://Subfunção
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Subfunção", "subfuncao");
+						break;
+						
+					default://Unidade gestora
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Unidade gestora", "unidadegestora");
+						break;					
+				}
+			}
+		});
+		
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+		
+		p.add(t);
+		p.add(comboTabelas);
+		p.add(buscaReg);
+		
+		painelInf.add(p);		
 	}
 	
+	
+	
+	protected void buscaEntrada(JPanel painelInf, String nome, String tabela) {
+		JPanel p = new JPanel();
+		JLabel lb = new JLabel("Digite a chave da entrada da tabela de " + nome + ": ");
+		JTextField chave = new JTextField();
+		JButton confirma = new JButton("Confirmar");
+		
+		confirma.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				p.setVisible(false);
+				switch(tabela){
+					case "acao":
+						Acao acao = new Acao();
+						acao = new DaoAcao("Diarias", "senha123").recuperaAcao(chave.getText());
+						exibeAcao(painelInf, acao);
+						break;
+					case "diaria":
+						Diaria diaria = new Diaria();
+						diaria = new DaoDiaria("Diaria", "senha123").recuperaDiaria(Integer.parseInt(chave.getText()));
+						exibeDiaria(painelInf, diaria);
+						break;
+					case "favorecido":
+						Favorecido fav = new Favorecido();
+						fav = new DaoFavorecido("Diarias", "senha123").recuperaFavorecido(Integer.parseInt(chave.getText()));
+						exibeFavorecido(painelInf, fav);
+						break;
+					case "orgaosubordinado":
+						OrgaoSub oSub = new OrgaoSub();
+						oSub = new DaoOrgaoSub("Diarias", "senha123").recuperaOrgaoSub(Integer.parseInt(chave.getText()));
+						exibeOrgSub(painelInf, oSub);
+						break;
+					case "funcao":
+						Funcao fun = new Funcao();
+						fun = new DaoFuncao("Diarias", "senha123").recuperaFuncao(Integer.parseInt(chave.getText()));
+						exibeFuncao(painelInf, fun);
+						break;
+					case "subfuncao":
+						SubFuncao subFun = new SubFuncao();
+						subFun = new DaoSubfuncao("Diarias", "senha123").recuperaSubfuncao(chave.getText());
+						exibeSubFuncao(painelInf, subFun);
+						break;
+					case "orgaosuperior":
+						OrgaoSup oSup = new OrgaoSup();
+						oSup = new DaoOrgaoSup("Diarias", "senha123").recuperaOrgSup(Integer.parseInt(chave.getText()));
+						exibeOrgSup(painelInf, oSup);
+						break;
+					case "programa":
+						Programa prog = new Programa();
+						prog = new DaoPrograma("Diarias", "senha123").recuperaPrograma(Integer.parseInt(chave.getText()));
+						exibePrograma(painelInf, prog);
+						break;
+					default : 
+						UnidadeGestora uniGes = new UnidadeGestora();
+						uniGes = new DaoUnidadeGestora("Diarias", "senha123").recuperaUnidadeGestora(chave.getText());;
+						exibeUnidadeGestora(painelInf, uniGes);
+						break;
+				}
+			}
+		});
+		
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+		
+		p.add(lb);
+		p.add(chave);
+		p.add(confirma);
+		
+		painelInf.add(p);
+	}
+	
+	
+	protected void exibeAcao(JPanel painelInf, Acao acao) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"CodAcao", "NomeAcao", "LinguagemCidada"};
+		
+		if(acao == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {acao.getCodAcao(), acao.getNome(), acao.getLinguagemCidada()}};
+			
+			
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
+	
+	protected void exibeDiaria(JPanel painelInf, Diaria diaria) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"CodDiaria", "DocPagamento", "CodUniGes", "CodSubFun", "CodFun", "CodAcao", "CodProg", 
+				"CodFavorecido", "ValorPagamento", "GestaoPagamento", "DataPagamento"};
+		
+		if(diaria == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {""+diaria.getCodDiaria(), diaria.getDocPagamento(), ""+diaria.getGestor().getCodUniGes(), 
+				""+diaria.getSubFuncao().getCodSubFun(), ""+diaria.getFuncao().getCodFuncao(), ""+diaria.getAcao().getCodAcao(),
+				""+diaria.getPrograma().getCodProg(), ""+diaria.getFavorecido().getCodFavorecido(), ""+diaria.getValorPagamento(),
+				""+diaria.getGestaoPag(), ""+diaria.getDataPagamento().toString()}};
+			
+			
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
+	
+	protected void exibeFavorecido(JPanel painelInf, Favorecido fav) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"CodFavorecido", "CPF", "NomeFavorecido"};
+		
+		if(fav == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {fav.getCodFavorecido(), fav.getCpf(), fav.getNomeFavorecido()}};
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
+	
+	protected void exibePrograma(JPanel painelInf, Programa prog) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"CodProg", "nomeProg"};
+		
+		if(prog == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {prog.getCodProg(), prog.getNomeProg()}};
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
+	
+	protected void exibeFuncao(JPanel painelInf, Funcao fun) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"CodFuncao", "nomeFuncao"};
+		
+		if(fun == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {fun.getCodFuncao(), fun.getNomeFuncao()}};
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
+	
+	protected void exibeSubFuncao(JPanel painelInf, SubFuncao sFun) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"CodSubFuncao", "nomeSubFuncao"};
+		
+		if(sFun == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {sFun.getCodSubFun(), sFun.getNomeSubFun()}};
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
+	
+	protected void exibeOrgSup(JPanel painelInf, OrgaoSup oSup) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"CodOrgSup", "nomeOrgSup"};
+		
+		if(oSup == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {oSup.getCodOrgSup(), oSup.getNomeOrgSup()}};
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
+	
+	protected void exibeUnidadeGestora(JPanel painelInf, UnidadeGestora uniGes) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"codUnidadeGestora", "nomeUnidadeGestora", "codOrgaoSubordinado", "nomeOrgaoSubordinado", "codOrgaoSuperior", "nomeOrgaoSuperior"};
+		
+		if(uniGes == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {uniGes.getCodUniGes(), uniGes.getNomeUnidadeGestora(), uniGes.getOrgaoSub().getCodOrgaoSub(), uniGes.getOrgaoSub().getNomeOrgaoSub(), uniGes.getOrgaoSub().getOrgSup().getCodOrgSup(), uniGes.getOrgaoSub().getOrgSup().getNomeOrgSup()}};
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
+	
+	
+	protected void exibeOrgSub(JPanel painelInf, OrgaoSub oSub) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"CodOrgSub", "nomeOrgSub", "codOrgSup", "nomeOrgaoSup"};
+		
+		if(oSub == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {oSub.getCodOrgaoSub(), oSub.getNomeOrgaoSub(), oSub.getOrgSup().getCodOrgSup(), oSub.getOrgSup().getNomeOrgSup()}};
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
 	protected void insereUniGest(JPanel painelInserir) {
-		DaoUnidadeGestora dao = new DaoUnidadeGestora("Diarias", "1234");
+		DaoUnidadeGestora dao = new DaoUnidadeGestora("Diarias", "senha123");
 		JPanel p = new JPanel();
 		JLabel lbCodUniGes = new JLabel("Código da Unidade Gestora (PK): "), lbCodOrgSub = new JLabel("Código do Órgão Subordinado (FK): "), lbNomeUniGes = new JLabel("Nome da Unidade Gestora: ");
 		JTextField codUniGes = new JTextField(), codOrgSub = new JTextField(), nomeUniGest = new JTextField();
@@ -578,7 +1140,7 @@ public class Gui {
 
 
 	protected void insereSubfunc(JPanel painelInserir) {
-		DaoSubfuncao dao = new DaoSubfuncao("Diarias", "1234");
+		DaoSubfuncao dao = new DaoSubfuncao("Diarias", "senha123");
 		JPanel p = new JPanel();
 		JLabel lbCodSubFun = new JLabel("Código da Subfunção (PK): "), lbNomeSubFun = new JLabel("Nome da Subfunção: ");
 		JTextField codSubFun = new JTextField(), nomeSubFun = new JTextField();
@@ -622,7 +1184,7 @@ public class Gui {
 
 
 	protected void insereProg(JPanel painelInserir) {
-		DaoPrograma dao = new DaoPrograma("Diarias", "1234");
+		DaoPrograma dao = new DaoPrograma("Diarias", "senha123");
 		JPanel p = new JPanel();
 		JLabel lbCodProg = new JLabel("Código do Programa (PK): "), lbNomeProg = new JLabel("Nome do Programa: ");
 		JTextField codProg = new JTextField(), nomeProg = new JTextField();
@@ -665,7 +1227,7 @@ public class Gui {
 
 
 	protected void insereOrgSup(JPanel painelInserir) {
-		DaoOrgaoSup dao = new DaoOrgaoSup("Diarias", "1234");
+		DaoOrgaoSup dao = new DaoOrgaoSup("Diarias", "senha123");
 		JPanel p = new JPanel();
 		JLabel lbCodOrgSup = new JLabel("Código do Órgão Superior (PK): "), lbNomeOrgSup = new JLabel("Nome do Órgão Superior: ");
 		JTextField codOrgSup = new JTextField(), nomeOrgSup = new JTextField();
@@ -709,7 +1271,7 @@ public class Gui {
 
 
 	protected void insereOrgSub(JPanel painelInserir) {
-		DaoOrgaoSub dao = new DaoOrgaoSub("Diarias", "1234");
+		DaoOrgaoSub dao = new DaoOrgaoSub("Diarias", "senha123");
 		JPanel p = new JPanel();
 		JLabel lbCodOrgSub = new JLabel("Código do Órgão Subordinado (PK): "), lbCodOrgSup = new JLabel("Código do Órgão Superior (FK): "), lbNomeOrgSub = new JLabel("Nome do Órgão Subordinado: ");
 		JTextField codOrgSub = new JTextField(), codOrgSup = new JTextField(), nomeOrgSub = new JTextField();
@@ -758,6 +1320,7 @@ public class Gui {
 
 
 	protected void insereFuncao(JPanel painelInserir) {
+		DaoFuncao dao = new DaoFuncao("Diarias", "senha123");
 		JPanel p = new JPanel();
 		JLabel lbCodFunc = new JLabel("Código da Função (PK): "), lbNomeFunc = new JLabel("Nome da Função: ");
 		JTextField codFunc = new JTextField(), nomeFunc = new JTextField();
@@ -775,12 +1338,12 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * Insere no banco com os dados conseguidos.
-				 * 
-				 * Precisa confirmar se o codFunc é único.
-				 *
-				 * */				
+				Funcao func = new Funcao();
+				
+				func.setCodFuncao(Integer.parseInt(codFunc.getText()));
+				func.setNomeFuncao(nomeFunc.getText());
+				
+				dao.createFuncao(func);
 			}
 		});
 		
@@ -801,6 +1364,7 @@ public class Gui {
 
 
 	protected void insereFavorecido(JPanel painelInserir) {
+		DaoFavorecido dao = new DaoFavorecido("Diarias", "senha123");
 		JPanel p = new JPanel();
 		JLabel lbCPF = new JLabel("CPF do Favorecido: "), lbNomeFav = new JLabel("Nome do Favorecido: ");
 		JTextField CPF = new JTextField(), nomeFav = new JTextField();
@@ -818,10 +1382,12 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * Insere no banco com os dados conseguidos.
-				 * 
-				 * */				
+				Favorecido fav = new Favorecido();
+				
+				fav.setCpf(CPF.getText());
+				fav.setNomeFavorecido(nomeFav.getText());
+				
+				dao.createFavorecido(fav);
 			}
 		});
 		
@@ -841,13 +1407,14 @@ public class Gui {
 
 
 	protected void insereDiaria(JPanel painelInserir) {
+		DaoDiaria dao = new DaoDiaria("Diarias", "1234");
 		JPanel p = new JPanel();
-		JLabel t[] = new JLabel[10];
-		JTextField in[] = new JTextField[10];
+		JLabel t[] = new JLabel[12];
+		JTextField in[] = new JTextField[12];
 		JButton confirmar = new JButton("Confirmar");
 		int i;
 		
-		for(i = 0; i < 10; ++i){
+		for(i = 0; i < 12; ++i){
 			in[i] = new JTextField();
 		}
 		
@@ -860,16 +1427,44 @@ public class Gui {
 		t[6] = new JLabel("Código do Favorecido (FK): ");
 		t[7] = new JLabel("Valor do pagamento: ");
 		t[8] = new JLabel("Gestão do pagamento: ");
-		t[9] = new JLabel("Data do pagamento: ");
+		t[9] = new JLabel("Dia do pagamento: ");
+		t[10] = new JLabel("Mês do pagamento: ");
+		t[11] = new JLabel("Ano do pagamento: ");
 		
 		confirmar.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * 
-				 * 
-				 * */				
+				Diaria diaria = new Diaria();
+				Acao acao = new Acao();
+				@SuppressWarnings("deprecation")
+				Date data = new Date(Integer.parseInt(in[11].getText()), Integer.parseInt(in[10].getText()), Integer.parseInt(in[9].getText()));
+				Favorecido fav = new Favorecido();
+				Funcao func = new Funcao();
+				SubFuncao subf = new SubFuncao();
+				Programa prog = new Programa();
+				UnidadeGestora uGest = new UnidadeGestora();
+				
+				acao.setCodAcao(in[4].getText());
+				uGest.setCodUniGes(Integer.parseInt(in[1].getText()));
+				fav.setCodFavorecido(Integer.parseInt(in[6].getText()));
+				func.setCodFuncao(Integer.parseInt(in[3].getText()));
+				subf.setCodSubFun(Integer.parseInt(in[2].getText()));
+				prog.setCodProg(Integer.parseInt(in[5].getText()));
+				
+				
+				diaria.setAcao(acao);
+				diaria.setDataPagamento(data);
+				diaria.setDocPagamento(in[0].getText());				
+				diaria.setFavorecido(fav);				
+				diaria.setFuncao(func);				
+				diaria.setSubFuncao(subf);
+				diaria.setGestaoPag(Integer.parseInt(in[8].getText()));				
+				diaria.setGestor(uGest);				
+				diaria.setPrograma(prog);
+				diaria.setValorPagamento(Float.parseFloat(in[7].getText()));
+				
+				dao.createDiaria(diaria);
 			}
 		});
 		
@@ -886,8 +1481,9 @@ public class Gui {
 
 
 	protected void insereAcao(JPanel painelInserir) {
+		DaoAcao dao = new DaoAcao("Diarias", "senha123");
 		JPanel p = new JPanel();
-		JLabel lbCodAcao = new JLabel("Código da Ação (4 caracteres, PK): "), lbNomeAcao = new JLabel("Nome da Ação: "), lbLinguagem = new JLabel("Linguagem citada: ");
+		JLabel lbCodAcao = new JLabel("Código da Ação (4 caracteres, PK): "), lbNomeAcao = new JLabel("Nome da Ação: "), lbLinguagem = new JLabel("Linguagem cidada: ");
 		JTextField codAcao = new JTextField(), nomeAcao = new JTextField(), linguagem = new JTextField();
 		JButton confirmar = new JButton("Confirmar");
 		
@@ -903,12 +1499,13 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * Insere no banco com os dados conseguidos.
-				 * 
-				 * Precisa confirmar se o "codAcao" é único.
-				 *
-				 * */				
+				Acao acao = new Acao();
+				
+				acao.setCodAcao(codAcao.getText());
+				acao.setLinguagemCidada(linguagem.getText());
+				acao.setNome(nomeAcao.getText());
+				
+				dao.createAcao(acao);				
 			}
 		});
 		
