@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.time.chrono.JapaneseChronology;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -696,9 +698,14 @@ public class Gui {
 	
 	protected void Buscar(JPanel painelInf){
 		JPanel painel = new JPanel();
+		JPanel p = new JPanel();
+		JLabel favorecidos = new JLabel("Todos os favorecidos que pertencem a uma: ");
 		JButton buscaReg = new JButton("Procurar registro em tabela.");
 		JButton gastoFuncionario = new JButton("Gasto de um funcionario");
 		JButton numeroDeDiarias = new JButton("Numero de diarias concedidas a um Orgao/UnidadeGestora");
+		JButton diariasConcedidas = new JButton("Diárias concedidas a um funcionário");
+		JButton func = new JButton("Função"), subf = new JButton("Subfunção");
+		JButton listaProgs = new JButton("Lista programas ordenados pelo numero de diárias");
 		/*	Fernando -
 		 * 		gastoFUncionario
 		 * 		numDiariasPor Orgao
@@ -708,11 +715,53 @@ public class Gui {
 		 * 		Listar Progs
 		 * 
 		 * */
+		
+		listaProgs.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				painel.setVisible(false);
+				p.setVisible(false);
+				ListProg(painelInf);
+			}
+		});
+		
+		func.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				painel.setVisible(false);
+				p.setVisible(false);
+				FavFunc(painelInf);
+			}
+		});
+		
+		subf.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				painel.setVisible(false);
+				p.setVisible(false);
+				FavSubf(painelInf);
+			}
+		});
+		
+		diariasConcedidas.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				painel.setVisible(false);
+				p.setVisible(false);
+				DiariasConcedidas(painelInf);
+			}
+		});
+		
 		buscaReg.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				painel.setVisible(false);
+				p.setVisible(false);
 				BuscaReg(painelInf);
 			}
 		});
@@ -722,6 +771,7 @@ public class Gui {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				painel.setVisible(false);
+				p.setVisible(false);
 				gastoFuncionario(painelInf);
 			}
 		});
@@ -730,21 +780,245 @@ public class Gui {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				painel.setVisible(false);
+				p.setVisible(false);
 				numDeDiarias(painelInf);
 			}
 		});
 	
-		painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+		painel.setLayout(new GridLayout(0,1));
 		
 		painel.add(buscaReg);
+		painel.add(diariasConcedidas);
 		painel.add(gastoFuncionario);
 		painel.add(numeroDeDiarias);
+		painel.add(favorecidos);	
+		
+		p.setLayout(new GridLayout(1,2));
+		p.add(func);
+		p.add(subf);
+		
+		painel.add(p);
+		
+		
+		painel.add(listaProgs);
 		
 		painelInf.add(painel);
 		painelInf.repaint();
 		painelInf.revalidate();	
 	}
 	
+	protected void ListProg(JPanel painelInf) {
+		JPanel painel = new JPanel();
+		JLabel t = new JLabel("Tipo de ordenação: ");
+		JButton confirma= new JButton("Confirmar");
+		JComboBox<String> combo= new JComboBox<String>(new String[]{"Ascendente", "Descendente"}); 
+		
+		
+		confirma.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Programa> lista; 
+				if(combo.getSelectedIndex() == 0)
+					lista = new DaoDiaria("Diarias", "senha123").listarProgramasPorDiarias(true);
+				else
+					lista = new DaoDiaria("Diarias", "senha123").listarProgramasPorDiarias(false);
+				painel.setVisible(false);
+				mostraProgs(painelInf, lista);
+			}
+		});
+		painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+		painel.add(t);
+		painel.add(combo);
+		painel.add(confirma);
+		
+		painelInf.add(painel);
+		painelInf.repaint();
+		painelInf.revalidate();
+	}
+
+
+	protected void mostraProgs(JPanel painelInf, ArrayList<Programa> lista) {
+		String colunas[] = {"CodProg", "NomeProg"};
+		Object[][] dados = new Object[lista.size()][2];
+		
+		
+		if(lista != null){
+			for(int i = 0; i < lista.size(); ++i){
+				dados[i][0] = ""+lista.get(i).getCodProg();
+				dados[i][1] = lista.get(i).getNomeProg();
+			}
+			
+			JTable tab = new JTable(dados, colunas);
+			JScrollPane sp = new JScrollPane(tab);
+			
+			JPanel painel = new JPanel();
+			
+			painel.setLayout(new GridLayout(1, 1));
+			painel.add(sp);
+			
+			painelInf.add(painel);
+			painelInf.repaint();
+			painelInf.revalidate();
+		}
+	}
+
+
+	protected void FavSubf(JPanel painelInf) {
+		JPanel painel = new JPanel();
+		JLabel t = new JLabel("Digite o nome da Subfunção: "), t2 = new JLabel("Tipo de ordenação: ");
+		JTextField in = new JTextField();
+		JButton confirma= new JButton("Confirmar");
+		JComboBox<String> combo= new JComboBox<String>(new String[]{"Ascendente", "Descendente"}); 
+		
+		
+		confirma.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Favorecido> lista; 
+				if(combo.getSelectedIndex() == 0)
+					lista = new DaoDiaria("Diarias", "senha123").listarFavorecidosPorSubFuncao(in.getText(), true);
+				else
+					lista = new DaoDiaria("Diarias", "senha123").listarFavorecidosPorSubFuncao(in.getText(), false);
+				painel.setVisible(false);
+				mostraFav(painelInf, lista);
+			}
+		});
+		painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+		
+		painel.add(t);
+		painel.add(in);
+		painel.add(t2);
+		painel.add(combo);
+		painel.add(confirma);
+		
+		painelInf.add(painel);
+		painelInf.repaint();
+		painelInf.revalidate();
+	}
+
+
+	protected void FavFunc(JPanel painelInf) {
+		JPanel painel = new JPanel();
+		JLabel t = new JLabel("Digite o nome da Função: "), t2 = new JLabel("Tipo de ordenação: ");
+		JTextField in = new JTextField();
+		JButton confirma= new JButton("Confirmar");
+		JComboBox<String> combo= new JComboBox<String>(new String[]{"Ascendente", "Descendente"}); 
+		
+		
+		confirma.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Favorecido> lista; 
+				if(combo.getSelectedIndex() == 0)
+					lista = new DaoDiaria("Diarias", "senha123").listarFavorecidosPorFuncao(in.getText(), true);
+				else
+					lista = new DaoDiaria("Diarias", "senha123").listarFavorecidosPorFuncao(in.getText(), false);
+				painel.setVisible(false);
+				mostraFav(painelInf, lista);
+			}
+		});
+		
+		painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+		
+		painel.add(t);
+		painel.add(in);
+		painel.add(t2);
+		painel.add(combo);
+		painel.add(confirma);
+		
+		painelInf.add(painel);
+		painelInf.repaint();
+		painelInf.revalidate();
+	}
+
+
+	protected void mostraFav(JPanel painelInf, ArrayList<Favorecido> lista) {
+		String colunas[] = {"NomeFav", "Cpf"};
+		Object[][] dados = new Object[lista.size()][2];
+		
+		
+		if(lista != null){
+			for(int i = 0; i < lista.size(); ++i){
+				dados[i][0] = lista.get(i).getNomeFavorecido();
+				dados[i][1] = lista.get(i).getCpf();
+			}
+			
+			JTable tab = new JTable(dados, colunas);
+			JScrollPane sp = new JScrollPane(tab);
+			
+			JPanel painel = new JPanel();
+			
+			painel.setLayout(new GridLayout(1, 1));
+			painel.add(sp);
+			
+			painelInf.add(painel);
+			painelInf.repaint();
+			painelInf.revalidate();
+		}
+	}
+
+
+	protected void DiariasConcedidas(JPanel painelInf) {
+		JPanel painel = new JPanel();
+		JLabel favorecidos = new JLabel("Digite o nome do favorecido: ");
+		JTextField in = new JTextField();
+		JButton confirma= new JButton("Confirmar");
+		
+		confirma.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Diaria> lista = new DaoDiaria("Diarias", "senha123").DiariasConcedidas(in.getText());
+				painel.setVisible(false);
+				mostraDiariasConcedidas(painelInf, lista);
+			}
+		});
+		painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+		
+		painel.add(favorecidos);
+		painel.add(in);
+		painel.add(confirma);
+		
+		painelInf.add(painel);
+		painelInf.repaint();
+		painelInf.revalidate();
+		
+	}
+
+
+	protected void mostraDiariasConcedidas(JPanel painelInf, ArrayList<Diaria> lista) {
+		String colunas[] = {"NomeFav", "Cpf", "DocPagamento", "GestaoPagamento", "DataPagamento", "ValorPagamento"};
+		Object[][] dados = new Object[lista.size()][6];
+		
+		
+		if(lista != null){
+			for(int i = 0; i < lista.size(); ++i){
+				dados[i][0] = lista.get(i).getFavorecido().getNomeFavorecido();
+				dados[i][1] = lista.get(i).getFavorecido().getCpf();
+				dados[i][2] = lista.get(i).getDocPagamento();
+				dados[i][3] = ""+lista.get(i).getGestaoPag();
+				dados[i][4] = lista.get(i).getDataPagamento().toString();
+				dados[i][5] = ""+lista.get(i).getValorPagamento();
+			}
+			
+			JTable tab = new JTable(dados, colunas);
+			JScrollPane sp = new JScrollPane(tab);
+			
+			JPanel painel = new JPanel();
+			
+			painel.setLayout(new GridLayout(1, 1));
+			painel.add(sp);
+			
+			painelInf.add(painel);
+			painelInf.repaint();
+			painelInf.revalidate();
+		}
+	}
+
+
 	protected void numDeDiarias(JPanel painelInf){
 		JPanel p = new JPanel();
 		String[] tipos = new String[]{"Orgao Superior", "Orgao Subordinado", "Unidade Gestora"}; 
