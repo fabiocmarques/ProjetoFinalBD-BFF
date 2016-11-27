@@ -6,9 +6,14 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import Integracao.DaoOrgaoSub;
+import Integracao.DaoOrgaoSup;
+import Integracao.DaoPrograma;
 import Integracao.DaoSubfuncao;
 import Integracao.DaoUnidadeGestora;
 import Negocio.OrgaoSub;
+import Negocio.OrgaoSup;
+import Negocio.Programa;
 import Negocio.SubFuncao;
 import Negocio.UnidadeGestora;
 
@@ -524,7 +529,7 @@ public class Gui {
 	}
 	
 	protected void insereUniGest(JPanel painelInserir) {
-		DaoUnidadeGestora dao = new DaoUnidadeGestora();
+		DaoUnidadeGestora dao = new DaoUnidadeGestora("Diarias", "1234");
 		JPanel p = new JPanel();
 		JLabel lbCodUniGes = new JLabel("Código da Unidade Gestora (PK): "), lbCodOrgSub = new JLabel("Código do Órgão Subordinado (FK): "), lbNomeUniGes = new JLabel("Nome da Unidade Gestora: ");
 		JTextField codUniGes = new JTextField(), codOrgSub = new JTextField(), nomeUniGest = new JTextField();
@@ -573,7 +578,7 @@ public class Gui {
 
 
 	protected void insereSubfunc(JPanel painelInserir) {
-		DaoSubfuncao dao = new DaoSubfuncao();
+		DaoSubfuncao dao = new DaoSubfuncao("Diarias", "1234");
 		JPanel p = new JPanel();
 		JLabel lbCodSubFun = new JLabel("Código da Subfunção (PK): "), lbNomeSubFun = new JLabel("Nome da Subfunção: ");
 		JTextField codSubFun = new JTextField(), nomeSubFun = new JTextField();
@@ -617,7 +622,7 @@ public class Gui {
 
 
 	protected void insereProg(JPanel painelInserir) {
-		DaoPrograma dao = new DaoPrograma();
+		DaoPrograma dao = new DaoPrograma("Diarias", "1234");
 		JPanel p = new JPanel();
 		JLabel lbCodProg = new JLabel("Código do Programa (PK): "), lbNomeProg = new JLabel("Nome do Programa: ");
 		JTextField codProg = new JTextField(), nomeProg = new JTextField();
@@ -635,12 +640,12 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * Insere no banco com os dados conseguidos.
-				 * 
-				 * Precisa confirmar se o codProg é único.
-				 * 
-				 * */				
+				Programa prog = new Programa();
+				
+				prog.setCodProg(Integer.parseInt(codProg.getText()));
+				prog.setNomeProg(nomeProg.getText());
+				
+				dao.createPrograma(prog);
 			}
 		});
 		
@@ -660,6 +665,7 @@ public class Gui {
 
 
 	protected void insereOrgSup(JPanel painelInserir) {
+		DaoOrgaoSup dao = new DaoOrgaoSup("Diarias", "1234");
 		JPanel p = new JPanel();
 		JLabel lbCodOrgSup = new JLabel("Código do Órgão Superior (PK): "), lbNomeOrgSup = new JLabel("Nome do Órgão Superior: ");
 		JTextField codOrgSup = new JTextField(), nomeOrgSup = new JTextField();
@@ -677,12 +683,12 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * Insere no banco com os dados conseguidos.
-				 * 
-				 * Precisa confirmar se o codOrgSup é único.
-				 *
-				 * */				
+				OrgaoSup org = new OrgaoSup();
+				
+				org.setCodOrgSup(Integer.parseInt(codOrgSup.getText()));
+				org.setNomeOrgSup(nomeOrgSup.getText());
+				
+				dao.createOrgaoSup(org);
 			}
 		});
 		
@@ -703,6 +709,7 @@ public class Gui {
 
 
 	protected void insereOrgSub(JPanel painelInserir) {
+		DaoOrgaoSub dao = new DaoOrgaoSub("Diarias", "1234");
 		JPanel p = new JPanel();
 		JLabel lbCodOrgSub = new JLabel("Código do Órgão Subordinado (PK): "), lbCodOrgSup = new JLabel("Código do Órgão Superior (FK): "), lbNomeOrgSub = new JLabel("Nome do Órgão Subordinado: ");
 		JTextField codOrgSub = new JTextField(), codOrgSup = new JTextField(), nomeOrgSub = new JTextField();
@@ -720,13 +727,16 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * Insere no banco com os dados conseguidos.
-				 * 
-				 * Precisa confirmar se o "codOrgSub" é único.
-				 * 
-				 * Precisa confirmar se "codOrgSup" está na tabela OrgaoSuperior.
-				 * */				
+				OrgaoSub oSub = new OrgaoSub();
+				OrgaoSup oSup = new OrgaoSup();
+				
+				oSup.setCodOrgSup(Integer.parseInt(codOrgSup.getText()));
+				
+				oSub.setCodOrgaoSub(Integer.parseInt(codOrgSub.getText()));
+				oSub.setNomeOrgaoSub(nomeOrgSub.getText());
+				oSub.setOrgSup(oSup);
+				
+				dao.createOrgaoSub(oSub);			
 			}
 		});
 		
