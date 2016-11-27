@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 
-import javax.swing.JTable;
 import javax.swing.*;
 
 import Integracao.DaoAcao;
@@ -442,7 +441,7 @@ public class Gui {
 		JLabel t[] = new JLabel[13];
 		JTextField in[] = new JTextField[13];
 		JButton confirma = new JButton("Confirmar");
-		int camposLeitura, i;
+		int i;
 		
 		for(i = 0; i < 13; ++i)
 			t[i] = new JLabel();		
@@ -453,6 +452,7 @@ public class Gui {
 		
 		confirma.addActionListener(new ActionListener() {
 			
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Funcao fun;
@@ -571,7 +571,7 @@ public class Gui {
 			}
 		});
 		
-		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));		
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 		
 		
 		switch(tabela){
@@ -810,7 +810,7 @@ public class Gui {
 					case "diaria":
 						Diaria diaria = new Diaria();
 						diaria = new DaoDiaria("Diaria", "senha123").recuperaDiaria(Integer.parseInt(chave.getText()));
-						//exibe
+						exibeDiaria(painelInf, diaria);
 						break;
 					case "favorecido":
 						Favorecido fav = new Favorecido();
@@ -1067,6 +1067,8 @@ public class Gui {
 			painelInf.add(p);
 		}
 	}
+	
+	
 	
 	
 	
@@ -1435,6 +1437,7 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				Diaria diaria = new Diaria();
 				Acao acao = new Acao();
+				@SuppressWarnings("deprecation")
 				Date data = new Date(Integer.parseInt(in[11].getText()), Integer.parseInt(in[10].getText()), Integer.parseInt(in[9].getText()));
 				Favorecido fav = new Favorecido();
 				Funcao func = new Funcao();
