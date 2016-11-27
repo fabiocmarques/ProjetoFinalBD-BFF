@@ -1205,7 +1205,7 @@ public class Gui {
 						break;
 					case "diaria":
 						Diaria diaria = new Diaria();
-						diaria = new DaoDiaria("Diaria", "senha123").recuperaDiaria(Integer.parseInt(chave.getText()));
+						diaria = new DaoDiaria("Diarias", "senha123").recuperaDiaria(Integer.parseInt(chave.getText()));
 						exibeDiaria(painelInf, diaria);
 						break;
 					case "favorecido":
