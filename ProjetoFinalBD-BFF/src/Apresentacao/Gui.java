@@ -689,7 +689,7 @@ public class Gui {
 	}
 	
 	protected void insereUniGest(JPanel painelInserir) {
-		DaoUnidadeGestora dao = new DaoUnidadeGestora("Diarias", "1234");
+		DaoUnidadeGestora dao = new DaoUnidadeGestora("Diarias", "senha123");
 		JPanel p = new JPanel();
 		JLabel lbCodUniGes = new JLabel("Código da Unidade Gestora (PK): "), lbCodOrgSub = new JLabel("Código do Órgão Subordinado (FK): "), lbNomeUniGes = new JLabel("Nome da Unidade Gestora: ");
 		JTextField codUniGes = new JTextField(), codOrgSub = new JTextField(), nomeUniGest = new JTextField();
@@ -738,7 +738,7 @@ public class Gui {
 
 
 	protected void insereSubfunc(JPanel painelInserir) {
-		DaoSubfuncao dao = new DaoSubfuncao("Diarias", "1234");
+		DaoSubfuncao dao = new DaoSubfuncao("Diarias", "senha123");
 		JPanel p = new JPanel();
 		JLabel lbCodSubFun = new JLabel("Código da Subfunção (PK): "), lbNomeSubFun = new JLabel("Nome da Subfunção: ");
 		JTextField codSubFun = new JTextField(), nomeSubFun = new JTextField();
@@ -782,7 +782,7 @@ public class Gui {
 
 
 	protected void insereProg(JPanel painelInserir) {
-		DaoPrograma dao = new DaoPrograma("Diarias", "1234");
+		DaoPrograma dao = new DaoPrograma("Diarias", "senha123");
 		JPanel p = new JPanel();
 		JLabel lbCodProg = new JLabel("Código do Programa (PK): "), lbNomeProg = new JLabel("Nome do Programa: ");
 		JTextField codProg = new JTextField(), nomeProg = new JTextField();
@@ -825,7 +825,7 @@ public class Gui {
 
 
 	protected void insereOrgSup(JPanel painelInserir) {
-		DaoOrgaoSup dao = new DaoOrgaoSup("Diarias", "1234");
+		DaoOrgaoSup dao = new DaoOrgaoSup("Diarias", "senha123");
 		JPanel p = new JPanel();
 		JLabel lbCodOrgSup = new JLabel("Código do Órgão Superior (PK): "), lbNomeOrgSup = new JLabel("Nome do Órgão Superior: ");
 		JTextField codOrgSup = new JTextField(), nomeOrgSup = new JTextField();
@@ -869,7 +869,7 @@ public class Gui {
 
 
 	protected void insereOrgSub(JPanel painelInserir) {
-		DaoOrgaoSub dao = new DaoOrgaoSub("Diarias", "1234");
+		DaoOrgaoSub dao = new DaoOrgaoSub("Diarias", "senha123");
 		JPanel p = new JPanel();
 		JLabel lbCodOrgSub = new JLabel("Código do Órgão Subordinado (PK): "), lbCodOrgSup = new JLabel("Código do Órgão Superior (FK): "), lbNomeOrgSub = new JLabel("Nome do Órgão Subordinado: ");
 		JTextField codOrgSub = new JTextField(), codOrgSup = new JTextField(), nomeOrgSub = new JTextField();
@@ -918,7 +918,7 @@ public class Gui {
 
 
 	protected void insereFuncao(JPanel painelInserir) {
-		DaoFuncao dao = new DaoFuncao("Diarias", "1234");
+		DaoFuncao dao = new DaoFuncao("Diarias", "senha123");
 		JPanel p = new JPanel();
 		JLabel lbCodFunc = new JLabel("Código da Função (PK): "), lbNomeFunc = new JLabel("Nome da Função: ");
 		JTextField codFunc = new JTextField(), nomeFunc = new JTextField();
@@ -1078,7 +1078,7 @@ public class Gui {
 
 
 	protected void insereAcao(JPanel painelInserir) {
-		DaoAcao dao = new DaoAcao("Diarias", "1234");
+		DaoAcao dao = new DaoAcao("Diarias", "senha123");
 		JPanel p = new JPanel();
 		JLabel lbCodAcao = new JLabel("Código da Ação (4 caracteres, PK): "), lbNomeAcao = new JLabel("Nome da Ação: "), lbLinguagem = new JLabel("Linguagem citada: ");
 		JTextField codAcao = new JTextField(), nomeAcao = new JTextField(), linguagem = new JTextField();
