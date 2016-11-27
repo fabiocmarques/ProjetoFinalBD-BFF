@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 
+import javax.swing.JTable;
 import javax.swing.*;
 
 import Integracao.DaoAcao;
@@ -85,8 +86,7 @@ public class Gui {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				painelInf.removeAll();
-				Atualizar(painelInf);
-				
+				Atualizar(painelInf);				
 			}
 		});
 		
@@ -94,8 +94,8 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//Buscar(janela);
-				janela.getContentPane().remove(painelInf);
+				painelInf.removeAll();
+				Buscar(painelInf);
 			}
 		});
 		
@@ -298,7 +298,7 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				switch(nome){
+				switch(tabela){
 					case "acao":
 						Acao acao = new Acao();
 						acao.setCodAcao(chave.getText());
@@ -498,9 +498,8 @@ public class Gui {
 					diaria.setPrograma(prog);
 					diaria.setSubFuncao(sf);
 					diaria.setValorPagamento(Float.parseFloat(in[8].getText()));
-//					Colocar data de pagamento!!!! (Fuck Apple)
-					
-					
+					diaria.setDataPagamento(new Date(Integer.parseInt(in[12].getText()), Integer.parseInt(in[11].getText()), Integer.parseInt(in[10].getText())));
+
 					new DaoDiaria("Diarias", "senha123").updateDiaria(diaria);
 					break;
 				case "funcao":
@@ -579,7 +578,7 @@ public class Gui {
 			case "acao":
 				t[0].setText("Código da Ação (PK): ");
 				t[1].setText("Nome da Ação: ");
-				t[2].setText("Linguagem citada: ");
+				t[2].setText("Linguagem cidada: ");
 				for(i = 0; i < 3; ++i){
 					p.add(t[i]);
 					p.add(in[i]);
@@ -596,8 +595,10 @@ public class Gui {
 				t[7] = new JLabel("Código do Favorecido (FK): ");
 				t[8] = new JLabel("Valor do pagamento: ");
 				t[9] = new JLabel("Gestão do pagamento: ");
-				t[10] = new JLabel("Data do pagamento: ");
-				for(i = 0; i < 11; ++i){
+				t[10] = new JLabel("Dia do pagamento: ");
+				t[11] = new JLabel("Mês do pagamento: ");
+				t[12] = new JLabel("Ano do pagamento: ");
+				for(i = 0; i < 13; ++i){
 					p.add(t[i]);
 					p.add(in[i]);
 				}
@@ -682,12 +683,230 @@ public class Gui {
 		
 		painelInf.add(p);
 	}
-
-
-	protected void Buscar(JFrame janela){
 	
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	protected void Buscar(JPanel painelInf){
+		JPanel painel = new JPanel();
+		JButton buscaReg = new JButton("Procurar registro em tabela.");
+		
+		buscaReg.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				painel.setVisible(false);
+				BuscaReg(painelInf);
+			}
+		});
+		
+		
+	
+		painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+		
+		painel.add(buscaReg);
+		
+		painelInf.add(painel);
+		painelInf.repaint();
+		painelInf.revalidate();	
+	}
+
+	
+	protected void BuscaReg(JPanel painelInf){
+		JPanel p = new JPanel();
+		JLabel t = new JLabel("Selecione a tabela para realizar a busca: ");
+		JComboBox<String> comboTabelas = new JComboBox<String>(tabelas);
+		JButton buscaReg = new JButton("Confirmar");
+		
+		buscaReg.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				switch(comboTabelas.getSelectedIndex()){
+					case 0://Ação
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Ação", "acao");
+						break;
+						
+					case 1://Diária
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Diária", "diaria");
+						break;
+						
+					case 2://Favorecido
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Favorecido", "favorecido");
+						break;
+						
+					case 3://Função
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Função", "funcao");
+						break;
+						
+					case 4://Órgão Subordinado
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Órgão Subordinado", "orgaosubordinado");
+						break;
+						
+					case 5://Órgão Superior
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Órgão Superior", "orgaosuperior");
+						break;
+						
+					case 6://Programa
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Programa", "programa");
+						break;
+						
+					case 7://Subfunção
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Subfunção", "subfuncao");
+						break;
+						
+					default://Unidade gestora
+						p.setVisible(false);
+						buscaEntrada(painelInf, "Unidade gestora", "unidadegestora");
+						break;					
+				}
+			}
+		});
+		
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+		
+		p.add(t);
+		p.add(comboTabelas);
+		p.add(buscaReg);
+		
+		painelInf.add(p);		
 	}
 	
+	
+	
+	protected void buscaEntrada(JPanel painelInf, String nome, String tabela) {
+		JPanel p = new JPanel();
+		JLabel lb = new JLabel("Digite a chave da entrada da tabela de " + nome + ": ");
+		JTextField chave = new JTextField();
+		JButton confirma = new JButton("Confirmar");
+		
+		confirma.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				p.setVisible(false);
+				switch(tabela){
+					case "acao":
+						Acao acao = new Acao();
+						acao = new DaoAcao("Diarias", "senha123").recuperaAcao(chave.getText());
+						exibeAcao(painelInf, acao);
+						break;
+					case "diaria":
+						Diaria diaria = new Diaria();
+						diaria = new DaoDiaria("Diaria", "senha123").recuperaDiaria(Integer.parseInt(chave.getText()));
+						//exibe
+						break;
+					case "favorecido":
+						Favorecido fav = new Favorecido();
+						fav = new DaoFavorecido("Diarias", "senha123").recuperaFavorecido(Integer.parseInt(chave.getText()));
+						break;
+					case "orgaosubordinado":
+						OrgaoSub oSub = new OrgaoSub();
+						oSub = new DaoOrgaoSub("Diarias", "senha123").recuperaOrgaoSub(Integer.parseInt(chave.getText()));
+						//exibe
+						break;
+					case "funcao":
+						Funcao fun = new Funcao();
+						fun = new DaoFuncao("Diarias", "senha123").recuperaFuncao(Integer.parseInt(chave.getText()));
+						//exibe
+						break;
+					case "subfuncao":
+						SubFuncao subFun = new SubFuncao();
+						subFun = new DaoSubfuncao("Diarias", "senha123").recuperaSubfuncao(chave.getText());
+						//exibe
+						break;
+					case "orgaosuperior":
+						OrgaoSup oSup = new OrgaoSup();
+						oSup = new DaoOrgaoSup("Diarias", "senha123").recuperaOrgSup(Integer.parseInt(chave.getText()));
+						//exibe
+						break;
+					case "programa":
+						Programa prog = new Programa();
+						prog = new DaoPrograma("Diarias", "senha123").recuperaPrograma(Integer.parseInt(chave.getText()));
+						//exibe
+						break;
+					default : 
+						UnidadeGestora uniGes = new UnidadeGestora();
+						uniGes = new DaoUnidadeGestora("Diarias", "senha123").recuperaUnidadeGestora(chave.getText());;
+						break;
+				}
+			}
+		});
+		
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+		
+		p.add(lb);
+		p.add(chave);
+		p.add(confirma);
+		
+		painelInf.add(p);
+	}
+	
+	
+	protected void exibeAcao(JPanel painelInf, Acao acao) {
+		JPanel p = new JPanel();
+		JScrollPane sc = null;
+		JTable tabela = null;
+		String colunas[] = {"CodAcao", "NomeAcao", "LinguagemCidada"};
+		
+		if(acao == null){
+			System.out.println("É null");
+		}
+		else{
+			Object linhas[][] = { {acao.getCodAcao().toString(), acao.getNome(), acao.getLinguagemCidada()}};
+			
+			
+			
+			tabela = new JTable(linhas, colunas);
+			sc = new JScrollPane(tabela);
+			
+			p.setLayout(new GridLayout(1, 1));
+			p.add(sc);
+			
+			painelInf.add(p);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
 	protected void insereUniGest(JPanel painelInserir) {
 		DaoUnidadeGestora dao = new DaoUnidadeGestora("Diarias", "senha123");
 		JPanel p = new JPanel();
@@ -1080,7 +1299,7 @@ public class Gui {
 	protected void insereAcao(JPanel painelInserir) {
 		DaoAcao dao = new DaoAcao("Diarias", "senha123");
 		JPanel p = new JPanel();
-		JLabel lbCodAcao = new JLabel("Código da Ação (4 caracteres, PK): "), lbNomeAcao = new JLabel("Nome da Ação: "), lbLinguagem = new JLabel("Linguagem citada: ");
+		JLabel lbCodAcao = new JLabel("Código da Ação (4 caracteres, PK): "), lbNomeAcao = new JLabel("Nome da Ação: "), lbLinguagem = new JLabel("Linguagem cidada: ");
 		JTextField codAcao = new JTextField(), nomeAcao = new JTextField(), linguagem = new JTextField();
 		JButton confirmar = new JButton("Confirmar");
 		

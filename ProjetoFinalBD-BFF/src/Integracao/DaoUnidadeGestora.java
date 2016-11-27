@@ -89,6 +89,7 @@ public class DaoUnidadeGestora {
 	    	String sql = "SELECT * FROM unidadegestora WHERE Coduniges = " + uniGes + ";";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
+		    rs.next();
 		    
 		    uGes.setCodUniGes(rs.getInt("coduniges"));
 		    sub = rs.getString("codorgsub");
