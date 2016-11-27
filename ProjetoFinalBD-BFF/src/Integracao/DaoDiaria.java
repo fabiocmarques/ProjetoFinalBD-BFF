@@ -477,7 +477,7 @@ public class DaoDiaria {
 			    OrgaoSub orgaoSub = new OrgaoSub();
 			    
 			    orgaoSub.setCodOrgaoSub(rs.getInt("codOrgSub"));
-			    orgaoSub.setNomeOrgaoSub(rs.getString("nomeorgaosub"));
+			    orgaoSub.setNomeOrgaoSub(rs.getString("nomeorgsub"));
 			    unidadeGestora.setOrgaoSub(orgaoSub);
 			    
 			    OrgaoSup orgaoSup = new OrgaoSup();
