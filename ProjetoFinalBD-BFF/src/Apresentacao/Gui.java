@@ -6,6 +6,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import Integracao.DaoSubfuncao;
+import Integracao.DaoUnidadeGestora;
+import Negocio.OrgaoSub;
+import Negocio.SubFuncao;
+import Negocio.UnidadeGestora;
+
 public class Gui {
 	
 	String[] tabelas;
@@ -111,7 +117,7 @@ public class Gui {
 	public void Inserir(JPanel painelInf){
 		JPanel painelSeletorTab = new JPanel();
 		JLabel t1 = new JLabel("Selecione a tabela para inserção: ");
-		JComboBox comboTabelas = new JComboBox(tabelas);
+		JComboBox<String> comboTabelas = new JComboBox<String>(tabelas);
 		JButton confirmaTabela = new JButton("Confirmar");
 		
 		/*
@@ -192,7 +198,7 @@ public class Gui {
 	protected void Remover(JPanel painelInf){
 		JPanel painelSeletorTab = new JPanel();
 		JLabel t1 = new JLabel("Selecione a tabela para remoção: ");
-		JComboBox comboTabelas = new JComboBox(tabelas);
+		JComboBox<String> comboTabelas = new JComboBox<String>(tabelas);
 		JButton confirmaTabela = new JButton("Confirmar");
 		
 		/*
@@ -297,7 +303,7 @@ public class Gui {
 	protected void Atualizar(JPanel painelInf){
 		JPanel painelSeletorTab = new JPanel();
 		JLabel t1 = new JLabel("Selecione a tabela para remoção: ");
-		JComboBox comboTabelas = new JComboBox(tabelas);
+		JComboBox<String> comboTabelas = new JComboBox<String>(tabelas);
 		JButton confirmaTabela = new JButton("Confirmar");
 		
 		/*
@@ -518,6 +524,7 @@ public class Gui {
 	}
 	
 	protected void insereUniGest(JPanel painelInserir) {
+		DaoUnidadeGestora dao = new DaoUnidadeGestora();
 		JPanel p = new JPanel();
 		JLabel lbCodUniGes = new JLabel("Código da Unidade Gestora (PK): "), lbCodOrgSub = new JLabel("Código do Órgão Subordinado (FK): "), lbNomeUniGes = new JLabel("Nome da Unidade Gestora: ");
 		JTextField codUniGes = new JTextField(), codOrgSub = new JTextField(), nomeUniGest = new JTextField();
@@ -535,13 +542,16 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * Insere no banco com os dados conseguidos.
-				 * 
-				 * Precisa confirmar se o "codUniGes" é único.
-				 * 
-				 * Precisa confirmar se "codOrgSub" está na tabela OrgaoSubordinado.
-				 * */				
+				UnidadeGestora uGes = new UnidadeGestora();
+				OrgaoSub org = new OrgaoSub();
+				
+				org.setCodOrgaoSub(Integer.parseInt(codOrgSub.getText()));
+				
+				uGes.setCodUniGes(Integer.parseInt(codUniGes.getText()));
+				uGes.setNomeUnidadeGestora(nomeUniGest.getText());
+				uGes.setOrgaoSub(org);	
+				
+				dao.createUnidadeGestora(uGes);			
 			}
 		});
 		
@@ -563,6 +573,7 @@ public class Gui {
 
 
 	protected void insereSubfunc(JPanel painelInserir) {
+		DaoSubfuncao dao = new DaoSubfuncao();
 		JPanel p = new JPanel();
 		JLabel lbCodSubFun = new JLabel("Código da Subfunção (PK): "), lbNomeSubFun = new JLabel("Nome da Subfunção: ");
 		JTextField codSubFun = new JTextField(), nomeSubFun = new JTextField();
@@ -580,12 +591,12 @@ public class Gui {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * Insere no banco com os dados conseguidos.
-				 * 
-				 * Precisa confirmar se o codSubFun é único.
-				 *
-				 * */				
+				SubFuncao subf = new SubFuncao();
+				
+				subf.setCodSubFun(Integer.parseInt(codSubFun.getText()));
+				subf.setNomeSubFun(nomeSubFun.getText());
+				
+				dao.createSubfuncao(subf);
 			}
 		});
 		
@@ -606,6 +617,7 @@ public class Gui {
 
 
 	protected void insereProg(JPanel painelInserir) {
+		DaoPrograma dao = new DaoPrograma();
 		JPanel p = new JPanel();
 		JLabel lbCodProg = new JLabel("Código do Programa (PK): "), lbNomeProg = new JLabel("Nome do Programa: ");
 		JTextField codProg = new JTextField(), nomeProg = new JTextField();
