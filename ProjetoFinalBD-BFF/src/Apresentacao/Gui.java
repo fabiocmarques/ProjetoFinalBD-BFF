@@ -1453,6 +1453,7 @@ public class Gui {
 			System.out.println("É null");
 		}
 		else{
+			System.out.println("Chegou");
 			Object linhas[][] = { {oSub.getCodOrgaoSub(), oSub.getNomeOrgaoSub(), oSub.getOrgSup().getCodOrgSup(), oSub.getOrgSup().getNomeOrgSup()}};
 			
 			tabela = new JTable(linhas, colunas);
@@ -1864,10 +1865,12 @@ public class Gui {
 		
 		p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
 		
-		for(i = 0; i < 10; ++i){
+		for(i = 0; i < 12; ++i){
 			p.add(t[i]);
 			p.add(in[i]);
 		}
+		
+		p.add(confirmar);
 		
 		painelInserir.add(p);		
 		
