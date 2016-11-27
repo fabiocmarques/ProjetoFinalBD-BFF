@@ -360,7 +360,7 @@ public class Gui {
 
 	protected void Atualizar(JPanel painelInf){
 		JPanel painelSeletorTab = new JPanel();
-		JLabel t1 = new JLabel("Selecione a tabela para remoção: ");
+		JLabel t1 = new JLabel("Selecione a tabela para atualização: ");
 		JComboBox<String> comboTabelas = new JComboBox<String>(tabelas);
 		JButton confirmaTabela = new JButton("Confirmar");
 		
@@ -454,6 +454,7 @@ public class Gui {
 		
 		confirma.addActionListener(new ActionListener() {
 			
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Funcao fun;
@@ -499,8 +500,8 @@ public class Gui {
 					diaria.setPrograma(prog);
 					diaria.setSubFuncao(sf);
 					diaria.setValorPagamento(Float.parseFloat(in[8].getText()));
-					diaria.setDataPagamento(new Date(Integer.parseInt(in[12].getText()), Integer.parseInt(in[11].getText()), Integer.parseInt(in[10].getText())));
-
+					diaria.setDataPagamento(new Date((int)Integer.parseInt(in[12].getText()) - 1900, (int)Integer.parseInt(in[11].getText()) - 1, (int)Integer.parseInt(in[10].getText())));
+					
 					new DaoDiaria("Diarias", "senha123").updateDiaria(diaria);
 					break;
 				case "funcao":
@@ -1453,7 +1454,6 @@ public class Gui {
 			System.out.println("É null");
 		}
 		else{
-			System.out.println("Chegou");
 			Object linhas[][] = { {oSub.getCodOrgaoSub(), oSub.getNomeOrgaoSub(), oSub.getOrgSup().getCodOrgSup(), oSub.getOrgSup().getNomeOrgSup()}};
 			
 			tabela = new JTable(linhas, colunas);
@@ -1833,7 +1833,7 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				Diaria diaria = new Diaria();
 				Acao acao = new Acao();
-				Date data = new Date(Integer.parseInt(in[11].getText()), Integer.parseInt(in[10].getText()), Integer.parseInt(in[9].getText()));
+				Date data = new Date(Integer.parseInt(in[11].getText()) - 1900, Integer.parseInt(in[10].getText())-1, Integer.parseInt(in[9].getText()));
 				Favorecido fav = new Favorecido();
 				Funcao func = new Funcao();
 				SubFuncao subf = new SubFuncao();

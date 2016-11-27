@@ -80,12 +80,12 @@ public class DaoSubfuncao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "SELECT * FROM subfuncao WHERE Codsubfuncao = '" + codSubf + "';";
+	    	String sql = "SELECT * FROM subfuncao WHERE Codsubfun = '" + codSubf + "';";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
 		    if(rs.next()){
-			    sub.setCodSubFun(rs.getInt("codsubfuncao"));
+			    sub.setCodSubFun(rs.getInt("codsubfun"));
 			    sub.setNomeSubFun(rs.getString("nomesubfun"));
 		    }
 		    else
