@@ -30,7 +30,7 @@ public class DaoUnidadeGestora {
 	    	
 	    	stmt = c.createStatement();
 	         String gestorSql = "INSERT INTO UNIDADEGESTORA (CODUNIGES, CODORGSUB, NOMEUNIGES) "
-		               + "VALUES ('" + uniGes.getCodUniGes() + "', '" + uniGes.getOrgaoSub() + "', '" + uniGes.getNomeUnidadeGestora() + "');";
+		               + "VALUES ('" + uniGes.getCodUniGes() + "', '" + uniGes.getOrgaoSub().getCodOrgaoSub() + "', '" + uniGes.getNomeUnidadeGestora() + "');";
 	         stmt.executeUpdate(gestorSql);
 	        
 	     

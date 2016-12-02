@@ -31,7 +31,7 @@ public class DaoOrgaoSub {
 	    	
 	    	stmt = c.createStatement();
 		    String orgSubSql = "INSERT INTO ORGAOSUBORDINADO (CODORGSUB, CODORGSUP, NOMEORGSUB) "
-		    				+ "VALUES (" + orgaoSub.getCodOrgaoSub() + ", " + orgaoSub.getOrgSup().getCodOrgSup() + ", " + orgaoSub.getNomeOrgaoSub() + ");";
+		    				+ "VALUES ('" + orgaoSub.getCodOrgaoSub() + "', '" + orgaoSub.getOrgSup().getCodOrgSup() + "', '" + orgaoSub.getNomeOrgaoSub() + "');";
 		    stmt.executeUpdate(orgSubSql);
 		    
 		    stmt.close();

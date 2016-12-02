@@ -112,7 +112,7 @@ public class DaoSubfuncao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "DELETE FROM ACAO WHERE CodAcao = '" + subf.getCodSubFun() + "';";
+	    	String sql = "DELETE FROM SUBFUNCAO WHERE codsubfun = '" + subf.getCodSubFun() + "';";
 		    stmt = c.createStatement();
 		    stmt.execute(sql);
 		    
