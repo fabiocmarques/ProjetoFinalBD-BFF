@@ -197,11 +197,11 @@ public class DaoDiaria {
 		    	
 		    	
 		    	Diaria diaria = new Diaria();
-		    	diaria.setValorPagamento(rs.getFloat("ValorPagamento"));
+		    	diaria.setValorPagamento(rs.getFloat("valoragamento"));
 		    	diaria.setFavorecido(favorecido);
-		    	diaria.setGestaoPag(rs.getInt("GestaoPagamento"));
-		    	diaria.setDataPagamento(rs.getDate("DataPagamento"));
-		    	diaria.setDocPagamento(rs.getString("DocPagamento"));
+		    	diaria.setGestaoPag(rs.getInt("gestaopagamento"));
+		    	diaria.setDataPagamento(rs.getDate("datapagamento"));
+		    	diaria.setDocPagamento(rs.getString("docpagamento"));
 		    	
 		    	diarias.add(diaria);
 		    }
@@ -244,8 +244,8 @@ public class DaoDiaria {
 		    while(rs.next()){
 		    	
 		    	Favorecido favorecido = new Favorecido();
-		    	favorecido.setNomeFavorecido(rs.getString("NomeFav"));
-		    	favorecido.setCpf(rs.getString("Cpf"));
+		    	favorecido.setNomeFavorecido(rs.getString("nomefav"));
+		    	favorecido.setCpf(rs.getString("cpf"));
 		    	
 		    	favorecidos.add(favorecido);
 		    }
@@ -289,8 +289,8 @@ public class DaoDiaria {
 		    while(rs.next()){
 		    	
 		    	Favorecido favorecido = new Favorecido();
-		    	favorecido.setNomeFavorecido(rs.getString("NomeFav"));
-		    	favorecido.setCpf(rs.getString("Cpf"));
+		    	favorecido.setNomeFavorecido(rs.getString("nomefav"));
+		    	favorecido.setCpf(rs.getString("cpf"));
 		    	
 		    	favorecidos.add(favorecido);
 		    }
@@ -430,30 +430,30 @@ public class DaoDiaria {
 		    
 		    if(rs.next()){
 			    
-			    diaria.setCodDiaria(rs.getInt("codDiaria"));
-			    diaria.setDocPagamento(rs.getString("docPagamento"));
-			    diaria.setValorPagamento(rs.getFloat("valorPagamento"));
-			    diaria.setGestaoPag(rs.getInt("gestaoPagamento"));
-			    diaria.setDataPagamento(rs.getDate("dataPagamento"));
+			    diaria.setCodDiaria(rs.getInt("coddiaria"));
+			    diaria.setDocPagamento(rs.getString("docpagamento"));
+			    diaria.setValorPagamento(rs.getFloat("valorpagamento"));
+			    diaria.setGestaoPag(rs.getInt("gestaopagamento"));
+			    diaria.setDataPagamento(rs.getDate("datapagamento"));
 			    
 			    Acao acao = new Acao();
 			    
-			    acao.setCodAcao(rs.getString("codAcao"));
-			    acao.setLinguagemCidada(rs.getString("linguagemCidada"));
-			    acao.setNome(rs.getString("nomeAcao"));
+			    acao.setCodAcao(rs.getString("codacao"));
+			    acao.setLinguagemCidada(rs.getString("linguagemcidada"));
+			    acao.setNome(rs.getString("nomeacao"));
 			    diaria.setAcao(acao);
 			    
 			    Favorecido favorecido = new Favorecido();
 			    
-			    favorecido.setCodFavorecido(rs.getInt("codFavorecido"));
+			    favorecido.setCodFavorecido(rs.getInt("codfavorecido"));
 			    favorecido.setCpf(rs.getString("cpf"));
-			    favorecido.setNomeFavorecido(rs.getString("nomeFav"));
+			    favorecido.setNomeFavorecido(rs.getString("nomefav"));
 			    diaria.setFavorecido(favorecido);
 			    
 			    Programa programa = new Programa();
 			    
-			    programa.setCodProg(rs.getInt("codProg"));
-			    programa.setNomeProg(rs.getString("nomeProg"));
+			    programa.setCodProg(rs.getInt("codprog"));
+			    programa.setNomeProg(rs.getString("nomeprog"));
 			    diaria.setPrograma(programa);
 			    
 			    Funcao funcao = new Funcao();
@@ -477,7 +477,7 @@ public class DaoDiaria {
 			    OrgaoSub orgaoSub = new OrgaoSub();
 			    
 			    orgaoSub.setCodOrgaoSub(rs.getInt("codOrgSub"));
-			    orgaoSub.setNomeOrgaoSub(rs.getString("nomeorgaosub"));
+			    orgaoSub.setNomeOrgaoSub(rs.getString("nomeorgsub"));
 			    unidadeGestora.setOrgaoSub(orgaoSub);
 			    
 			    OrgaoSup orgaoSup = new OrgaoSup();
@@ -516,7 +516,7 @@ public class DaoDiaria {
 	    	
 	    	String sql = "UPDATE Diaria set "
 	    					+ "codAcao = '" + diaria.getAcao().getCodAcao() + "', "
-	    					+ "codFav = '" + diaria.getFavorecido().getCodFavorecido() + "', "
+	    					+ "codFavorecido = '" + diaria.getFavorecido().getCodFavorecido() + "', "
 	    					+ "codProg = '" + diaria.getPrograma().getCodProg() + "', "
 	    					+ "codFun = '" + diaria.getFuncao().getCodFuncao() + "', "
 	    					+ "codSubFun = '" + diaria.getSubFuncao().getCodSubFun() + "', "
@@ -525,7 +525,7 @@ public class DaoDiaria {
 	    					+ "valorPagamento = '" + diaria.getValorPagamento() + "', "
 	    					+ "gestaoPagamento = '" + diaria.getGestaoPag() + "', "
 	    					+ "dataPagamento = '" + diaria.getDataPagamento()
-	    					+ "' where ID ='" + diaria.getCodDiaria() +  "';";
+	    					+ "' where coddiaria ='" + diaria.getCodDiaria() +  "';";
 	    	
 		    stmt = c.createStatement();
 		    stmt.execute(sql);

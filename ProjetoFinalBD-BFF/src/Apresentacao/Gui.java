@@ -308,7 +308,7 @@ public class Gui {
 					case "diaria":
 						Diaria diaria = new Diaria();
 						diaria.setCodDiaria(Integer.parseInt(chave.getText()));
-						new DaoDiaria("Diaria", "senha123").deleteDiaria(diaria);
+						new DaoDiaria("Diarias", "senha123").deleteDiaria(diaria);
 						break;
 					case "favorecido":
 						Favorecido fav = new Favorecido();
@@ -360,7 +360,7 @@ public class Gui {
 
 	protected void Atualizar(JPanel painelInf){
 		JPanel painelSeletorTab = new JPanel();
-		JLabel t1 = new JLabel("Selecione a tabela para remoção: ");
+		JLabel t1 = new JLabel("Selecione a tabela para atualização: ");
 		JComboBox<String> comboTabelas = new JComboBox<String>(tabelas);
 		JButton confirmaTabela = new JButton("Confirmar");
 		
@@ -454,6 +454,7 @@ public class Gui {
 		
 		confirma.addActionListener(new ActionListener() {
 			
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Funcao fun;
@@ -499,8 +500,8 @@ public class Gui {
 					diaria.setPrograma(prog);
 					diaria.setSubFuncao(sf);
 					diaria.setValorPagamento(Float.parseFloat(in[8].getText()));
-					diaria.setDataPagamento(new Date(Integer.parseInt(in[12].getText()), Integer.parseInt(in[11].getText()), Integer.parseInt(in[10].getText())));
-
+					diaria.setDataPagamento(new Date((int)Integer.parseInt(in[12].getText()) - 1900, (int)Integer.parseInt(in[11].getText()) - 1, (int)Integer.parseInt(in[10].getText())));
+					
 					new DaoDiaria("Diarias", "senha123").updateDiaria(diaria);
 					break;
 				case "funcao":
@@ -584,6 +585,7 @@ public class Gui {
 					p.add(t[i]);
 					p.add(in[i]);
 				}
+				break;
 				
 			case "diaria":
 				t[0] = new JLabel("Código da Diária (PK): ");
@@ -1205,8 +1207,8 @@ public class Gui {
 						break;
 					case "diaria":
 						Diaria diaria = new Diaria();
-						diaria = new DaoDiaria("Diaria", "senha123").recuperaDiaria(Integer.parseInt(chave.getText()));
-						//exibe
+						diaria = new DaoDiaria("Diarias", "senha123").recuperaDiaria(Integer.parseInt(chave.getText()));
+						exibeDiaria(painelInf, diaria);
 						break;
 					case "favorecido":
 						Favorecido fav = new Favorecido();
@@ -1801,7 +1803,7 @@ public class Gui {
 
 
 	protected void insereDiaria(JPanel painelInserir) {
-		DaoDiaria dao = new DaoDiaria("Diarias", "1234");
+		DaoDiaria dao = new DaoDiaria("Diarias", "senha123");
 		JPanel p = new JPanel();
 		JLabel t[] = new JLabel[12];
 		JTextField in[] = new JTextField[12];
@@ -1831,7 +1833,7 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				Diaria diaria = new Diaria();
 				Acao acao = new Acao();
-				Date data = new Date(Integer.parseInt(in[11].getText()), Integer.parseInt(in[10].getText()), Integer.parseInt(in[9].getText()));
+				Date data = new Date(Integer.parseInt(in[11].getText()) - 1900, Integer.parseInt(in[10].getText())-1, Integer.parseInt(in[9].getText()));
 				Favorecido fav = new Favorecido();
 				Funcao func = new Funcao();
 				SubFuncao subf = new SubFuncao();
@@ -1863,10 +1865,12 @@ public class Gui {
 		
 		p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
 		
-		for(i = 0; i < 10; ++i){
+		for(i = 0; i < 12; ++i){
 			p.add(t[i]);
 			p.add(in[i]);
 		}
+		
+		p.add(confirmar);
 		
 		painelInserir.add(p);		
 		

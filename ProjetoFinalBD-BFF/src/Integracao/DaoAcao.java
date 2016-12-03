@@ -55,7 +55,7 @@ public class DaoAcao {
 	    	
 	    	String sql = "UPDATE ACAO SET codacao = '" + acao.getCodAcao() + "', "
 	    				+ "nomeacao = '" + acao.getNome() + "', "
-	    				+ "ligaugemcidada = '" + acao.getLinguagemCidada()
+	    				+ "linguagemcidada = '" + acao.getLinguagemCidada()
 	    				+ "' WHERE CodAcao = '" + acao.getCodAcao() + "';";
 		    stmt = c.createStatement();
 		    stmt.execute(sql);

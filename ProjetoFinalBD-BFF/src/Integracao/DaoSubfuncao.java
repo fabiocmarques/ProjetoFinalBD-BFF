@@ -54,7 +54,7 @@ public class DaoSubfuncao {
 	    	"postgres", senha);
 	    	
 	    	String sql = "UPDATE subfuncao SET codsubfun = '" + subf.getCodSubFun() + "', "
-	    				+ "nomesubfun = '" + subf.getNomeSubFun() + "', "
+	    				+ "nomesubfun = '" + subf.getNomeSubFun() + "'"
 	    				+ " WHERE codsubfun = '" + subf.getCodSubFun() + "';";
 		    stmt = c.createStatement();
 		    stmt.execute(sql);
@@ -80,12 +80,12 @@ public class DaoSubfuncao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "SELECT * FROM subfuncao WHERE Codsubfuncao = '" + codSubf + "';";
+	    	String sql = "SELECT * FROM subfuncao WHERE Codsubfun = '" + codSubf + "';";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
 		    
 		    if(rs.next()){
-			    sub.setCodSubFun(rs.getInt("codsubfuncao"));
+			    sub.setCodSubFun(rs.getInt("codsubfun"));
 			    sub.setNomeSubFun(rs.getString("nomesubfun"));
 		    }
 		    else
@@ -112,7 +112,7 @@ public class DaoSubfuncao {
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
 	    	
-	    	String sql = "DELETE FROM ACAO WHERE CodAcao = '" + subf.getCodSubFun() + "';";
+	    	String sql = "DELETE FROM SUBFUNCAO WHERE codsubfun = '" + subf.getCodSubFun() + "';";
 		    stmt = c.createStatement();
 		    stmt.execute(sql);
 		    

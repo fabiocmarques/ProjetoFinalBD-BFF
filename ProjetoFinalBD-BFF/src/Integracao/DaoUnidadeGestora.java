@@ -30,7 +30,7 @@ public class DaoUnidadeGestora {
 	    	
 	    	stmt = c.createStatement();
 	         String gestorSql = "INSERT INTO UNIDADEGESTORA (CODUNIGES, CODORGSUB, NOMEUNIGES) "
-		               + "VALUES ('" + uniGes.getCodUniGes() + "', '" + uniGes.getOrgaoSub() + "', '" + uniGes.getNomeUnidadeGestora() + "');";
+		               + "VALUES ('" + uniGes.getCodUniGes() + "', '" + uniGes.getOrgaoSub().getCodOrgaoSub() + "', '" + uniGes.getNomeUnidadeGestora() + "');";
 	         stmt.executeUpdate(gestorSql);
 	        
 	     
@@ -56,7 +56,7 @@ public class DaoUnidadeGestora {
 	    	"postgres", senha);
 	    	
 	    	String sql = "UPDATE unidadegestora SET coduniges = '" + uniGes.getCodUniGes() + "', "
-	    				+ "codorgsub = '" + uniGes.getOrgaoSub() + "', "
+	    				+ "codorgsub = '" + uniGes.getOrgaoSub().getCodOrgaoSub() + "', "
 	    				+ "nomeuniges = '" + uniGes.getNomeUnidadeGestora()
 	    				+ "' WHERE coduniges = '" + uniGes.getCodUniGes() + "';";
 		    stmt = c.createStatement();
@@ -85,33 +85,29 @@ public class DaoUnidadeGestora {
 	    	c = DriverManager 
 	    	.getConnection("jdbc:postgresql://localhost:5432/" + bd,
 	    	"postgres", senha);
-	    	
-	    	String sql = "SELECT * FROM unidadegestora WHERE Coduniges = '" + uniGes + "';";
+	   
+	    	String sql = "SELECT * FROM unidadegestora join orgaosubordinado on "
+	    			+ "unidadegestora.codorgsub = orgaosubordinado.codorgsub join orgaosuperior on "
+	    			+ "orgaosubordinado.codorgsup = orgaosuperior.codorgsup "
+	    			+ "WHERE Coduniges = '" + uniGes + "';";
 		    stmt = c.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
+		    
 		    if(rs.next()){
 		    	uGes.setCodUniGes(rs.getInt("coduniges"));
 			    sub = rs.getString("codorgsub");
 			    uGes.setNomeUnidadeGestora(rs.getString("nomeuniges"));
 			    
-			    sql = "SELECT * FROM orgaosubordinado WHERE codorgsub = '" + sub + "';";
-			    stmt = c.createStatement();
-			    rs = stmt.executeQuery(sql);
-			    
 			    sup = rs.getString("codorgsup");
-			    oSub.setCodOrgaoSub(rs.getInt("codorgsub"));
-			    oSub.setNomeOrgaoSub(rs.getString("nomeorgsub"));
-			    
-			    sql = "SELECT * FROM orgaosuperior WHERE codorgsup = '" + sup + "';";
-			    stmt = c.createStatement();
-			    rs = stmt.executeQuery(sql);
-			    
-			    oSup.setCodOrgSup(rs.getInt("codorgsup"));
-			    oSup.setNomeOrgSup(rs.getString("nomeorgsup"));
-			    
-			    oSub.setOrgSup(oSup);
-			    
-			    uGes.setOrgaoSub(oSub);
+				oSub.setCodOrgaoSub(rs.getInt("codorgsub"));
+				oSub.setNomeOrgaoSub(rs.getString("nomeorgsub"));
+				    
+				oSup.setCodOrgSup(rs.getInt("codorgsup"));
+				oSup.setNomeOrgSup(rs.getString("nomeorgsup"));
+					    
+				oSub.setOrgSup(oSup);
+					    
+				uGes.setOrgaoSub(oSub);
 
 		    }
 		    else
